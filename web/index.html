@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>沪深300 ETF 市场看板</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.1/dist/echarts.min.js"></script>
+</head>
+<body>
+  <main class="shell">
+    <header class="hero">
+      <div>
+        <p class="eyebrow">ETFirst · ETF MARKET DASHBOARD</p>
+        <h1>2026年以来，300红利对比300成长</h1>
+        <p class="subline">以选定交易日收盘价为基准，比较红利、成长与沪深300 ETF 的表现。</p>
+      </div>
+      <div class="control-panel">
+        <label for="benchmark-date">基准日期</label>
+        <input id="benchmark-date" type="date" value="2025-12-31">
+        <span id="benchmark-status" class="hint">实际基准交易日：加载中</span>
+      </div>
+    </header>
+
+    <section id="message" class="message hidden"></section>
+    <section id="kpis" class="kpis"></section>
+
+    <section class="panel chart-panel">
+      <div class="panel-heading">
+        <div>
+          <h2>累计涨幅与红利−成长差值</h2>
+          <p id="freshness">数据加载中</p>
+        </div>
+        <button id="download-csv" class="button">下载 CSV</button>
+      </div>
+      <div id="main-chart" class="chart"></div>
+    </section>
+
+    <section class="panel">
+      <div class="panel-heading"><div><h2>交易日数据</h2><p>数值随基准日期动态重算。</p></div></div>
+      <div class="table-wrap"><table id="data-table"><thead></thead><tbody></tbody></table></div>
+    </section>
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>
+
