@@ -5,8 +5,8 @@ from datetime import datetime, timedelta
 from pathlib import Path
 from typing import Optional
 
-from .config import DATA_PATH, DATABASE_PATH, INDEX_DATA_PATH, INDEXES, INDEX_START_DATE, PRODUCT_START_DATES, PRODUCTS, START_DATE
-from .fetch_data import current_end_date, fetch_index_history, fetch_index_history_etfirst, fetch_product_history, fetch_product_history_etfirst
+from .config import DATA_PATH, DATABASE_PATH, INDEX_DATA_PATH, INDEXES, INDEX_START_DATE, PRODUCT_START_DATES, PRODUCTS, START_DATE, STRATEGIES
+from .fetch_data import current_end_date, fetch_csi_total_return_history, fetch_index_history, fetch_index_history_etfirst, fetch_product_history, fetch_product_history_etfirst
 from .validate_data import validate_records
 from .storage import read_index_records, read_records, upsert_index_records, upsert_records
 from .prism_metrics import calculate_prism_metrics
@@ -87,11 +87,16 @@ def update_dataset(path: Path = DATA_PATH, api_key: Optional[str] = None, end_da
     existing_indexes = read_index_records(DATABASE_PATH)
     for code in INDEXES:
         fetch_start = next_fetch_start(existing_indexes, code, INDEX_START_DATE, "indexCode")
+        if fetch_start >= index_end:
+            continue
         try:
             index_incoming.extend(fetch_index_history_etfirst(code, fetch_start, index_end))
         except Exception as primary_error:
             try:
-                index_incoming.extend(fetch_index_history(code, fetch_start, index_end, api_key))
+                if code.startswith("H") or code.endswith("CNY010"):
+                    index_incoming.extend(fetch_csi_total_return_history(code, fetch_start, index_end, api_key))
+                else:
+                    index_incoming.extend(fetch_index_history(code, fetch_start, index_end, api_key))
             except Exception as fallback_error:
                 raise RuntimeError(f"ETFirst and AkShare both failed for index {code}. ETFirst: {primary_error}; AkShare: {fallback_error}") from fallback_error
     index_records = merge_index_records(existing_indexes, index_incoming)
@@ -101,7 +106,7 @@ def update_dataset(path: Path = DATA_PATH, api_key: Optional[str] = None, end_da
     index_calendar = calculate_prism_metrics(index_records_to_calendar(index_records))
     index_output = {
         "schemaVersion": 1, "source": "ETFirst/AkShare", "updatedAt": updated_at,
-        "latestTradeDate": index_calendar[-1]["tradeDate"], "indexes": INDEXES,
+        "latestTradeDate": index_calendar[-1]["tradeDate"], "indexes": INDEXES, "strategies": STRATEGIES,
         "records": index_calendar, "flatRecords": index_records,
     }
     with tempfile.NamedTemporaryFile("w", encoding="utf-8", dir=INDEX_DATA_PATH.parent, delete=False, suffix=".tmp") as temp:
