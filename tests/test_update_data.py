@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from scripts.update_data import merge_records, records_to_calendar
+from scripts.update_data import merge_records, next_fetch_start, records_to_calendar
 from scripts.validate_data import validate_records
 
 
@@ -24,4 +24,9 @@ def test_validation_rejects_bad_price_and_duplicate():
 def test_records_are_grouped_by_trade_date():
     rows = [{"tradeDate": "20260105", "productCode": "512530", "closePrice": 1.5}]
     assert records_to_calendar(rows) == [{"tradeDate": "20260105", "prices": {"512530": 1.5}}]
+
+
+def test_next_fetch_start_is_day_after_latest_record():
+    rows = [{"tradeDate": "20261028", "productCode": "512530"}]
+    assert next_fetch_start(rows, "512530", "20180101", "productCode") == "20261029"
 

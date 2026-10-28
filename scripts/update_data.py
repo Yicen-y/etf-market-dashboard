@@ -1,7 +1,7 @@
 import argparse
 import json
 import tempfile
-from datetime import datetime
+from datetime import datetime, timedelta
 from pathlib import Path
 from typing import Optional
 
@@ -38,11 +38,19 @@ def merge_index_records(existing: list[dict], incoming: list[dict]) -> list[dict
     return [merged[key] for key in sorted(merged)]
 
 
+def next_fetch_start(records: list[dict], code: str, fallback: str, key: str) -> str:
+    latest = max((row["tradeDate"] for row in records if row.get(key) == code), default=None)
+    if not latest:
+        return fallback
+    return (datetime.strptime(latest, "%Y%m%d") + timedelta(days=1)).strftime("%Y%m%d")
+
+
 def update_dataset(path: Path = DATA_PATH, api_key: Optional[str] = None, end_date: Optional[str] = None) -> None:
     payload = json.loads(path.read_text(encoding="utf-8")) if path.exists() else {"records": []}
     incoming: list[dict] = []
+    existing = read_records(DATABASE_PATH)
     for code in PRODUCTS:
-        fetch_start = PRODUCT_START_DATES.get(code, START_DATE)
+        fetch_start = next_fetch_start(existing, code, PRODUCT_START_DATES.get(code, START_DATE), "productCode")
         fetch_end = end_date or current_end_date()
         try:
             incoming.extend(fetch_product_history_etfirst(code, fetch_start, fetch_end))
@@ -51,7 +59,6 @@ def update_dataset(path: Path = DATA_PATH, api_key: Optional[str] = None, end_da
                 incoming.extend(fetch_product_history(code, fetch_start, fetch_end, api_key))
             except Exception as fallback_error:
                 raise RuntimeError(f"ETFirst and AkShare both failed for {code}. ETFirst: {primary_error}; AkShare: {fallback_error}") from fallback_error
-    existing = read_records(DATABASE_PATH)
     records = merge_records(existing or payload.get("flatRecords", []), incoming)
     errors = validate_records(records, set(PRODUCTS))
     if errors:
@@ -77,15 +84,16 @@ def update_dataset(path: Path = DATA_PATH, api_key: Optional[str] = None, end_da
 
     index_incoming: list[dict] = []
     index_end = end_date or current_end_date()
+    existing_indexes = read_index_records(DATABASE_PATH)
     for code in INDEXES:
+        fetch_start = next_fetch_start(existing_indexes, code, INDEX_START_DATE, "indexCode")
         try:
-            index_incoming.extend(fetch_index_history_etfirst(code, INDEX_START_DATE, index_end))
+            index_incoming.extend(fetch_index_history_etfirst(code, fetch_start, index_end))
         except Exception as primary_error:
             try:
-                index_incoming.extend(fetch_index_history(code, INDEX_START_DATE, index_end, api_key))
+                index_incoming.extend(fetch_index_history(code, fetch_start, index_end, api_key))
             except Exception as fallback_error:
                 raise RuntimeError(f"ETFirst and AkShare both failed for index {code}. ETFirst: {primary_error}; AkShare: {fallback_error}") from fallback_error
-    existing_indexes = read_index_records(DATABASE_PATH)
     index_records = merge_index_records(existing_indexes, index_incoming)
     if not index_records:
         raise ValueError("指数历史数据为空")
