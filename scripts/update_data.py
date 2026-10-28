@@ -1,14 +1,14 @@
 import argparse
 import json
-import os
 import tempfile
 from datetime import datetime
 from pathlib import Path
 from typing import Optional
 
-from .config import DATA_PATH, PRODUCTS, START_DATE
+from .config import DATA_PATH, DATABASE_PATH, PRODUCTS, START_DATE
 from .fetch_data import current_end_date, fetch_product_history
 from .validate_data import validate_records
+from .storage import read_records, upsert_records
 
 
 def merge_records(existing: list[dict], incoming: list[dict]) -> list[dict]:
@@ -29,15 +29,18 @@ def update_dataset(path: Path = DATA_PATH, api_key: Optional[str] = None, end_da
     incoming: list[dict] = []
     for code in PRODUCTS:
         incoming.extend(fetch_product_history(code, START_DATE, end_date or current_end_date(), api_key))
-    records = merge_records(payload.get("flatRecords", []), incoming)
+    existing = read_records(DATABASE_PATH)
+    records = merge_records(existing or payload.get("flatRecords", []), incoming)
     errors = validate_records(records, set(PRODUCTS))
     if errors:
         raise ValueError("; ".join(errors))
     calendar = records_to_calendar(records)
+    updated_at = datetime.now().astimezone().isoformat(timespec="seconds")
+    upsert_records(DATABASE_PATH, records, updated_at)
     output = {
         "schemaVersion": 1,
-        "source": "南方基金 ETFirst",
-        "updatedAt": datetime.now().astimezone().isoformat(timespec="seconds"),
+        "source": "AkShare",
+        "updatedAt": updated_at,
         "latestTradeDate": calendar[-1]["tradeDate"] if calendar else None,
         "products": PRODUCTS,
         "records": calendar,
@@ -53,9 +56,7 @@ def update_dataset(path: Path = DATA_PATH, api_key: Optional[str] = None, end_da
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--api-key", default=os.getenv("ETFIRST_API_KEY"))
+    parser.add_argument("--api-key", default=None)
     args = parser.parse_args()
-    if not args.api_key:
-        raise SystemExit("ETFIRST_API_KEY is required")
     update_dataset(api_key=args.api_key)
 
