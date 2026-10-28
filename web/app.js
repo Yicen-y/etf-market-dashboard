@@ -30,7 +30,8 @@ function cls(value) { return value > 0 ? "positive" : value < 0 ? "negative" : "
 function renderKpis(last) {
   const items = [
     ["沪深300红利ETF建信", last.returns["512530"]], ["沪深300成长ETF银华", last.returns["562310"]],
-    ["沪深300ETF华夏", last.returns["510330"]], ["红利/成长 50:50组合", last.portfolio5050]
+    ["沪深300ETF华夏", last.returns["510330"]], ["红利/成长 50:50组合", last.portfolio5050],
+    ["红利−成长差值", last.difference]
   ];
   document.querySelector("#kpis").innerHTML = items.map(([label, value]) => `<div class="kpi"><div class="label">${label}</div><div class="value ${cls(value)}">${fmtPct(value)}</div></div>`).join("");
 }
