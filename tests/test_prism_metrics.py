@@ -22,3 +22,12 @@ def test_prism_rsi_is_bounded_and_requires_history():
     result = calculate_prism_metrics(rows)
     assert result[0]["rsi14"] is None
     assert 0 <= result[-1]["rsi14"] <= 100
+
+
+def test_prism_has_242_day_rsi_average():
+    rows = [
+        {"tradeDate": f"2025{i:04d}", "values": {"480080": 100 + i, "480081": 200}}
+        for i in range(1, 250)
+    ]
+    result = calculate_prism_metrics(rows)
+    assert result[-1]["rsiMa242"] is not None

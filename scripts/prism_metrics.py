@@ -62,10 +62,14 @@ def calculate_prism_metrics(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
             "return40Spread": spread40,
             "return40Ma242": None,
             "rsi14": rsi[i],
+            "rsiMa242": None,
         })
     spreads = [r["return40Spread"] for r in result]
     for i, row in enumerate(result):
         window = [x for x in spreads[max(0, i - 241): i + 1] if x is not None]
         if len(window) == min(242, i + 1):
             row["return40Ma242"] = _mean(window)
+        rsi_window = [x["rsi14"] for x in result[max(0, i - 241): i + 1] if x["rsi14"] is not None]
+        if rsi_window and len(rsi_window) == min(242, i - 13):
+            row["rsiMa242"] = _mean(rsi_window)
     return result
