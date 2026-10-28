@@ -30,6 +30,8 @@ input { width:100%; border:1px solid #c9d3e2; border-radius:8px; padding:10px; c
 .panel-heading { display:flex; justify-content:space-between; gap:16px; align-items:flex-start; margin-bottom:10px; }
 .button { border:1px solid #c9d3e2; background:#fff; border-radius:8px; padding:9px 13px; cursor:pointer; color:var(--ink); }
 .button:hover { border-color:var(--blue); color:var(--blue); }
+.refresh-button { margin-top:10px; width:100%; }
+.refresh-button:disabled { opacity:.6; cursor:wait; }
 .chart { width:100%; height:620px; }
 .table-wrap { overflow:auto; }
 table { width:100%; border-collapse:collapse; font-size:13px; white-space:nowrap; }
