@@ -39,7 +39,12 @@ def fetch_product_history_etfirst(product_code: str, start_date: str, end_date: 
     if result.returncode != 0:
         error = result.stderr.decode("utf-8", errors="replace").strip()
         raise RuntimeError(error or "ETFirst request failed")
-    payload = json.loads((result.stdout or b"").decode("utf-8-sig"))
+    raw = result.stdout or b""
+    try:
+        text = raw.decode("utf-8-sig")
+    except UnicodeDecodeError:
+        text = raw.decode("gb18030")
+    payload = json.loads(text)
     rows = payload.get("results", {}).get("getReturnTrendList", {}).get(product_code, [])
     return [{"tradeDate": row["tradeDate"], "productCode": product_code, "closePrice": float(row["closePrice"])} for row in rows]
 
