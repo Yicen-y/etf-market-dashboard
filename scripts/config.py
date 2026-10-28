@@ -14,4 +14,11 @@ PRODUCTS = {
 # predates it. This keeps the database ready for arbitrary benchmark dates.
 START_DATE = "20000101"
 
+# Avoid querying periods before an ETF existed; Eastmoney may close those requests.
+PRODUCT_START_DATES = {
+    "512530": "20180101",
+    "562310": "20210101",
+    "510330": "20130101",
+}
+
 

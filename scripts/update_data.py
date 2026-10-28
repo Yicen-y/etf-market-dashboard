@@ -5,7 +5,7 @@ from datetime import datetime
 from pathlib import Path
 from typing import Optional
 
-from .config import DATA_PATH, DATABASE_PATH, PRODUCTS, START_DATE
+from .config import DATA_PATH, DATABASE_PATH, PRODUCT_START_DATES, PRODUCTS, START_DATE
 from .fetch_data import current_end_date, fetch_product_history
 from .validate_data import validate_records
 from .storage import read_records, upsert_records
@@ -28,7 +28,7 @@ def update_dataset(path: Path = DATA_PATH, api_key: Optional[str] = None, end_da
     payload = json.loads(path.read_text(encoding="utf-8")) if path.exists() else {"records": []}
     incoming: list[dict] = []
     for code in PRODUCTS:
-        incoming.extend(fetch_product_history(code, START_DATE, end_date or current_end_date(), api_key))
+        incoming.extend(fetch_product_history(code, PRODUCT_START_DATES.get(code, START_DATE), end_date or current_end_date(), api_key))
     existing = read_records(DATABASE_PATH)
     records = merge_records(existing or payload.get("flatRecords", []), incoming)
     errors = validate_records(records, set(PRODUCTS))
