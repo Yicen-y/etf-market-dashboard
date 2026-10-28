@@ -9,6 +9,8 @@ from .config import PRODUCT_START_DATES
 def _disable_process_proxy() -> None:
     # Eastmoney rejects the local proxy connection in some Windows setups.
     # Limit this to the update process; system/browser proxy settings remain unchanged.
+    if os.getenv("ETF_DIRECT") != "1":
+        return
     for key in ("HTTP_PROXY", "HTTPS_PROXY", "ALL_PROXY", "http_proxy", "https_proxy", "all_proxy"):
         os.environ.pop(key, None)
     os.environ["NO_PROXY"] = "*"
