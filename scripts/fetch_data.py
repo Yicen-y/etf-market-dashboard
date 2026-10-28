@@ -3,6 +3,7 @@ import akshare as ak
 from datetime import datetime, timedelta
 import os
 import time
+from .config import PRODUCT_START_DATES
 
 
 def _disable_process_proxy() -> None:
@@ -14,12 +15,26 @@ def _disable_process_proxy() -> None:
     os.environ["no_proxy"] = "*"
 
 
+def discover_start_date(product_code: str, end_date: str) -> str:
+    """Use the earliest available fund net-value date as an automatic start date."""
+    try:
+        info = ak.fund_etf_fund_info_em(fund=product_code, start_date="20000101", end_date=end_date)
+        if info is not None and not info.empty and "净值日期" in info.columns:
+            earliest = info["净值日期"].dropna().min()
+            if earliest is not None:
+                return earliest.strftime("%Y%m%d")
+    except Exception:
+        pass
+    return PRODUCT_START_DATES.get(product_code, "20130101")
+
+
 def fetch_product_history(product_code: str, start_date: str, end_date: str, api_key=None) -> list[dict]:
-    start = datetime.strptime(start_date, "%Y%m%d").date()
+    _disable_process_proxy()
+    discovered = discover_start_date(product_code, end_date)
+    start = datetime.strptime(discovered, "%Y%m%d").date()
     end = datetime.strptime(end_date, "%Y%m%d").date()
     records = []
     cursor = start
-    _disable_process_proxy()
     while cursor <= end:
         chunk_end = min(cursor + timedelta(days=365), end)
         frame = None
