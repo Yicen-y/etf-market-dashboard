@@ -20,6 +20,7 @@ h2 { margin:0; font-size:18px; }
 .control-panel label { display:block; font-size:12px; color:var(--muted); margin-bottom:7px; }
 input { width:100%; border:1px solid #c9d3e2; border-radius:8px; padding:10px; color:var(--ink); font:inherit; }
 .hint { display:block; margin-top:8px; color:var(--muted); font-size:12px; line-height:1.4; }
+.strategy-universe { margin-top:8px; color:var(--muted); font-size:13px; }
 .kpis { display:grid; grid-template-columns:repeat(5,1fr); gap:14px; margin-bottom:18px; }
 .kpi,.panel { background:var(--surface); border:1px solid var(--line); border-radius:14px; box-shadow:0 8px 30px rgba(26,50,90,.05); }
 .kpi { padding:18px; }

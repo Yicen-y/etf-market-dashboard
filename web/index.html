@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>A股ETF看板</title>
-  <link rel="stylesheet" href="styles.css?v=20261029-1">
+  <link rel="stylesheet" href="styles.css?v=20261029-2">
   <script src="echarts.min.js"></script>
 </head>
 <body>
@@ -28,6 +28,7 @@
         <p class="eyebrow">ETFirst · ETF MARKET DASHBOARD</p>
       <h1 id="page-title">300红利与300成长轮动</h1>
         <p id="page-subline" class="subline">以选定交易日收盘价为基准，比较红利、成长与沪深300 ETF 的表现。</p>
+        <p id="strategy-universe" class="strategy-universe"></p>
       </div>
       <div class="control-panel">
         <label for="benchmark-date">基准日期</label>
@@ -56,15 +57,15 @@
       <div class="table-wrap"><table id="data-table"><thead></thead><tbody></tbody></table></div>
     </section>
     <section id="prism-content" class="hidden">
-      <section class="panel chart-panel"><div class="panel-heading"><div><h2>同一基准下的成长100R与价值100R累计收益</h2><p id="prism-freshness">数据加载中</p></div><button id="download-prism-csv" class="button">下载 CSV</button></div><div id="prism-main-chart" class="chart"></div></section>
-      <section class="panel"><h2>成长100R / 价值100R 比值及242日布林线</h2><div id="prism-ratio-chart" class="chart"></div></section>
-      <section class="panel"><h2>40日收益差及242日均线</h2><div id="prism-spread-chart" class="chart"></div></section>
-      <section class="panel"><h2>比值14日 RSI 及242日均线</h2><div id="prism-rsi-chart" class="chart"></div></section>
+      <section class="panel chart-panel"><div class="panel-heading"><div><h2 id="prism-main-title">同一基准下的成长100R与价值100R累计收益</h2><p id="prism-freshness">数据加载中</p></div><button id="download-prism-csv" class="button">下载 CSV</button></div><div id="prism-main-chart" class="chart"></div></section>
+      <section class="panel"><h2 id="prism-ratio-title">成长100R / 价值100R 比值及242日布林线</h2><div id="prism-ratio-chart" class="chart"></div></section>
+      <section class="panel"><h2 id="prism-spread-title">40日收益差及242日均线</h2><div id="prism-spread-chart" class="chart"></div></section>
+      <section class="panel"><h2 id="prism-rsi-title">比值14日 RSI 及242日均线</h2><div id="prism-rsi-chart" class="chart"></div></section>
       <section class="panel data-table-panel"><div class="panel-heading"><div><h2>三棱镜交易日数据</h2><p>原始指数点位计算，不对指数分别归一化。</p></div></div><div class="table-wrap"><table id="prism-table"><thead></thead><tbody></tbody></table></div></section>
     </section>
     </div>
   </main>
-  <script src="app.js?v=20261029-1"></script>
+  <script src="app.js?v=20261029-2"></script>
 </body>
 </html>
 
