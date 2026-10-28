@@ -5,7 +5,7 @@ import json
 import os
 import subprocess
 import time
-from .config import PRODUCT_START_DATES
+from .config import INDEX_START_DATE, PRODUCT_START_DATES
 
 
 def _disable_process_proxy() -> None:
@@ -76,6 +76,36 @@ def fetch_product_history(product_code: str, start_date: str, end_date: str, api
             records.extend({"tradeDate": str(row["日期"]).replace("-", ""), "productCode": product_code, "closePrice": float(row["收盘"])} for _, row in frame.iterrows())
         cursor = chunk_end + timedelta(days=1)
     return records
+
+
+def fetch_index_history_etfirst(index_code: str, start_date: str, end_date: str) -> list[dict]:
+    command = ["etfirst", "--json", "index-detail", "all", "--index-code", index_code,
+               "--start-date", start_date, "--end-date", end_date]
+    result = subprocess.run(command, capture_output=True, text=False, check=False)
+    if result.returncode != 0:
+        raise RuntimeError(result.stderr.decode("utf-8", errors="replace").strip() or "ETFirst request failed")
+    raw = result.stdout or b""
+    try:
+        text = raw.decode("utf-8-sig")
+    except UnicodeDecodeError:
+        text = raw.decode("gb18030")
+    payload = json.loads(text)
+    rows = payload.get("results", {}).get("list", [])
+    if not rows:
+        raise RuntimeError(f"ETFirst returned no historical index points for {index_code}")
+    return [{"tradeDate": row["JYR"], "indexCode": index_code, "closeValue": float(row["CLOSE"])} for row in rows]
+
+
+def fetch_index_history(index_code: str, start_date: str, end_date: str, api_key=None) -> list[dict]:
+    """AkShare's CNI endpoint supplies the 480080/480081 total-return histories."""
+    _disable_process_proxy()
+    frame = ak.index_hist_cni(symbol=index_code, start_date=start_date, end_date=end_date)
+    if frame is None or frame.empty:
+        return []
+    # AkShare may decode the Chinese column labels differently on Windows;
+    # CNI's stable column order is date, open, high, low, close.
+    return [{"tradeDate": row.iloc[0].strftime("%Y%m%d"), "indexCode": index_code, "closeValue": float(row.iloc[4])}
+            for _, row in frame.iterrows()]
 
 
 def current_end_date() -> str:

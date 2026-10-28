@@ -2,6 +2,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 DATA_PATH = ROOT / "data" / "etf_prices.json"
+INDEX_DATA_PATH = ROOT / "data" / "index_prices.json"
 DATABASE_PATH = ROOT / "data" / "etf_market.db"
 
 PRODUCTS = {
@@ -20,5 +21,11 @@ PRODUCT_START_DATES = {
     "562310": "20210101",
     "510330": "20130101",
 }
+
+INDEXES = {
+    "480080": {"name": "成长100R", "role": "growth_return", "sourceCode": "480080"},
+    "480081": {"name": "价值100R", "role": "value_return", "sourceCode": "480081"},
+}
+INDEX_START_DATE = "20121231"
 
 
