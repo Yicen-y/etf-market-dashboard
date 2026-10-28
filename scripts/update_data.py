@@ -31,12 +31,12 @@ def update_dataset(path: Path = DATA_PATH, api_key: Optional[str] = None, end_da
         fetch_start = PRODUCT_START_DATES.get(code, START_DATE)
         fetch_end = end_date or current_end_date()
         try:
-            incoming.extend(fetch_product_history(code, fetch_start, fetch_end, api_key))
+            incoming.extend(fetch_product_history_etfirst(code, fetch_start, fetch_end))
         except Exception as primary_error:
             try:
-                incoming.extend(fetch_product_history_etfirst(code, fetch_start, fetch_end))
+                incoming.extend(fetch_product_history(code, fetch_start, fetch_end, api_key))
             except Exception as fallback_error:
-                raise RuntimeError(f"AkShare and ETFirst both failed for {code}. AkShare: {primary_error}; ETFirst: {fallback_error}") from fallback_error
+                raise RuntimeError(f"ETFirst and AkShare both failed for {code}. ETFirst: {primary_error}; AkShare: {fallback_error}") from fallback_error
     existing = read_records(DATABASE_PATH)
     records = merge_records(existing or payload.get("flatRecords", []), incoming)
     errors = validate_records(records, set(PRODUCTS))

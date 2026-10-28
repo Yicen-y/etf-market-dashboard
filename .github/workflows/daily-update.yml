@@ -23,7 +23,15 @@ jobs:
           python-version: "3.11"
       - name: Install dependencies
         run: python -m pip install -r requirements.txt
+      - name: Install ETFirst CLI
+        run: python -m pip install https://www.nffund.com/wxfiles/miniapp/openu/static/assets/etfirst/0.4.2/etfirst-0.4.2.tar.gz
+      - name: Authenticate ETFirst
+        env:
+          ETFIRST_API_KEY: ${{ secrets.ETFIRST_API_KEY }}
+        run: etfirst auth login --api-key "$ETFIRST_API_KEY"
       - name: Update and validate data
+        env:
+          ETFIRST_API_KEY: ${{ secrets.ETFIRST_API_KEY }}
         run: python -m scripts.update_data
       - name: Run tests
         run: python -m pytest -q
