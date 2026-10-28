@@ -31,3 +31,14 @@ def test_prism_has_242_day_rsi_average():
     ]
     result = calculate_prism_metrics(rows)
     assert result[-1]["rsiMa242"] is not None
+
+
+def test_242_day_indicators_are_blank_before_full_window():
+    rows = [
+        {"tradeDate": f"2025{i:04d}", "values": {"480080": 100 + i, "480081": 200}}
+        for i in range(1, 100)
+    ]
+    result = calculate_prism_metrics(rows)
+    assert result[-1]["ratioMa242"] is None
+    assert result[-1]["ratioUpper242"] is None
+    assert result[-1]["return40Ma242"] is None

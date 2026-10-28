@@ -50,7 +50,7 @@ def calculate_prism_metrics(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
             if old.get(GROWTH_CODE) and old.get(VALUE_CODE):
                 spread40 = (growth / old[GROWTH_CODE] - 1) - (value / old[VALUE_CODE] - 1)
         window = [x for x in ratios[max(0, i - 241): i + 1] if x is not None]
-        ma = _mean(window) if len(window) == min(242, i + 1) else None
+        ma = _mean(window) if len(window) == 242 else None
         std = _std(window) if ma is not None else None
         result.append({
             "tradeDate": row["tradeDate"],
@@ -67,9 +67,9 @@ def calculate_prism_metrics(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
     spreads = [r["return40Spread"] for r in result]
     for i, row in enumerate(result):
         window = [x for x in spreads[max(0, i - 241): i + 1] if x is not None]
-        if len(window) == min(242, i + 1):
+        if len(window) == 242:
             row["return40Ma242"] = _mean(window)
         rsi_window = [x["rsi14"] for x in result[max(0, i - 241): i + 1] if x["rsi14"] is not None]
-        if rsi_window and len(rsi_window) == min(242, i - 13):
+        if len(rsi_window) == 242:
             row["rsiMa242"] = _mean(rsi_window)
     return result

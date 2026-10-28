@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "source": "ETFirst/AkShare",
-  "updatedAt": "2026-10-28T22:34:08+08:00",
+  "updatedAt": "2026-10-28T23:04:23+08:00",
   "latestTradeDate": "20261028",
   "indexes": {
     "480080": {
@@ -23,9 +23,9 @@
         "480081": 1000.0
       },
       "ratio": 1.0,
-      "ratioMa242": 1.0,
-      "ratioUpper242": 1.0,
-      "ratioLower242": 1.0,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": null,
       "return40Ma242": null,
       "rsi14": null,
@@ -38,9 +38,9 @@
         "480081": 1000.6886
       },
       "ratio": 0.987892836992447,
-      "ratioMa242": 0.9939464184962234,
-      "ratioUpper242": 1.0110685326233668,
-      "ratioLower242": 0.9768243043690802,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": null,
       "return40Ma242": null,
       "rsi14": null,
@@ -53,9 +53,9 @@
         "480081": 1006.4233
       },
       "ratio": 0.990105654350411,
-      "ratioMa242": 0.9926661637809526,
-      "ratioUpper242": 1.0055600391380024,
-      "ratioLower242": 0.9797722884239027,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": null,
       "return40Ma242": null,
       "rsi14": null,
@@ -68,9 +68,9 @@
         "480081": 998.8736
       },
       "ratio": 1.0115003539987442,
-      "ratioMa242": 0.9973747113354006,
-      "ratioUpper242": 1.018951583265982,
-      "ratioLower242": 0.9757978394048191,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": null,
       "return40Ma242": null,
       "rsi14": null,
@@ -83,9 +83,9 @@
         "480081": 1000.4799
       },
       "ratio": 1.0139726945039076,
-      "ratioMa242": 1.000694307969102,
-      "ratioUpper242": 1.0245598791531565,
-      "ratioLower242": 0.9768287367850476,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": null,
       "return40Ma242": null,
       "rsi14": null,
@@ -98,9 +98,9 @@
         "480081": 1003.9027
       },
       "ratio": 1.0089846356624004,
-      "ratioMa242": 1.0020760292513184,
-      "ratioUpper242": 1.0244696015253985,
-      "ratioLower242": 0.9796824569772383,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": null,
       "return40Ma242": null,
       "rsi14": null,
@@ -113,9 +113,9 @@
         "480081": 984.1628
       },
       "ratio": 1.011913679322161,
-      "ratioMa242": 1.0034814078328673,
-      "ratioUpper242": 1.0252344740566908,
-      "ratioLower242": 0.9817283416090439,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": null,
       "return40Ma242": null,
       "rsi14": null,
@@ -128,9 +128,9 @@
         "480081": 1017.4429
       },
       "ratio": 1.0116596223729115,
-      "ratioMa242": 1.004503684650373,
-      "ratioUpper242": 1.025456920051921,
-      "ratioLower242": 0.9835504492488251,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": null,
       "return40Ma242": null,
       "rsi14": null,
@@ -143,9 +143,9 @@
         "480081": 1023.0358
       },
       "ratio": 1.0196422256190838,
-      "ratioMa242": 1.0061857447580076,
-      "ratioUpper242": 1.0282314712820675,
-      "ratioLower242": 0.9841400182339477,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": null,
       "return40Ma242": null,
       "rsi14": null,
@@ -158,9 +158,9 @@
         "480081": 1007.8881
       },
       "ratio": 1.0363133566117113,
-      "ratioMa242": 1.009198505943378,
-      "ratioUpper242": 1.037395698966435,
-      "ratioLower242": 0.9810013129203208,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": null,
       "return40Ma242": null,
       "rsi14": null,
@@ -173,9 +173,9 @@
         "480081": 1006.145
       },
       "ratio": 1.031985846970367,
-      "ratioMa242": 1.0112700824003769,
-      "ratioUpper242": 1.0413432664968119,
-      "ratioLower242": 0.981196898303942,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": null,
       "return40Ma242": null,
       "rsi14": null,
@@ -188,9 +188,9 @@
         "480081": 1026.7913
       },
       "ratio": 1.0289741449893468,
-      "ratioMa242": 1.0127454209494575,
-      "ratioUpper242": 1.043186453964939,
-      "ratioLower242": 0.9823043879339761,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": null,
       "return40Ma242": null,
       "rsi14": null,
@@ -203,9 +203,9 @@
         "480081": 1036.7162
       },
       "ratio": 1.0163623371564947,
-      "ratioMa242": 1.0130236452730759,
-      "ratioUpper242": 1.0422376893795777,
-      "ratioLower242": 0.9838096011665739,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": null,
       "return40Ma242": null,
       "rsi14": null,
@@ -218,9 +218,9 @@
         "480081": 1028.6883
       },
       "ratio": 1.004138765843842,
-      "ratioMa242": 1.0123890110281306,
-      "ratioUpper242": 1.040855907067587,
-      "ratioLower242": 0.9839221149886743,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": null,
       "return40Ma242": null,
       "rsi14": null,
@@ -233,13 +233,13 @@
         "480081": 1028.6156
       },
       "ratio": 1.009365014491322,
-      "ratioMa242": 1.0121874112590101,
-      "ratioUpper242": 1.0396632108493247,
-      "ratioLower242": 0.9847116116686957,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": null,
       "return40Ma242": null,
       "rsi14": 54.31914796843443,
-      "rsiMa242": 54.31914796843443
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130124",
@@ -248,13 +248,13 @@
         "480081": 1016.8407
       },
       "ratio": 1.0017771711930885,
-      "ratioMa242": 1.01153677125489,
-      "ratioUpper242": 1.0385864453159486,
-      "ratioLower242": 0.9844870971938313,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": null,
       "return40Ma242": null,
       "rsi14": 50.511857588472395,
-      "rsiMa242": 52.415502778453416
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130125",
@@ -263,13 +263,13 @@
         "480081": 1010.2773
       },
       "ratio": 1.0102533235182063,
-      "ratioMa242": 1.0114612743292026,
-      "ratioUpper242": 1.0376594068593568,
-      "ratioLower242": 0.9852631417990486,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": null,
       "return40Ma242": null,
       "rsi14": 54.36018496939497,
-      "rsiMa242": 53.06373017543393
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130128",
@@ -278,13 +278,13 @@
         "480081": 1040.5516
       },
       "ratio": 1.0021444395453334,
-      "ratioMa242": 1.0109436723967655,
-      "ratioUpper242": 1.0367362823323159,
-      "ratioLower242": 0.9851510624612152,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": null,
       "return40Ma242": null,
       "rsi14": 50.32811087551065,
-      "rsiMa242": 52.37982535045311
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130129",
@@ -293,13 +293,13 @@
         "480081": 1049.0071
       },
       "ratio": 1.001816098289516,
-      "ratioMa242": 1.0104632737595418,
-      "ratioUpper242": 1.0358766443693985,
-      "ratioLower242": 0.985049903149685,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": null,
       "return40Ma242": null,
       "rsi14": 50.16585335520097,
-      "rsiMa242": 51.93703095140269
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130130",
@@ -308,13 +308,13 @@
         "480081": 1058.2522
       },
       "ratio": 0.9957130256851817,
-      "ratioMa242": 1.0097257613558237,
-      "ratioUpper242": 1.0353257969365355,
-      "ratioLower242": 0.9841257257751119,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": null,
       "return40Ma242": null,
       "rsi14": 47.12461942905994,
-      "rsiMa242": 51.13496236434556
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130131",
@@ -323,13 +323,13 @@
         "480081": 1050.5158
       },
       "ratio": 1.0022623172350194,
-      "ratioMa242": 1.009370359254833,
-      "ratioUpper242": 1.0345339008484098,
-      "ratioLower242": 0.9842068176612564,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": null,
       "return40Ma242": null,
       "rsi14": 50.586541926888074,
-      "rsiMa242": 51.05661658756592
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130201",
@@ -338,13 +338,13 @@
         "480081": 1063.4294
       },
       "ratio": 0.995583251694941,
-      "ratioMa242": 1.0087436725475654,
-      "ratioUpper242": 1.0339946537278866,
-      "ratioLower242": 0.9834926913672442,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": null,
       "return40Ma242": null,
       "rsi14": 47.19304180002677,
-      "rsiMa242": 50.573669739123524
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130204",
@@ -353,13 +353,13 @@
         "480081": 1056.8713
       },
       "ratio": 0.988177463045879,
-      "ratioMa242": 1.0078494895257528,
-      "ratioUpper242": 1.0339682472694083,
-      "ratioLower242": 0.9817307317820974,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": null,
       "return40Ma242": null,
       "rsi14": 43.69306115919247,
-      "rsiMa242": 49.809157674686745
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130205",
@@ -368,13 +368,13 @@
         "480081": 1076.0728
       },
       "ratio": 0.985529045990197,
-      "ratioMa242": 1.0069194710451048,
-      "ratioUpper242": 1.034040731943183,
-      "ratioLower242": 0.9797982101470267,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": null,
       "return40Ma242": null,
       "rsi14": 42.47975766591925,
-      "rsiMa242": 49.07621767380999
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130206",
@@ -383,13 +383,13 @@
         "480081": 1069.1183
       },
       "ratio": 0.9976709780386324,
-      "ratioMa242": 1.0065495313248458,
-      "ratioUpper242": 1.0333562447128806,
-      "ratioLower242": 0.9797428179368111,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": null,
       "return40Ma242": null,
       "rsi14": 49.41504485587443,
-      "rsiMa242": 49.107020144906755
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130207",
@@ -398,13 +398,13 @@
         "480081": 1070.4891
       },
       "ratio": 1.0049480186206474,
-      "ratioMa242": 1.0064879346823767,
-      "ratioUpper242": 1.0327605531012423,
-      "ratioLower242": 0.9802153162635112,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": null,
       "return40Ma242": null,
       "rsi14": 53.067376894787365,
-      "rsiMa242": 49.43704987406347
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130208",
@@ -413,13 +413,13 @@
         "480081": 1086.4914
       },
       "ratio": 1.0055101218472597,
-      "ratioMa242": 1.0064517193921871,
-      "ratioUpper242": 1.032216890269856,
-      "ratioLower242": 0.9806865485145181,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": null,
       "return40Ma242": null,
       "rsi14": 53.34757748694594,
-      "rsiMa242": 49.737859690439045
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130218",
@@ -428,13 +428,13 @@
         "480081": 1080.3989
       },
       "ratio": 1.0105940500309656,
-      "ratioMa242": 1.0065996597721436,
-      "ratioUpper242": 1.0319316254734234,
-      "ratioLower242": 0.9812676940708638,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": null,
       "return40Ma242": null,
       "rsi14": 55.911403260817146,
-      "rsiMa242": 50.178827088323196
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130219",
@@ -443,13 +443,13 @@
         "480081": 1051.2211
       },
       "ratio": 1.0163103651553418,
-      "ratioMa242": 1.006934511681909,
-      "ratioUpper242": 1.032070082473858,
-      "ratioLower242": 0.9817989408899601,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": null,
       "return40Ma242": null,
       "rsi14": 58.66222735622053,
-      "rsiMa242": 50.74438710618302
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130220",
@@ -458,13 +458,13 @@
         "480081": 1062.9792
       },
       "ratio": 1.025548665486587,
-      "ratioMa242": 1.0075549834753983,
-      "ratioUpper242": 1.0331715610759,
-      "ratioLower242": 0.9819384058748967,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": null,
       "return40Ma242": null,
       "rsi14": 62.71145824598088,
-      "rsiMa242": 51.49232905242039
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130221",
@@ -473,13 +473,13 @@
         "480081": 1027.6333
       },
       "ratio": 1.0391264082236338,
-      "ratioMa242": 1.008573416531793,
-      "ratioUpper242": 1.0361949469643155,
-      "ratioLower242": 0.9809518860992705,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": null,
       "return40Ma242": null,
       "rsi14": 67.71668517528018,
-      "rsiMa242": 52.44670294200038
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130222",
@@ -488,13 +488,13 @@
         "480081": 1021.5693
       },
       "ratio": 1.0435847083501824,
-      "ratioMa242": 1.0096675194011175,
-      "ratioUpper242": 1.0395265466214405,
-      "ratioLower242": 0.9798084921807947,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": null,
       "return40Ma242": null,
       "rsi14": 69.17958074260181,
-      "rsiMa242": 53.37630726425601
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130225",
@@ -503,13 +503,13 @@
         "480081": 1023.8613
       },
       "ratio": 1.0517435320584927,
-      "ratioMa242": 1.0109425500877047,
-      "ratioUpper242": 1.0437799226789157,
-      "ratioLower242": 0.9781051774964938,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": null,
       "return40Ma242": null,
       "rsi14": 71.70635815362444,
-      "rsiMa242": 54.34104678474908
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130226",
@@ -518,13 +518,13 @@
         "480081": 1004.9815
       },
       "ratio": 1.0595884600860812,
-      "ratioMa242": 1.0123733121464806,
-      "ratioUpper242": 1.0487604030088746,
-      "ratioLower242": 0.9759862212840866,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": null,
       "return40Ma242": null,
       "rsi14": 73.92035132858403,
-      "rsiMa242": 55.32001201194083
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130227",
@@ -533,13 +533,13 @@
         "480081": 1016.6353
       },
       "ratio": 1.0504354904851325,
-      "ratioMa242": 1.0134608029561565,
-      "ratioUpper242": 1.0515481720181152,
-      "ratioLower242": 0.9753734338941977,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": null,
       "return40Ma242": null,
       "rsi14": 67.30306386945091,
-      "rsiMa242": 55.89063352896512
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130228",
@@ -548,13 +548,13 @@
         "480081": 1048.7077
       },
       "ratio": 1.0351956031218232,
-      "ratioMa242": 1.0140645474052026,
-      "ratioUpper242": 1.052296597641047,
-      "ratioLower242": 0.9758324971693583,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": null,
       "return40Ma242": null,
       "rsi14": 57.99404703329676,
-      "rsiMa242": 55.98624323370746
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130301",
@@ -563,13 +563,13 @@
         "480081": 1050.178
       },
       "ratio": 1.0431731573123793,
-      "ratioMa242": 1.0148512665918832,
-      "ratioUpper242": 1.0537445614147882,
-      "ratioLower242": 0.9759579717689781,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": null,
       "return40Ma242": null,
       "rsi14": 61.03244610306344,
-      "rsiMa242": 56.20564335846207
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130304",
@@ -578,13 +578,13 @@
         "480081": 1000.7594
       },
       "ratio": 1.0636850375824598,
-      "ratioMa242": 1.0161363658284772,
-      "ratioUpper242": 1.0576433517425705,
-      "ratioLower242": 0.9746293799143839,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": null,
       "return40Ma242": null,
       "rsi14": 67.53482302476687,
-      "rsiMa242": 56.67769251122477
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130305",
@@ -593,13 +593,13 @@
         "480081": 1015.4238
       },
       "ratio": 1.0700817727534058,
-      "ratioMa242": 1.0175195813906548,
-      "ratioUpper242": 1.0619714065132138,
-      "ratioLower242": 0.9730677562680958,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": null,
       "return40Ma242": null,
       "rsi14": 69.25765742604449,
-      "rsiMa242": 57.18089110781756
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130306",
@@ -608,13 +608,13 @@
         "480081": 1026.8017
       },
       "ratio": 1.0788542714722813,
-      "ratioMa242": 1.0190529486426956,
-      "ratioUpper242": 1.0670268312714186,
-      "ratioLower242": 0.9710790660139725,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": null,
       "return40Ma242": null,
       "rsi14": 71.49196362540954,
-      "rsiMa242": 57.7313169738788
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130307",
@@ -623,13 +623,13 @@
         "480081": 1017.5906
       },
       "ratio": 1.0715373156945434,
-      "ratioMa242": 1.0203330551561551,
-      "ratioUpper242": 1.070459878310871,
-      "ratioLower242": 0.9702062320014393,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.07279569999999991,
       "return40Ma242": null,
       "rsi14": 67.1107954969109,
-      "rsiMa242": 58.07870506732443
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130308",
@@ -638,13 +638,13 @@
         "480081": 1011.7046
       },
       "ratio": 1.0674380644310602,
-      "ratioMa242": 1.0214546029960339,
-      "ratioUpper242": 1.0730563002390894,
-      "ratioLower242": 0.9698529057529783,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.0814064964014205,
       "return40Ma242": null,
       "rsi14": 64.71794160102039,
-      "rsiMa242": 58.31582065781357
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130311",
@@ -653,13 +653,13 @@
         "480081": 1009.2021
       },
       "ratio": 1.072337146345613,
-      "ratioMa242": 1.022637917957652,
-      "ratioUpper242": 1.0759312289969878,
-      "ratioLower242": 0.969344606918316,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.08328256496180497,
       "return40Ma242": null,
       "rsi14": 66.26599707296965,
-      "rsiMa242": 58.5899646721293
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130312",
@@ -668,13 +668,13 @@
         "480081": 994.8899
       },
       "ratio": 1.069736460285706,
-      "ratioMa242": 1.0237083393741986,
-      "ratioUpper242": 1.078259118719475,
-      "ratioLower242": 0.9691575600289222,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.057344368953497704,
       "return40Ma242": null,
       "rsi14": 64.6444784081404,
-      "rsiMa242": 58.791781796663
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130313",
@@ -683,13 +683,13 @@
         "480081": 979.8736
       },
       "ratio": 1.0769191046681938,
-      "ratioMa242": 1.0248908008251763,
-      "ratioUpper242": 1.0811032078846248,
-      "ratioLower242": 0.9686783937657276,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.060800394392121926,
       "return40Ma242": null,
       "rsi14": 67.0430842918895,
-      "rsiMa242": 59.057952844896114
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130314",
@@ -698,13 +698,13 @@
         "480081": 980.5028
       },
       "ratio": 1.0840844105697607,
-      "ratioMa242": 1.0261776184283193,
-      "ratioUpper242": 1.0844382541476032,
-      "ratioLower242": 0.9679169827090355,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.07269613109161821,
       "return40Ma242": null,
       "rsi14": 69.28196104741451,
-      "rsiMa242": 59.377453101224816
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130315",
@@ -713,13 +713,13 @@
         "480081": 983.4346
       },
       "ratio": 1.085256914898052,
-      "ratioMa242": 1.027434624736186,
-      "ratioUpper242": 1.0875808191368885,
-      "ratioLower242": 0.9672884303354835,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.0724261061750956,
       "return40Ma242": null,
       "rsi14": 69.64535127136244,
-      "rsiMa242": 59.688601530622925
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130318",
@@ -728,13 +728,13 @@
         "480081": 967.8659
       },
       "ratio": 1.097424033639371,
-      "ratioMa242": 1.028892737421669,
-      "ratioUpper242": 1.0917322553944453,
-      "ratioLower242": 0.9660532194488928,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.08064507266341492,
       "return40Ma242": null,
       "rsi14": 73.18972130839647,
-      "rsiMa242": 60.08569328879273
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130319",
@@ -743,13 +743,13 @@
         "480081": 974.2114
       },
       "ratio": 1.0977239642237813,
-      "ratioMa242": 1.030297456335998,
-      "ratioUpper242": 1.0955147266910363,
-      "ratioLower242": 0.9650801859809595,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.07292291796713468,
       "return40Ma242": null,
       "rsi14": 73.27257058618784,
-      "rsiMa242": 60.46246121157545
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130320",
@@ -758,13 +758,13 @@
         "480081": 999.6311
       },
       "ratio": 1.0921690011445224,
-      "ratioMa242": 1.0315348872321684,
-      "ratioUpper242": 1.0984134152690164,
-      "ratioLower242": 0.9646563591953203,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.053456856116325446,
       "return40Ma242": null,
       "rsi14": 69.01856154514256,
-      "rsiMa242": 60.70013066528564
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130321",
@@ -773,13 +773,13 @@
         "480081": 1001.7324
       },
       "ratio": 1.1016740598587007,
-      "ratioMa242": 1.0329101651268062,
-      "ratioUpper242": 1.101969025360478,
-      "ratioLower242": 0.9638513048931345,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.06723210882072606,
       "return40Ma242": null,
       "rsi14": 72.01272749736562,
-      "rsiMa242": 61.00587652561213
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130322",
@@ -788,13 +788,13 @@
         "480081": 1006.3254
       },
       "ratio": 1.1024080282580566,
-      "ratioMa242": 1.0342466624947149,
-      "ratioUpper242": 1.1052899503085443,
-      "ratioLower242": 0.9632033746808853,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.06994364912803497,
       "return40Ma242": null,
       "rsi14": 72.23586148836782,
-      "rsiMa242": 61.30140244568465
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130325",
@@ -803,13 +803,13 @@
         "480081": 1000.2825
       },
       "ratio": 1.1110765208828506,
-      "ratioMa242": 1.0356962824643023,
-      "ratioUpper242": 1.1091509254663687,
-      "ratioLower242": 0.962241639462236,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.08991439851125349,
       "return40Ma242": null,
       "rsi14": 74.79205380732863,
-      "rsiMa242": 61.6473165831627
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130326",
@@ -818,13 +818,13 @@
         "480081": 991.7208
       },
       "ratio": 1.1210686515801624,
-      "ratioMa242": 1.037277252262744,
-      "ratioUpper242": 1.1136556893030571,
-      "ratioLower242": 0.9608988152224309,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.11226319892711911,
       "return40Ma242": null,
       "rsi14": 77.37757277556719,
-      "rsiMa242": 62.040572987972816
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130327",
@@ -833,13 +833,13 @@
         "480081": 993.2982
       },
       "ratio": 1.1234267816049601,
-      "ratioMa242": 1.0388436073416936,
-      "ratioUpper242": 1.1179978732455953,
-      "ratioLower242": 0.9596893414377918,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.10912352587116037,
       "return40Ma242": null,
       "rsi14": 77.95230788225786,
-      "rsiMa242": 62.42866408295537
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130328",
@@ -848,13 +848,13 @@
         "480081": 975.3783
       },
       "ratio": 1.1222611780475331,
-      "ratioMa242": 1.0403332068185835,
-      "ratioUpper242": 1.1218716429435212,
-      "ratioLower242": 0.9587947706936459,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.11536616069153283,
       "return40Ma242": null,
       "rsi14": 76.91216887331129,
-      "rsiMa242": 62.7735094351067
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130329",
@@ -863,13 +863,13 @@
         "480081": 973.4616
       },
       "ratio": 1.1290531645007877,
-      "ratioMa242": 1.0418896973042362,
-      "ratioUpper242": 1.1260452683359758,
-      "ratioLower242": 0.9577341262724965,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.11330884201875024,
       "return40Ma242": null,
       "rsi14": 78.69600171496194,
-      "rsiMa242": 63.14379995324286
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130401",
@@ -878,13 +878,13 @@
         "480081": 976.1963
       },
       "ratio": 1.1359900667519434,
-      "ratioMa242": 1.0435121174671278,
-      "ratioUpper242": 1.1305097786952045,
-      "ratioLower242": 0.956514456239051,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.12529894143870002,
       "return40Ma242": null,
       "rsi14": 80.36464400070558,
-      "rsiMa242": 63.53518277250338
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130402",
@@ -893,13 +893,13 @@
         "480081": 975.6438
       },
       "ratio": 1.1185744223455323,
-      "ratioMa242": 1.0447843599226938,
-      "ratioUpper242": 1.1332156319914168,
-      "ratioLower242": 0.9563530878539708,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.10839586310221094,
       "return40Ma242": null,
       "rsi14": 66.3201450190389,
-      "rsiMa242": 63.597070822426396
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130403",
@@ -908,13 +908,13 @@
         "480081": 974.5244
       },
       "ratio": 1.109377558940546,
-      "ratioMa242": 1.0458609132396581,
-      "ratioUpper242": 1.1351116727549166,
-      "ratioLower242": 0.9566101537243995,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.10512217109073918,
       "return40Ma242": null,
       "rsi14": 60.32470197365808,
-      "rsiMa242": 63.525932369192304
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130408",
@@ -923,13 +923,13 @@
         "480081": 969.0355
       },
       "ratio": 1.1270632500047728,
-      "ratioMa242": 1.0471920990882666,
-      "ratioUpper242": 1.138105893672948,
-      "ratioLower242": 0.9562783045035852,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.11486124725281,
       "return40Ma242": null,
       "rsi14": 66.58122833849703,
-      "rsiMa242": 63.59093866641155
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130409",
@@ -938,13 +938,13 @@
         "480081": 976.4227
       },
       "ratio": 1.1227371096554803,
-      "ratioMa242": 1.048410567000641,
-      "ratioUpper242": 1.1405952604909713,
-      "ratioLower242": 0.9562258735103106,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.11726844439482698,
       "return40Ma242": null,
       "rsi14": 63.92569479264249,
-      "rsiMa242": 63.5979127523747
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130410",
@@ -953,13 +953,13 @@
         "480081": 976.0233
       },
       "ratio": 1.1178858127669697,
-      "ratioMa242": 1.0495133486794714,
-      "ratioUpper242": 1.1426123122866052,
-      "ratioLower242": 0.9564143850723377,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.1212191040819508,
       "return40Ma242": null,
       "rsi14": 60.98813139574155,
-      "rsiMa242": 63.54465190836178
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130411",
@@ -968,13 +968,13 @@
         "480081": 969.0085
       },
       "ratio": 1.1265615317099902,
-      "ratioMa242": 1.0507172265393234,
-      "ratioUpper242": 1.145061624271674,
-      "ratioLower242": 0.9563728288069728,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.1288652037467275,
       "return40Ma242": null,
       "rsi14": 64.15997925521259,
-      "rsiMa242": 63.55695845529879
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130412",
@@ -983,13 +983,13 @@
         "480081": 961.6371
       },
       "ratio": 1.1298595904837696,
-      "ratioMa242": 1.051934801369238,
-      "ratioUpper242": 1.147575986865539,
-      "ratioLower242": 0.9562936158729369,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.11917691844925327,
       "return40Ma242": null,
       "rsi14": 65.31449849093842,
-      "rsiMa242": 63.59142002462506
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130415",
@@ -998,13 +998,13 @@
         "480081": 956.1563
       },
       "ratio": 1.121415714146317,
-      "ratioMa242": 1.0529875424719213,
-      "ratioUpper242": 1.1494193385808202,
-      "ratioLower242": 0.9565557463630222,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.10351624874740484,
       "return40Ma242": null,
       "rsi14": 59.9866069525761,
-      "rsiMa242": 63.522096696316424
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130416",
@@ -1013,13 +1013,13 @@
         "480081": 969.1325
       },
       "ratio": 1.1146605856268363,
-      "ratioMa242": 1.053908035653338,
-      "ratioUpper242": 1.1507856617640881,
-      "ratioLower242": 0.9570304095425877,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.09682689459757621,
       "return40Ma242": null,
       "rsi14": 56.04766366771893,
-      "rsiMa242": 63.38106965804101
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130417",
@@ -1028,13 +1028,13 @@
         "480081": 974.6255
       },
       "ratio": 1.1253675386084192,
-      "ratioMa242": 1.054958910696795,
-      "ratioUpper242": 1.1526603730755631,
-      "ratioLower242": 0.9572574483180267,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.10245153792617678,
       "return40Ma242": null,
       "rsi14": 60.47749193164541,
-      "rsiMa242": 63.32729970014479
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130418",
@@ -1043,13 +1043,13 @@
         "480081": 977.1432
       },
       "ratio": 1.1258636400478457,
-      "ratioMa242": 1.0559865154699983,
-      "ratioUpper242": 1.1544580737508578,
-      "ratioLower242": 0.9575149571891388,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.10019894625988601,
       "return40Ma242": null,
       "rsi14": 60.67526176146094,
-      "rsiMa242": 63.27908082853236
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130419",
@@ -1058,13 +1058,13 @@
         "480081": 995.573
       },
       "ratio": 1.1295136569593591,
-      "ratioMa242": 1.0570369032055607,
-      "ratioUpper242": 1.1563598345631838,
-      "ratioLower242": 0.9577139718479374,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.09494655070892666,
       "return40Ma242": null,
       "rsi14": 62.174960433525804,
-      "rsiMa242": 63.259364392907244
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130422",
@@ -1073,13 +1073,13 @@
         "480081": 987.3746
       },
       "ratio": 1.1518352811587416,
-      "ratioMa242": 1.0583720916274364,
-      "ratioUpper242": 1.1595175822347155,
-      "ratioLower242": 0.9572266010201573,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.10421578563880896,
       "return40Ma242": null,
       "rsi14": 69.76806960898601,
-      "rsiMa242": 63.37355220371565
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130423",
@@ -1088,13 +1088,13 @@
         "480081": 957.9691
       },
       "ratio": 1.162167130442934,
-      "ratioMa242": 1.0598136893887629,
-      "ratioUpper242": 1.1631812025012702,
-      "ratioLower242": 0.9564461762762555,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.10655559970551698,
       "return40Ma242": null,
       "rsi14": 72.5180221110092,
-      "rsiMa242": 63.53121547797932
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130424",
@@ -1103,13 +1103,13 @@
         "480081": 972.5058
       },
       "ratio": 1.1762916992371664,
-      "ratioMa242": 1.0614092785647684,
-      "ratioUpper242": 1.1676158997336226,
-      "ratioLower242": 0.9552026573959143,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.11248084320888097,
       "return40Ma242": null,
       "rsi14": 75.76371341689652,
-      "rsiMa242": 63.7385459515203
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130425",
@@ -1118,13 +1118,13 @@
         "480081": 961.482
       },
       "ratio": 1.1614503443642212,
-      "ratioMa242": 1.0627611848593557,
-      "ratioUpper242": 1.170771890452956,
-      "ratioLower242": 0.9547504792657554,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.09197241215475449,
       "return40Ma242": null,
       "rsi14": 66.83214623375196,
-      "rsiMa242": 63.79010595622416
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130426",
@@ -1133,13 +1133,13 @@
         "480081": 955.0074
       },
       "ratio": 1.1510536986414974,
-      "ratioMa242": 1.0639384183764509,
-      "ratioUpper242": 1.1731374260506464,
-      "ratioLower242": 0.9547394107022553,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.08998057079733579,
       "return40Ma242": null,
       "rsi14": 61.37388392079944,
-      "rsiMa242": 63.75049575892212
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130502",
@@ -1148,13 +1148,13 @@
         "480081": 951.4403
       },
       "ratio": 1.175205002352749,
-      "ratioMa242": 1.065402452376139,
-      "ratioUpper242": 1.1768341499067358,
-      "ratioLower242": 0.9539707548455421,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.12270488688382686,
       "return40Ma242": null,
       "rsi14": 67.92690898690674,
-      "rsiMa242": 63.81785726259929
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130503",
@@ -1163,13 +1163,13 @@
         "480081": 966.0282
       },
       "ratio": 1.1800161734408996,
-      "ratioMa242": 1.066890942260097,
-      "ratioUpper242": 1.1806276856090216,
-      "ratioLower242": 0.9531541989111723,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.12066828010799069,
       "return40Ma242": null,
       "rsi14": 69.05325210491056,
-      "rsiMa242": 63.9009587680328
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130506",
@@ -1178,13 +1178,13 @@
         "480081": 977.6139
       },
       "ratio": 1.182561029461631,
-      "ratioMa242": 1.068373892096014,
-      "ratioUpper242": 1.1843660380686265,
-      "ratioLower242": 0.9523817461234014,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.10917389205203154,
       "return40Ma242": null,
       "rsi14": 69.66018396415646,
-      "rsiMa242": 63.990946661722234
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130507",
@@ -1193,13 +1193,13 @@
         "480081": 985.4864
       },
       "ratio": 1.1721620917345992,
-      "ratioMa242": 1.0696876667749835,
-      "ratioUpper242": 1.18727638095015,
-      "ratioLower242": 0.9520989525998168,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.09258238167290667,
       "return40Ma242": null,
       "rsi14": 64.12581322690066,
-      "rsiMa242": 63.99302153195574
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130508",
@@ -1208,13 +1208,13 @@
         "480081": 988.4121
       },
       "ratio": 1.181500408584638,
-      "ratioMa242": 1.0710853260476043,
-      "ratioUpper242": 1.1905724948502459,
-      "ratioLower242": 0.9515981572449628,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.09158646550456462,
       "return40Ma242": null,
       "rsi14": 66.68546944776762,
-      "rsiMa242": 64.03381619734684
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130509",
@@ -1223,13 +1223,13 @@
         "480081": 979.9195
       },
       "ratio": 1.1906805610052662,
-      "ratioMa242": 1.0725618104297976,
-      "ratioUpper242": 1.1942377764256096,
-      "ratioLower242": 0.9508858444339856,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.10707286892109791,
       "return40Ma242": null,
       "rsi14": 69.02524112598805,
-      "rsiMa242": 64.1083150768788
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130510",
@@ -1238,13 +1238,13 @@
         "480081": 987.3604
       },
       "ratio": 1.1908462198808054,
-      "ratioMa242": 1.0740043032279807,
-      "ratioUpper242": 1.1977167118854641,
-      "ratioLower242": 0.9502918945704971,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.11282962791001894,
       "return40Ma242": null,
       "rsi14": 69.06745982712526,
-      "rsiMa242": 64.18124367614712
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130513",
@@ -1253,13 +1253,13 @@
         "480081": 981.2263
       },
       "ratio": 1.204742371866714,
-      "ratioMa242": 1.0755794606814595,
-      "ratioUpper242": 1.201840495104594,
-      "ratioLower242": 0.9493184262583249,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.12005073118661314,
       "return40Ma242": null,
       "rsi14": 72.4586120593903,
-      "rsiMa242": 64.30120553677384
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130514",
@@ -1268,13 +1268,13 @@
         "480081": 963.7806
       },
       "ratio": 1.2143987957425164,
-      "ratioMa242": 1.0772320718131385,
-      "ratioUpper242": 1.206334495723858,
-      "ratioLower242": 0.948129647902419,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.1310031782009886,
       "return40Ma242": null,
       "rsi14": 74.54684868649895,
-      "rsiMa242": 64.4475718674842
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130515",
@@ -1283,13 +1283,13 @@
         "480081": 967.2597
       },
       "ratio": 1.2319632462719166,
-      "ratioMa242": 1.0790524385714773,
-      "ratioUpper242": 1.211701162462833,
-      "ratioLower242": 0.9464037146801213,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.1421167660032321,
       "return40Ma242": null,
       "rsi14": 77.83838217463769,
-      "rsiMa242": 64.63617482955678
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130516",
@@ -1298,13 +1298,13 @@
         "480081": 979.4414
       },
       "ratio": 1.2339983790760733,
-      "ratioMa242": 1.0808541355540888,
-      "ratioUpper242": 1.2168884637122221,
-      "ratioLower242": 0.9448198073959555,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.13813655495912303,
       "return40Ma242": null,
       "rsi14": 78.19030639159527,
-      "rsiMa242": 64.82442665680732
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130517",
@@ -1313,13 +1313,13 @@
         "480081": 995.773
       },
       "ratio": 1.227514604232089,
-      "ratioMa242": 1.082539888067629,
-      "ratioUpper242": 1.221389061987947,
-      "ratioLower242": 0.9436907141473108,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.13272662493677556,
       "return40Ma242": null,
       "rsi14": 74.15031406425686,
-      "rsiMa242": 64.95217853910115
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130520",
@@ -1328,13 +1328,13 @@
         "480081": 1006.1248
       },
       "ratio": 1.2259332043102407,
-      "ratioMa242": 1.084169357570386,
-      "ratioUpper242": 1.2255628315003215,
-      "ratioLower242": 0.9427758836404503,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.12172963475384035,
       "return40Ma242": null,
       "rsi14": 73.15746158509785,
-      "rsiMa242": 65.06306074242544
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130521",
@@ -1343,13 +1343,13 @@
         "480081": 1011.1776
       },
       "ratio": 1.2307861645669367,
-      "ratioMa242": 1.0858167374242798,
-      "ratioUpper242": 1.2297996032359861,
-      "ratioLower242": 0.9418338716125735,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.12581597530473765,
       "return40Ma242": null,
       "rsi14": 74.29493220621333,
-      "rsiMa242": 65.1861523619426
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130522",
@@ -1358,13 +1358,13 @@
         "480081": 1011.7021
       },
       "ratio": 1.2186465759041125,
-      "ratioMa242": 1.0872926245185002,
-      "ratioUpper242": 1.233177166889618,
-      "ratioLower242": 0.9414080821473823,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.11720241907784512,
       "return40Ma242": null,
       "rsi14": 66.68270513352553,
-      "rsiMa242": 65.20584384577921
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130523",
@@ -1373,13 +1373,13 @@
         "480081": 997.8013
       },
       "ratio": 1.2382183707317278,
-      "ratioMa242": 1.088951149202162,
-      "ratioUpper242": 1.2374337610060742,
-      "ratioLower242": 0.9404685373982498,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.12345617890016625,
       "return40Ma242": null,
       "rsi14": 71.714547635965,
-      "rsiMa242": 65.29037246643098
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130524",
@@ -1388,13 +1388,13 @@
         "480081": 999.8355
       },
       "ratio": 1.2538487581207107,
-      "ratioMa242": 1.0907435145164939,
-      "ratioUpper242": 1.2423582808034888,
-      "ratioLower242": 0.939128748229499,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.1364867350037947,
       "return40Ma242": null,
       "rsi14": 74.96622482989274,
-      "rsiMa242": 65.41442185570612
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130527",
@@ -1403,13 +1403,13 @@
         "480081": 996.561
       },
       "ratio": 1.2766078544113204,
-      "ratioMa242": 1.0927420558056857,
-      "ratioUpper242": 1.2483794821671952,
-      "ratioLower242": 0.9371046294441763,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.14842855514359798,
       "return40Ma242": null,
       "rsi14": 78.78972079749688,
-      "rsiMa242": 65.58372943724778
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130528",
@@ -1418,13 +1418,13 @@
         "480081": 1015.3127
       },
       "ratio": 1.2513714247837144,
-      "ratioMa242": 1.0944296022841753,
-      "ratioUpper242": 1.2526488291803652,
-      "ratioLower242": 0.9362103753879853,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.11899585854052996,
       "return40Ma242": null,
       "rsi14": 66.63620033402404,
-      "rsiMa242": 65.59688532345749
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130529",
@@ -1433,13 +1433,13 @@
         "480081": 1017.5662
       },
       "ratio": 1.260245082826061,
-      "ratioMa242": 1.0961750283951426,
-      "ratioUpper242": 1.2571864766902867,
-      "ratioLower242": 0.9351635800999983,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.1247620336414419,
       "return40Ma242": null,
       "rsi14": 68.47745262764025,
-      "rsiMa242": 65.63244788276837
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130530",
@@ -1448,13 +1448,13 @@
         "480081": 1013.9916
       },
       "ratio": 1.2651290207926773,
-      "ratioMa242": 1.09793496581595,
-      "ratioUpper242": 1.2617677734580928,
-      "ratioLower242": 0.9341021581738074,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.13234325601189623,
       "return40Ma242": null,
       "rsi14": 69.47591696197894,
-      "rsiMa242": 65.6793194569051
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130531",
@@ -1463,13 +1463,13 @@
         "480081": 1004.226
       },
       "ratio": 1.2644565068022535,
-      "ratioMa242": 1.0996516827333347,
-      "ratioUpper242": 1.266100096750102,
-      "ratioLower242": 0.9332032687165674,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.12371650110335097,
       "return40Ma242": null,
       "rsi14": 69.15110929712526,
-      "rsiMa242": 65.72114825016077
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130603",
@@ -1478,13 +1478,13 @@
         "480081": 1005.505
       },
       "ratio": 1.2495696192460504,
-      "ratioMa242": 1.1011814575957093,
-      "ratioUpper242": 1.2695168904862446,
-      "ratioLower242": 0.9328460247051739,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.10298469725404691,
       "return40Ma242": null,
       "rsi14": 62.21703399897493,
-      "rsiMa242": 65.67943260431332
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130604",
@@ -1493,13 +1493,13 @@
         "480081": 988.3107
       },
       "ratio": 1.240084014065617,
-      "ratioMa242": 1.1025845137216679,
-      "ratioUpper242": 1.272370317291255,
-      "ratioLower242": 0.9327987101520807,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.11003931683517165,
       "return40Ma242": null,
       "rsi14": 58.211641609130794,
-      "rsiMa242": 65.59157623966411
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130605",
@@ -1508,13 +1508,13 @@
         "480081": 988.9885
       },
       "ratio": 1.243860166220335,
-      "ratioMa242": 1.1039972702466545,
-      "ratioUpper242": 1.2752701153274706,
-      "ratioLower242": 0.9327244251658385,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.12302270391066239,
       "return40Ma242": null,
       "rsi14": 59.33401204110328,
-      "rsiMa242": 65.51881386526225
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130606",
@@ -1523,13 +1523,13 @@
         "480081": 977.3239
       },
       "ratio": 1.2403611535541084,
-      "ratioMa242": 1.1053474077051442,
-      "ratioUpper242": 1.277908943207151,
-      "ratioLower242": 0.9327858722031371,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.10138469913241122,
       "return40Ma242": null,
       "rsi14": 57.78527111732425,
-      "rsiMa242": 65.42992256930893
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130607",
@@ -1538,13 +1538,13 @@
         "480081": 958.1944
       },
       "ratio": 1.2505801536723655,
-      "ratioMa242": 1.1067712581558031,
-      "ratioUpper242": 1.2808684029007482,
-      "ratioLower242": 0.932674113410858,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.11174157444993549,
       "return40Ma242": null,
       "rsi14": 60.98800457290917,
-      "rsiMa242": 65.37944622844076
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130613",
@@ -1553,13 +1553,13 @@
         "480081": 925.6279
       },
       "ratio": 1.2667627023774888,
-      "ratioMa242": 1.1083245731482467,
-      "ratioUpper242": 1.284411850335688,
-      "ratioLower242": 0.9322372959608055,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.126300797656123,
       "return40Ma242": null,
       "rsi14": 65.45727459290366,
-      "rsiMa242": 65.38032070444595
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130614",
@@ -1568,13 +1568,13 @@
         "480081": 927.8738
       },
       "ratio": 1.300048562638583,
-      "ratioMa242": 1.1101680730471921,
-      "ratioUpper242": 1.289387116685385,
-      "ratioLower242": 0.9309490294089994,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.14745972591563283,
       "return40Ma242": null,
       "rsi14": 72.44885848709598,
-      "rsiMa242": 65.45886001314206
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130617",
@@ -1583,13 +1583,13 @@
         "480081": 916.1142
       },
       "ratio": 1.3206948435031354,
-      "ratioMa242": 1.1121730899086772,
-      "ratioUpper242": 1.295200583705133,
-      "ratioLower242": 0.9291455961122215,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.16090610920442405,
       "return40Ma242": null,
       "rsi14": 75.7302031039093,
-      "rsiMa242": 65.5717319152384
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130618",
@@ -1598,13 +1598,13 @@
         "480081": 924.5174
       },
       "ratio": 1.3208762755573882,
-      "ratioMa242": 1.1141419878864953,
-      "ratioUpper242": 1.3007530430421381,
-      "ratioLower242": 0.9275309327308526,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.17197946673966935,
       "return40Ma242": null,
       "rsi14": 75.75752721442342,
-      "rsiMa242": 65.68244708153388
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130619",
@@ -1613,13 +1613,13 @@
         "480081": 919.7426
       },
       "ratio": 1.3213017424657723,
-      "ratioMa242": 1.1160780603591989,
-      "ratioUpper242": 1.306076654461196,
-      "ratioLower242": 0.9260794662572018,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.17593705743784538,
       "return40Ma242": null,
       "rsi14": 75.82625940754906,
-      "rsiMa242": 65.79152033235125
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130620",
@@ -1628,13 +1628,13 @@
         "480081": 898.5051
       },
       "ratio": 1.2996134356944664,
-      "ratioMa242": 1.1177774619826737,
-      "ratioUpper242": 1.310156485878978,
-      "ratioLower242": 0.9253984380863693,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.14274172917515604,
       "return40Ma242": null,
       "rsi14": 65.61394903779353,
-      "rsiMa242": 65.78963127602618
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130621",
@@ -1643,13 +1643,13 @@
         "480081": 897.3448
       },
       "ratio": 1.3018966622417603,
-      "ratioMa242": 1.1194666289575277,
-      "ratioUpper242": 1.3141742015409303,
-      "ratioLower242": 0.924759056374125,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.1435851372964957,
       "return40Ma242": null,
       "rsi14": 66.13109550668344,
-      "rsiMa242": 65.7932256363489
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130624",
@@ -1658,13 +1658,13 @@
         "480081": 853.3718
       },
       "ratio": 1.2934439595965088,
-      "ratioMa242": 1.1210482410542457,
-      "ratioUpper242": 1.3176795959508794,
-      "ratioLower242": 0.9244168861576121,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.12440359525850797,
       "return40Ma242": null,
       "rsi14": 62.39017293102662,
-      "rsiMa242": 65.75777717066845
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130625",
@@ -1673,13 +1673,13 @@
         "480081": 850.0107
       },
       "ratio": 1.2969596735664621,
-      "ratioMa242": 1.1226330287345359,
-      "ratioUpper242": 1.3211966933515384,
-      "ratioLower242": 0.9240693641175332,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.10846571395773352,
       "return40Ma242": null,
       "rsi14": 63.31958826076193,
-      "rsiMa242": 65.73264120252507
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130626",
@@ -1688,13 +1688,13 @@
         "480081": 851.1763
       },
       "ratio": 1.3414755556516318,
-      "ratioMa242": 1.1245869798677242,
-      "ratioUpper242": 1.3265343897467643,
-      "ratioLower242": 0.922639569988684,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.13708821768253754,
       "return40Ma242": null,
       "rsi14": 72.56457542380704,
-      "rsiMa242": 65.80235481702795
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130627",
@@ -1703,13 +1703,13 @@
         "480081": 849.8306
       },
       "ratio": 1.3236549731205254,
-      "ratioMa242": 1.1263486435248287,
-      "ratioUpper242": 1.3308514259012343,
-      "ratioLower242": 0.921845861148423,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.10947485880049812,
       "return40Ma242": null,
       "rsi14": 65.45259464441764,
-      "rsiMa242": 65.79882188599147
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130628",
@@ -1718,13 +1718,13 @@
         "480081": 861.8265
       },
       "ratio": 1.3063475072999031,
-      "ratioMa242": 1.1279275809263642,
-      "ratioUpper242": 1.3342964617536994,
-      "ratioLower242": 0.9215587000990292,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.1118247461057057,
       "return40Ma242": null,
       "rsi14": 59.36694576170293,
-      "rsiMa242": 65.73450312474858
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130701",
@@ -1733,13 +1733,13 @@
         "480081": 861.3463
       },
       "ratio": 1.353481404633653,
-      "ratioMa242": 1.1298889185238188,
-      "ratioUpper242": 1.3396127459654386,
-      "ratioLower242": 0.9201650910821991,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.1586154269415624,
       "return40Ma242": null,
       "rsi14": 68.0730207981262,
-      "rsiMa242": 65.75765676507906
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130702",
@@ -1748,13 +1748,13 @@
         "480081": 860.9907
       },
       "ratio": 1.373766638826645,
-      "ratioMa242": 1.1319913126643606,
-      "ratioUpper242": 1.3456558203945184,
-      "ratioLower242": 0.9183268049342029,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.1528968822443515,
       "return40Ma242": null,
       "rsi14": 70.95714284710624,
-      "rsiMa242": 65.80863211882442
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130703",
@@ -1763,13 +1763,13 @@
         "480081": 857.0217
       },
       "ratio": 1.3897706440805406,
-      "ratioMa242": 1.1341945548132166,
-      "ratioUpper242": 1.3522100744280579,
-      "ratioLower242": 0.9161790351983755,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.157697671328611,
       "return40Ma242": null,
       "rsi14": 73.02734539670132,
-      "rsiMa242": 65.87871671375527
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130704",
@@ -1778,13 +1778,13 @@
         "480081": 873.5575
       },
       "ratio": 1.3571771749426913,
-      "ratioMa242": 1.1360842380346527,
-      "ratioUpper242": 1.3570140617041302,
-      "ratioLower242": 0.9151544143651753,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.13194257730537262,
       "return40Ma242": null,
       "rsi14": 63.15406647472973,
-      "rsiMa242": 65.85251815376463
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130705",
@@ -1793,13 +1793,13 @@
         "480081": 878.6681
       },
       "ratio": 1.3341037417882817,
-      "ratioMa242": 1.1377482674779607,
-      "ratioUpper242": 1.3607154941447817,
-      "ratioLower242": 0.9147810408111395,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.12318139341194878,
       "return40Ma242": null,
       "rsi14": 57.25287745724234,
-      "rsiMa242": 65.77061681379776
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130708",
@@ -1808,13 +1808,13 @@
         "480081": 859.2222
       },
       "ratio": 1.320111258764031,
-      "ratioMa242": 1.1392679590720112,
-      "ratioUpper242": 1.3637788903270536,
-      "ratioLower242": 0.9147570278169688,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.10198370541749291,
       "return40Ma242": null,
       "rsi14": 53.959986918563025,
-      "rsiMa242": 65.65919577705026
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130709",
@@ -1823,13 +1823,13 @@
         "480081": 860.5031
       },
       "ratio": 1.323163739909827,
-      "ratioMa242": 1.140787758913646,
-      "ratioUpper242": 1.3668476058169454,
-      "ratioLower242": 0.9147279120103465,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.09770741334373911,
       "return40Ma242": null,
       "rsi14": 54.57379041878897,
-      "rsiMa242": 65.55559385781417
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130710",
@@ -1838,13 +1838,13 @@
         "480081": 886.4234
       },
       "ratio": 1.313109965282956,
-      "ratioMa242": 1.1422002360150338,
-      "ratioUpper242": 1.3694761031275795,
-      "ratioLower242": 0.9149243689024882,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.09217380597841662,
       "return40Ma242": null,
       "rsi14": 52.10960955731425,
-      "rsiMa242": 65.43109400317991
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130711",
@@ -1853,13 +1853,13 @@
         "480081": 916.3346
       },
       "ratio": 1.3028791011492964,
-      "ratioMa242": 1.143506568251898,
-      "ratioUpper242": 1.371696234173225,
-      "ratioLower242": 0.9153169023305707,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.07607155603647575,
       "return40Ma242": null,
       "rsi14": 49.652646006483714,
-      "rsiMa242": 65.28633759954049
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130712",
@@ -1868,13 +1868,13 @@
         "480081": 895.4124
       },
       "ratio": 1.325393751527229,
-      "ratioMa242": 1.144973400375086,
-      "ratioUpper242": 1.3745695194530667,
-      "ratioLower242": 0.9153772812971053,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.08491547413742773,
       "return40Ma242": null,
       "rsi14": 54.71311656385717,
-      "rsiMa242": 65.190217408307
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130715",
@@ -1883,13 +1883,13 @@
         "480081": 901.9097
       },
       "ratio": 1.3400364803704847,
-      "ratioMa242": 1.1465339050150491,
-      "ratioUpper242": 1.3778493807415384,
-      "ratioLower242": 0.9152184292885599,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.08179756217950962,
       "return40Ma242": null,
       "rsi14": 57.69151773219625,
-      "rsiMa242": 65.12266155536908
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130716",
@@ -1898,13 +1898,13 @@
         "480081": 906.7548
       },
       "ratio": 1.3513003735960372,
-      "ratioMa242": 1.1481590357180729,
-      "ratioUpper242": 1.381418298377137,
-      "ratioLower242": 0.9148997730590087,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.08800395967675334,
       "return40Ma242": null,
       "rsi14": 59.87751574488892,
-      "rsiMa242": 65.07582989634693
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130717",
@@ -1913,13 +1913,13 @@
         "480081": 899.5249
       },
       "ratio": 1.3363894651498809,
-      "ratioMa242": 1.1496411650836778,
-      "ratioUpper242": 1.384362247500555,
-      "ratioLower242": 0.9149200826668004,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.08012237029387215,
       "return40Ma242": null,
       "rsi14": 55.76961250325471,
-      "rsiMa242": 64.99347399021337
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130718",
@@ -1928,13 +1928,13 @@
         "480081": 885.1098
       },
       "ratio": 1.3521587943100393,
-      "ratioMa242": 1.1512233340620088,
-      "ratioUpper242": 1.3877436166076973,
-      "ratioLower242": 0.9147030515163204,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.09057866104392098,
       "return40Ma242": null,
       "rsi14": 58.97512515290157,
-      "rsiMa242": 64.94068145655274
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130719",
@@ -1943,13 +1943,13 @@
         "480081": 861.2654
       },
       "ratio": 1.355252980091851,
-      "ratioMa242": 1.152804959225031,
-      "ratioUpper242": 1.3911232172067933,
-      "ratioLower242": 0.9144867012432685,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.08613517347791289,
       "return40Ma242": null,
       "rsi14": 59.59391246795263,
-      "rsiMa242": 64.8941878131736
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130722",
@@ -1958,13 +1958,13 @@
         "480081": 866.5841
       },
       "ratio": 1.367896318430029,
-      "ratioMa242": 1.1544595081419924,
-      "ratioUpper242": 1.3948317879112886,
-      "ratioLower242": 0.9140872283726962,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.10490444318242975,
       "return40Ma242": null,
       "rsi14": 62.1088759502587,
-      "rsiMa242": 64.87017650401054
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130723",
@@ -1973,13 +1973,13 @@
         "480081": 887.7009
       },
       "ratio": 1.3733806060126783,
-      "ratioMa242": 1.1561306615608526,
-      "ratioUpper242": 1.3986132037892176,
-      "ratioLower242": 0.9136481193324876,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.09711374833774167,
       "return40Ma242": null,
       "rsi14": 63.179453799092606,
-      "rsiMa242": 64.85572588260099
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130724",
@@ -1988,13 +1988,13 @@
         "480081": 882.1397
       },
       "ratio": 1.3903732027931632,
-      "ratioMa242": 1.157905226267158,
-      "ratioUpper242": 1.4028779991026874,
-      "ratioLower242": 0.9129324534316288,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.09606696699100725,
       "return40Ma242": null,
       "rsi14": 66.35170815156852,
-      "rsiMa242": 64.8684036984397
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130725",
@@ -2003,13 +2003,13 @@
         "480081": 879.9153
       },
       "ratio": 1.3631185865275897,
-      "ratioMa242": 1.1594481838631012,
-      "ratioUpper242": 1.4060725291722638,
-      "ratioLower242": 0.9128238385539386,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.05983419566220971,
       "return40Ma242": null,
       "rsi14": 57.75671969546072,
-      "rsiMa242": 64.8086416479945
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130726",
@@ -2018,13 +2018,13 @@
         "480081": 883.8747
       },
       "ratio": 1.3547933887009098,
-      "ratioMa242": 1.1609059838992042,
-      "ratioUpper242": 1.4089086948278249,
-      "ratioLower242": 0.9129032729705835,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.0719477854934788,
       "return40Ma242": null,
       "rsi14": 55.39617544621912,
-      "rsiMa242": 64.73020442964636
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130729",
@@ -2033,13 +2033,13 @@
         "480081": 867.9542
       },
       "ratio": 1.3589530415314541,
-      "ratioMa242": 1.1623729991409246,
-      "ratioUpper242": 1.411789321235688,
-      "ratioLower242": 0.9129566770461611,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.06680843452654894,
       "return40Ma242": null,
       "rsi14": 56.35597734675571,
-      "rsiMa242": 64.66099594135802
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130730",
@@ -2048,13 +2048,13 @@
         "480081": 873.3361
       },
       "ratio": 1.3331725323160237,
-      "ratioMa242": 1.1636288780613295,
-      "ratioUpper242": 1.4138402130245942,
-      "ratioLower242": 0.9134175430980649,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.046323242923423824,
       "return40Ma242": null,
       "rsi14": 49.27839187543383,
-      "rsiMa242": 64.53490902278487
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130731",
@@ -2063,13 +2063,13 @@
         "480081": 883.1169
       },
       "ratio": 1.3189841571370675,
-      "ratioMa242": 1.1647628582005687,
-      "ratioUpper242": 1.4154619910857535,
-      "ratioLower242": 0.9140637253153837,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.03792273250566358,
       "return40Ma242": null,
       "rsi14": 45.864515406941806,
-      "rsiMa242": 64.38311720476989
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130801",
@@ -2078,13 +2078,13 @@
         "480081": 899.0379
       },
       "ratio": 1.3456181324502559,
-      "ratioMa242": 1.166073403666146,
-      "ratioUpper242": 1.4177465487184868,
-      "ratioLower242": 0.9144002586138051,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.06872645684182932,
       "return40Ma242": null,
       "rsi14": 52.51476411251503,
-      "rsiMa242": 64.28740467983235
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130802",
@@ -2093,13 +2093,13 @@
         "480081": 902.3649
       },
       "ratio": 1.337997411025185,
-      "ratioMa242": 1.1673102670284412,
-      "ratioUpper242": 1.4197602165385397,
-      "ratioLower242": 0.9148603175183427,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.07209077685882026,
       "return40Ma242": null,
       "rsi14": 50.59942270646025,
-      "rsiMa242": 64.17790082404537
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130805",
@@ -2108,13 +2108,13 @@
         "480081": 910.3072
       },
       "ratio": 1.3554102395323249,
-      "ratioMa242": 1.1686538382606118,
-      "ratioUpper242": 1.4221955184978055,
-      "ratioLower242": 0.915112158023418,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.0825458104967457,
       "return40Ma242": null,
       "rsi14": 54.66787111453349,
-      "rsiMa242": 64.1024243977794
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130806",
@@ -2123,13 +2123,13 @@
         "480081": 919.3779
       },
       "ratio": 1.3688214606855353,
-      "ratioMa242": 1.170073466788448,
-      "ratioUpper242": 1.4249476931437908,
-      "ratioLower242": 0.9151992404331054,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.09742632936219298,
       "return40Ma242": null,
       "rsi14": 57.56647946227024,
-      "rsiMa242": 64.05096026442894
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130807",
@@ -2138,13 +2138,13 @@
         "480081": 915.6787
       },
       "ratio": 1.3514005513069156,
-      "ratioMa242": 1.1713504180878738,
-      "ratioUpper242": 1.42713614733408,
-      "ratioLower242": 0.9155646888416676,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.07704178868852174,
       "return40Ma242": null,
       "rsi14": 52.84004357030678,
-      "rsiMa242": 63.963374977756104
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130808",
@@ -2153,13 +2153,13 @@
         "480081": 914.4886
       },
       "ratio": 1.3591472873472672,
-      "ratioMa242": 1.1726636829078696,
-      "ratioUpper242": 1.4294750894002934,
-      "ratioLower242": 0.9158522764154458,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.0720520105102419,
       "return40Ma242": null,
       "rsi14": 54.62415290996594,
-      "rsiMa242": 63.89097790746316
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130809",
@@ -2168,13 +2168,13 @@
         "480081": 916.1095
       },
       "ratio": 1.3566667521731843,
-      "ratioMa242": 1.17394148199999,
-      "ratioUpper242": 1.4316843205774932,
-      "ratioLower242": 0.9161986434224868,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.04299865562455918,
       "return40Ma242": null,
       "rsi14": 53.92073217317891,
-      "rsiMa242": 63.81428370950713
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130812",
@@ -2183,13 +2183,13 @@
         "480081": 940.5395
       },
       "ratio": 1.3360633976563452,
-      "ratioMa242": 1.1750595641769304,
-      "ratioUpper242": 1.4333135174310547,
-      "ratioLower242": 0.916805610922806,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.011946974978151337,
       "return40Ma242": null,
       "rsi14": 48.351243456989096,
-      "rsiMa242": 63.696245234297066
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130813",
@@ -2198,13 +2198,13 @@
         "480081": 938.8846
       },
       "ratio": 1.341343334420439,
-      "ratioMa242": 1.176198494110105,
-      "ratioUpper242": 1.4350279367700645,
-      "ratioLower242": 0.9173690514501454,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.01573585790074472,
       "return40Ma242": null,
       "rsi14": 49.78273271208542,
-      "rsiMa242": 63.59083983640152
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130814",
@@ -2213,13 +2213,13 @@
         "480081": 939.2159
       },
       "ratio": 1.3365728795690106,
-      "ratioMa242": 1.1772894763241113,
-      "ratioUpper242": 1.4365840748426277,
-      "ratioLower242": 0.9179948778055949,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.011802350348334656,
       "return40Ma242": null,
       "rsi14": 48.4754608279623,
-      "rsiMa242": 63.47719037017265
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130815",
@@ -2228,13 +2228,13 @@
         "480081": 937.9487
       },
       "ratio": 1.3168982482730665,
-      "ratioMa242": 1.17823277883728,
-      "ratioUpper242": 1.4376611697466848,
-      "ratioLower242": 0.9188043879278751,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.013883821502356453,
       "return40Ma242": null,
       "rsi14": 43.41219813060438,
-      "rsiMa242": 63.32745162211618
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130816",
@@ -2243,13 +2243,13 @@
         "480081": 930.9876
       },
       "ratio": 1.2964524984006232,
-      "ratioMa242": 1.1790261997739466,
-      "ratioUpper242": 1.4383012109188351,
-      "ratioLower242": 0.9197511886290581,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": -0.004338496178701634,
       "return40Ma242": null,
       "rsi14": 38.868706553583316,
-      "rsiMa242": 63.14627573271964
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130819",
@@ -2258,13 +2258,13 @@
         "480081": 939.0058
       },
       "ratio": 1.3123228844805859,
-      "ratioMa242": 1.1799148443386576,
-      "ratioUpper242": 1.439233529090296,
-      "ratioLower242": 0.9205961595870191,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.016060520976491688,
       "return40Ma242": null,
       "rsi14": 43.78668144764169,
-      "rsiMa242": 63.00392577474113
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130820",
@@ -2273,13 +2273,13 @@
         "480081": 933.4165
       },
       "ratio": 1.3130742814167093,
-      "ratioMa242": 1.1807966949153332,
-      "ratioUpper242": 1.4401566364992626,
-      "ratioLower242": 0.9214367533314038,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.013644082904205712,
       "return40Ma242": null,
       "rsi14": 44.0163231470097,
-      "rsiMa242": 62.865330135122655
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130821",
@@ -2288,13 +2288,13 @@
         "480081": 930.6098
       },
       "ratio": 1.3193474859172987,
-      "ratioMa242": 1.1817082132771883,
-      "ratioUpper242": 1.4411831928050904,
-      "ratioLower242": 0.9222332337492862,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": -0.018034697698885882,
       "return40Ma242": null,
       "rsi14": 45.99973157752484,
-      "rsiMa242": 62.743115652821224
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130822",
@@ -2303,13 +2303,13 @@
         "480081": 928.6188
       },
       "ratio": 1.3358008689895144,
-      "ratioMa242": 1.1827153548177916,
-      "ratioUpper242": 1.4425327809592707,
-      "ratioLower242": 0.9228979286763124,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.010026742568033375,
       "return40Ma242": null,
       "rsi14": 50.91194274631435,
-      "rsiMa242": 62.657999300975845
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130823",
@@ -2318,13 +2318,13 @@
         "480081": 923.8968
       },
       "ratio": 1.3471700518932417,
-      "ratioMa242": 1.1837832424611388,
-      "ratioUpper242": 1.4441029722389809,
-      "ratioLower242": 0.9234635126832967,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.03350001258400925,
       "return40Ma242": null,
       "rsi14": 54.02415734094838,
-      "rsiMa242": 62.59632900126136
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130826",
@@ -2333,13 +2333,13 @@
         "480081": 943.7622
       },
       "ratio": 1.339138397363234,
-      "ratioMa242": 1.1847855337830877,
-      "ratioUpper242": 1.4454561399052714,
-      "ratioLower242": 0.9241149276609039,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": -0.011611082515534221,
       "return40Ma242": null,
       "rsi14": 51.5382561637972,
-      "rsiMa242": 62.517902952768715
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130827",
@@ -2348,13 +2348,13 @@
         "480081": 947.9742
       },
       "ratio": 1.3326070477445484,
-      "ratioMa242": 1.1857331075905329,
-      "ratioUpper242": 1.4466374394179802,
-      "ratioLower242": 0.9248287757630856,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": -0.032988011947898244,
       "return40Ma242": null,
       "rsi14": 49.54184216975425,
-      "rsiMa242": 62.426522243029176
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130828",
@@ -2363,13 +2363,13 @@
         "480081": 946.6312
       },
       "ratio": 1.3160320513416417,
-      "ratioMa242": 1.1865630371685654,
-      "ratioUpper242": 1.4474600918487202,
-      "ratioLower242": 0.9256659824884105,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": -0.058605814610349194,
       "return40Ma242": null,
       "rsi14": 44.79914094669903,
-      "rsiMa242": 62.30325384235554
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130829",
@@ -2378,13 +2378,13 @@
         "480081": 945.0462
       },
       "ratio": 1.3125787924442212,
-      "ratioMa242": 1.1873606052399304,
-      "ratioUpper242": 1.44819723649006,
-      "ratioLower242": 0.9265239739898008,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": -0.03555036829582292,
       "return40Ma242": null,
       "rsi14": 43.85713370893142,
-      "rsiMa242": 62.17515578587342
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130830",
@@ -2393,13 +2393,13 @@
         "480081": 950.7405
       },
       "ratio": 1.2759233460655142,
-      "ratioMa242": 1.1879176036099026,
-      "ratioUpper242": 1.4483066575460437,
-      "ratioLower242": 0.9275285496737615,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": -0.047187199522264356,
       "return40Ma242": null,
       "rsi14": 35.358131902543064,
-      "rsiMa242": 61.99021079357459
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130902",
@@ -2408,13 +2408,13 @@
         "480081": 945.5653
       },
       "ratio": 1.2951924102967824,
-      "ratioMa242": 1.1885880711516956,
-      "ratioUpper242": 1.448710592189717,
-      "ratioLower242": 0.9284655501136744,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": -0.020773203273569685,
       "return40Ma242": null,
       "rsi14": 41.74870831214042,
-      "rsiMa242": 61.85157036561956
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130903",
@@ -2423,13 +2423,13 @@
         "480081": 958.1933
       },
       "ratio": 1.3070155051178085,
-      "ratioMa242": 1.1893236452757088,
-      "ratioUpper242": 1.4493030219346583,
-      "ratioLower242": 0.9293442686167592,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": -0.013589771514539217,
       "return40Ma242": null,
       "rsi14": 45.32065268403443,
-      "rsiMa242": 61.739115143295855
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130904",
@@ -2438,13 +2438,13 @@
         "480081": 959.0174
       },
       "ratio": 1.3046249212996552,
-      "ratioMa242": 1.1900353815474616,
-      "ratioUpper242": 1.4498386215576429,
-      "ratioLower242": 0.9302321415372803,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": -0.006990983472403789,
       "return40Ma242": null,
       "rsi14": 44.7234904913225,
-      "rsiMa242": 61.624144706458196
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130905",
@@ -2453,13 +2453,13 @@
         "480081": 957.002
       },
       "ratio": 1.3156391522692745,
-      "ratioMa242": 1.1908059568279634,
-      "ratioUpper242": 1.4505524092558886,
-      "ratioLower242": 0.9310595044000383,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.010228384758047548,
       "return40Ma242": null,
       "rsi14": 48.11558511934517,
-      "rsiMa242": 61.53348323271918
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130906",
@@ -2468,13 +2468,13 @@
         "480081": 964.4459
       },
       "ratio": 1.3155104915682674,
-      "ratioMa242": 1.1915663503324774,
-      "ratioUpper242": 1.451246157333979,
-      "ratioLower242": 0.9318865433309758,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": -0.008031747869480466,
       "return40Ma242": null,
       "rsi14": 48.078469697497816,
-      "rsiMa242": 61.443783142484364
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130909",
@@ -2483,13 +2483,13 @@
         "480081": 984.1497
       },
       "ratio": 1.2908874534026682,
-      "ratioMa242": 1.1921682964116906,
-      "ratioUpper242": 1.45151664411732,
-      "ratioLower242": 0.9328199487060613,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": -0.04002178083906438,
       "return40Ma242": null,
       "rsi14": 41.48334768859609,
-      "rsiMa242": 61.3115948282202
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130910",
@@ -2498,13 +2498,13 @@
         "480081": 1006.5504
       },
       "ratio": 1.2634837758745117,
-      "ratioMa242": 1.1925979077337558,
-      "ratioUpper242": 1.4513960363128562,
-      "ratioLower242": 0.9337997791546555,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": -0.07213904237935287,
       "return40Ma242": null,
       "rsi14": 35.62611407496016,
-      "rsiMa242": 61.14261140221191
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130911",
@@ -2513,13 +2513,13 @@
         "480081": 1011.9505
       },
       "ratio": 1.2421841779810376,
-      "ratioMa242": 1.1928948315076917,
-      "ratioUpper242": 1.4510263716321428,
-      "ratioLower242": 0.9347632913832407,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": -0.07930276210803222,
       "return40Ma242": null,
       "rsi14": 31.860633620067233,
-      "rsiMa242": 60.95122592651161
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130912",
@@ -2528,13 +2528,13 @@
         "480081": 1018.2107
       },
       "ratio": 1.233212536462247,
-      "ratioMa242": 1.193134817846707,
-      "ratioUpper242": 1.4505675302889056,
-      "ratioLower242": 0.9357021054045083,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": -0.10119605757107553,
       "return40Ma242": null,
       "rsi14": 30.402983354599982,
-      "rsiMa242": 60.75286071500569
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130913",
@@ -2543,13 +2543,13 @@
         "480081": 1011.0336
       },
       "ratio": 1.2571734510109258,
-      "ratioMa242": 1.1935137446701638,
-      "ratioUpper242": 1.4503681614915491,
-      "ratioLower242": 0.9366593278487784,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": -0.08495453936811415,
       "return40Ma242": null,
       "rsi14": 38.496132028015,
-      "rsiMa242": 60.6092689170251
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130916",
@@ -2558,13 +2558,13 @@
         "480081": 1001.5251
       },
       "ratio": 1.2800328219432544,
-      "ratioMa242": 1.194022680418829,
-      "ratioUpper242": 1.4504596945472645,
-      "ratioLower242": 0.9375856662903934,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": -0.07423460853903374,
       "return40Ma242": null,
       "rsi14": 45.06001729674453,
-      "rsiMa242": 60.5095942271515
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130917",
@@ -2573,13 +2573,13 @@
         "480081": 982.011
       },
       "ratio": 1.2900675247018618,
-      "ratioMa242": 1.1945843461748702,
-      "ratioUpper242": 1.4506876445252022,
-      "ratioLower242": 0.9384810478245382,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": -0.06710764201447383,
       "return40Ma242": null,
       "rsi14": 47.69875082243049,
-      "rsiMa242": 60.42799649845901
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130918",
@@ -2588,13 +2588,13 @@
         "480081": 984.1699
       },
       "ratio": 1.291242091431571,
-      "ratioMa242": 1.1951463098100836,
-      "ratioUpper242": 1.4509247513608656,
-      "ratioLower242": 0.9393678682593016,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": -0.07954470893079235,
       "return40Ma242": null,
       "rsi14": 48.01349341426595,
-      "rsiMa242": 60.349423694128674
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130923",
@@ -2603,13 +2603,13 @@
         "480081": 999.9145
       },
       "ratio": 1.307051752924875,
-      "ratioMa242": 1.1957931620824234,
-      "ratioUpper242": 1.45139400774696,
-      "ratioLower242": 0.9401923164178868,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": -0.04674061120958606,
       "return40Ma242": null,
       "rsi14": 52.18450742427129,
-      "rsiMa242": 60.29807201947549
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130924",
@@ -2618,13 +2618,13 @@
         "480081": 993.2874
       },
       "ratio": 1.3075947605899358,
-      "ratioMa242": 1.1964357000048802,
-      "ratioUpper242": 1.4518598549977295,
-      "ratioLower242": 0.9410115450120309,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": -0.03915079005053346,
       "return40Ma242": null,
       "rsi14": 52.325989289306655,
-      "rsiMa242": 60.24824650241194
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130925",
@@ -2633,13 +2633,13 @@
         "480081": 994.1644
       },
       "ratio": 1.2937883311854659,
-      "ratioMa242": 1.1969920007544836,
-      "ratioUpper242": 1.452106048147419,
-      "ratioLower242": 0.9418779533615483,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": -0.054924918048351534,
       "return40Ma242": null,
       "rsi14": 48.4042749085233,
-      "rsiMa242": 60.17468146145611
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130926",
@@ -2648,13 +2648,13 @@
         "480081": 968.9621
       },
       "ratio": 1.3133818133856834,
-      "ratioMa242": 1.19765330650807,
-      "ratioUpper242": 1.4526418362866234,
-      "ratioLower242": 0.9426647767295165,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": -0.016470265184411526,
       "return40Ma242": null,
       "rsi14": 53.70688672083448,
-      "rsiMa242": 60.13475680256339
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130927",
@@ -2663,13 +2663,13 @@
         "480081": 970.3702
       },
       "ratio": 1.3185870712023102,
-      "ratioMa242": 1.198336548116512,
-      "ratioUpper242": 1.4532487511351202,
-      "ratioLower242": 0.943424345097904,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": -0.00033079899397758794,
       "return40Ma242": null,
       "rsi14": 55.029163533056305,
-      "rsiMa242": 60.103434144468245
+      "rsiMa242": null
     },
     {
       "tradeDate": "20130930",
@@ -2678,13 +2678,13 @@
         "480081": 974.9045
       },
       "ratio": 1.3305495051053717,
-      "ratioMa242": 1.1990793175377976,
-      "ratioUpper242": 1.4540419153113608,
-      "ratioLower242": 0.9441167197642344,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": -0.012143277975613431,
       "return40Ma242": null,
       "rsi14": 57.99832996338842,
-      "rsiMa242": 60.0905981433641
+      "rsiMa242": null
     },
     {
       "tradeDate": "20131008",
@@ -2693,13 +2693,13 @@
         "480081": 986.7058
       },
       "ratio": 1.3433859413819194,
-      "ratioMa242": 1.1998854997939101,
-      "ratioUpper242": 1.4550444192712304,
-      "ratioLower242": 0.9447265803165898,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.0044037286222680105,
       "return40Ma242": null,
       "rsi14": 60.97579864051504,
-      "rsiMa242": 60.095962994861985
+      "rsiMa242": null
     },
     {
       "tradeDate": "20131009",
@@ -2708,13 +2708,13 @@
         "480081": 992.4976
       },
       "ratio": 1.3535755653212662,
-      "ratioMa242": 1.2007393334912844,
-      "ratioUpper242": 1.4562139039118556,
-      "ratioLower242": 0.945264763070713,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": -0.001475807393179096,
       "return40Ma242": null,
       "rsi14": 63.20557367684122,
-      "rsiMa242": 60.11469558933174
+      "rsiMa242": null
     },
     {
       "tradeDate": "20131010",
@@ -2723,13 +2723,13 @@
         "480081": 1000.4236
       },
       "ratio": 1.3395414702332091,
-      "ratioMa242": 1.2015061961252176,
-      "ratioUpper242": 1.4571043748215606,
-      "ratioLower242": 0.9459080174288745,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": -0.023276302541050953,
       "return40Ma242": null,
       "rsi14": 58.26742886288954,
-      "rsiMa242": 60.103634111927896
+      "rsiMa242": null
     },
     {
       "tradeDate": "20131011",
@@ -2738,13 +2738,13 @@
         "480081": 1020.1292
       },
       "ratio": 1.329228199722153,
-      "ratioMa242": 1.2022079653757503,
-      "ratioUpper242": 1.4578014176694776,
-      "ratioLower242": 0.9466145130820228,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": -0.018278465429947044,
       "return40Ma242": null,
       "rsi14": 54.8744930549885,
-      "rsiMa242": 60.07250827230326
+      "rsiMa242": null
     },
     {
       "tradeDate": "20131014",
@@ -2753,13 +2753,13 @@
         "480081": 1031.5279
       },
       "ratio": 1.3249310076828749,
-      "ratioMa242": 1.2028785830932756,
-      "ratioUpper242": 1.4584138423353725,
-      "ratioLower242": 0.9473433238511786,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": -0.02839677022109477,
       "return40Ma242": null,
       "rsi14": 53.47718750568956,
-      "rsiMa242": 60.03348270563691
+      "rsiMa242": null
     },
     {
       "tradeDate": "20131015",
@@ -2768,13 +2768,13 @@
         "480081": 1031.6753
       },
       "ratio": 1.3215385693541368,
-      "ratioMa242": 1.2035234743229541,
-      "ratioUpper242": 1.4589594520418636,
-      "ratioLower242": 0.9480874966040447,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": -0.02915937080390285,
       "return40Ma242": null,
       "rsi14": 52.344005427795985,
-      "rsiMa242": 59.9882504863555
+      "rsiMa242": null
     },
     {
       "tradeDate": "20131016",
@@ -2783,13 +2783,13 @@
         "480081": 1005.2415
       },
       "ratio": 1.325322720958098,
-      "ratioMa242": 1.20418184862909,
-      "ratioUpper242": 1.4595515619909558,
-      "ratioLower242": 0.9488121352672243,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": -0.008592072797131811,
       "return40Ma242": null,
       "rsi14": 53.526974351983334,
-      "rsiMa242": 59.95046524580361
+      "rsiMa242": null
     },
     {
       "tradeDate": "20131017",
@@ -2798,13 +2798,13 @@
         "480081": 999.5569
       },
       "ratio": 1.3202237911618637,
-      "ratioMa242": 1.2048057300405566,
-      "ratioUpper242": 1.4600522181867392,
-      "ratioLower242": 0.9495592418943739,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": -0.01676254173245284,
       "return40Ma242": null,
       "rsi14": 51.66593614154857,
-      "rsiMa242": 59.90229937891841
+      "rsiMa242": null
     },
     {
       "tradeDate": "20131018",
@@ -2813,13 +2813,13 @@
         "480081": 1003.4093
       },
       "ratio": 1.325142990004179,
-      "ratioMa242": 1.2054492447997203,
-      "ratioUpper242": 1.4606163507655556,
-      "ratioLower242": 0.9502821388338849,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": -0.009136125894595226,
       "return40Ma242": null,
       "rsi14": 53.351032197348424,
-      "rsiMa242": 59.864430782493145
+      "rsiMa242": null
     },
     {
       "tradeDate": "20131021",
@@ -2828,13 +2828,13 @@
         "480081": 1028.8538
       },
       "ratio": 1.3301264961066381,
-      "ratioMa242": 1.2061124216683738,
-      "ratioUpper242": 1.4612453303215647,
-      "ratioLower242": 0.9509795130151831,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.0110185559960847,
       "return40Ma242": null,
       "rsi14": 55.06036334791229,
-      "rsiMa242": 59.836821199535784
+      "rsiMa242": null
     },
     {
       "tradeDate": "20131022",
@@ -2843,13 +2843,13 @@
         "480081": 1014.177
       },
       "ratio": 1.3301775725539033,
-      "ratioMa242": 1.2067688510381387,
-      "ratioUpper242": 1.4618616239844808,
-      "ratioLower242": 0.9516760780917967,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.028337802220574027,
       "return40Ma242": null,
       "rsi14": 55.07853140496033,
-      "rsiMa242": 59.809630972138216
+      "rsiMa242": null
     },
     {
       "tradeDate": "20131023",
@@ -2858,13 +2858,13 @@
         "480081": 998.1558
       },
       "ratio": 1.315952379378049,
-      "ratioMa242": 1.2073435011872962,
-      "ratioUpper242": 1.4622532776348767,
-      "ratioLower242": 0.9524337247397157,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.00293992023799583,
       "return40Ma242": null,
       "rsi14": 49.122199284811316,
-      "rsiMa242": 59.74890692846022
+      "rsiMa242": null
     },
     {
       "tradeDate": "20131024",
@@ -2873,13 +2873,13 @@
         "480081": 1002.6292
       },
       "ratio": 1.3016665582849571,
-      "ratioMa242": 1.2078373391825719,
-      "ratioUpper242": 1.4624415823921406,
-      "ratioLower242": 0.9532330959730031,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": -0.009331996174268165,
       "return40Ma242": null,
       "rsi14": 43.97857302277558,
-      "rsiMa242": 59.659808996789685
+      "rsiMa242": null
     },
     {
       "tradeDate": "20131025",
@@ -2888,13 +2888,13 @@
         "480081": 982.8404
       },
       "ratio": 1.3071490549228542,
-      "ratioMa242": 1.2083545877020525,
-      "ratioUpper242": 1.4626957107998468,
-      "ratioLower242": 0.9540134646042582,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": -0.009764728177901194,
       "return40Ma242": null,
       "rsi14": 46.30240276513645,
-      "rsiMa242": 59.5847673887467
+      "rsiMa242": null
     },
     {
       "tradeDate": "20131028",
@@ -2903,13 +2903,13 @@
         "480081": 985.8999
       },
       "ratio": 1.3163089883668717,
-      "ratioMa242": 1.208913936928295,
-      "ratioUpper242": 1.4630674727020652,
-      "ratioLower242": 0.9547604011545251,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": -0.01549199585237182,
       "return40Ma242": null,
       "rsi14": 50.03183058147213,
-      "rsiMa242": 59.531399026694885
+      "rsiMa242": null
     },
     {
       "tradeDate": "20131029",
@@ -2918,13 +2918,13 @@
         "480081": 981.1599
       },
       "ratio": 1.3072827375028269,
-      "ratioMa242": 1.2094209926013595,
-      "ratioUpper242": 1.463308466769953,
-      "ratioLower242": 0.955533518432766,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": -0.03144334232724311,
       "return40Ma242": null,
       "rsi14": 46.59744375013838,
-      "rsiMa242": 59.45954371960291
+      "rsiMa242": null
     },
     {
       "tradeDate": "20131030",
@@ -2933,13 +2933,13 @@
         "480081": 1004.1779
       },
       "ratio": 1.2937026397414244,
-      "ratioMa242": 1.2098532061764367,
-      "ratioUpper242": 1.4633730241725333,
-      "ratioLower242": 0.95633338818034,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": -0.03610109639393855,
       "return40Ma242": null,
       "rsi14": 41.933588855166946,
-      "rsiMa242": 59.362715239688896
+      "rsiMa242": null
     },
     {
       "tradeDate": "20131031",
@@ -2948,13 +2948,13 @@
         "480081": 996.8563
       },
       "ratio": 1.2666314091609794,
-      "ratioMa242": 1.2101428908855416,
-      "ratioUpper242": 1.4631418784266585,
-      "ratioLower242": 0.9571439033444247,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": -0.052061603086570596,
       "return40Ma242": null,
       "rsi14": 34.51697806443579,
-      "rsiMa242": 59.22620020026443
+      "rsiMa242": null
     },
     {
       "tradeDate": "20131101",
@@ -2963,13 +2963,13 @@
         "480081": 1003.5943
       },
       "ratio": 1.2454177948200782,
-      "ratioMa242": 1.2103219513116052,
-      "ratioUpper242": 1.462724762582243,
-      "ratioLower242": 0.9579191400409675,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": -0.05688572483621268,
       "return40Ma242": null,
       "rsi14": 30.03416730028964,
-      "rsiMa242": 59.066680894800086
+      "rsiMa242": null
     },
     {
       "tradeDate": "20131104",
@@ -2978,13 +2978,13 @@
         "480081": 1009.7075
       },
       "ratio": 1.246887737290255,
-      "ratioMa242": 1.210506626998366,
-      "ratioUpper242": 1.4623216457874424,
-      "ratioLower242": 0.9586916082092896,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": -0.05347162675140282,
       "return40Ma242": null,
       "rsi14": 30.70572808443508,
-      "rsiMa242": 58.912545281700275
+      "rsiMa242": null
     },
     {
       "tradeDate": "20131105",
@@ -2993,13 +2993,13 @@
         "480081": 1008.7116
       },
       "ratio": 1.262828542865969,
-      "ratioMa242": 1.2107695511987058,
-      "ratioUpper242": 1.4620573819725422,
-      "ratioLower242": 0.9594817204248693,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": -0.010888784744103042,
       "return40Ma242": null,
       "rsi14": 37.690441688788326,
-      "rsiMa242": 58.79783120822508
+      "rsiMa242": null
     },
     {
       "tradeDate": "20131106",
@@ -3008,13 +3008,13 @@
         "480081": 996.6717
       },
       "ratio": 1.2664187214305374,
-      "ratioMa242": 1.211047797049865,
-      "ratioUpper242": 1.4618269749261126,
-      "ratioLower242": 0.9602686191736175,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": -0.023416493001563232,
       "return40Ma242": null,
       "rsi14": 39.177426483115255,
-      "rsiMa242": 58.69234516131588
+      "rsiMa242": null
     },
     {
       "tradeDate": "20131107",
@@ -3023,13 +3023,13 @@
         "480081": 985.7783
       },
       "ratio": 1.2580409814255396,
-      "ratioMa242": 1.2112815939870574,
-      "ratioUpper242": 1.4615208645388815,
-      "ratioLower242": 0.9610423234352332,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": -0.038549220906282766,
       "return40Ma242": null,
       "rsi14": 36.96081823988203,
-      "rsiMa242": 58.576133787404466
+      "rsiMa242": null
     },
     {
       "tradeDate": "20131108",
@@ -3038,13 +3038,13 @@
         "480081": 975.1659
       },
       "ratio": 1.252812982898602,
-      "ratioMa242": 1.2114871949222632,
-      "ratioUpper242": 1.4611716104092416,
-      "ratioLower242": 0.9618027794352848,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": -0.04038277782790611,
       "return40Ma242": null,
       "rsi14": 35.60693595808321,
-      "rsiMa242": 58.45395720320595
+      "rsiMa242": null
     },
     {
       "tradeDate": "20131111",
@@ -3053,13 +3053,13 @@
         "480081": 975.2367
       },
       "ratio": 1.2625023237948283,
-      "ratioMa242": 1.2117385009758226,
-      "ratioUpper242": 1.460907045732303,
-      "ratioLower242": 0.962569956219342,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": -0.041158167584488536,
       "return40Ma242": null,
       "rsi14": 39.994032887058374,
-      "rsiMa242": 58.35628564597766
+      "rsiMa242": null
     },
     {
       "tradeDate": "20131112",
@@ -3068,13 +3068,13 @@
         "480081": 986.4228
       },
       "ratio": 1.2570629957052897,
-      "ratioMa242": 1.2119606798715552,
-      "ratioUpper242": 1.4605957679448807,
-      "ratioLower242": 0.9633255917982297,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": -0.04544193577617439,
       "return40Ma242": null,
       "rsi14": 38.41191163899262,
-      "rsiMa242": 58.25131525646721
+      "rsiMa242": null
     },
     {
       "tradeDate": "20131113",
@@ -3083,13 +3083,13 @@
         "480081": 965.488
       },
       "ratio": 1.2586401902457616,
-      "ratioMa242": 1.21218838480021,
-      "ratioUpper242": 1.4602990200632318,
-      "ratioLower242": 0.9640777495371881,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": -0.02450700265685224,
       "return40Ma242": null,
       "rsi14": 39.163420396222484,
-      "rsiMa242": 58.151378634162256
+      "rsiMa242": null
     },
     {
       "tradeDate": "20131114",
@@ -3098,13 +3098,13 @@
         "480081": 975.5651
       },
       "ratio": 1.2711453084986333,
-      "ratioMa242": 1.21247458345894,
-      "ratioUpper242": 1.4601156415355248,
-      "ratioLower242": 0.9648335253823555,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.005877149189225661,
       "return40Ma242": null,
       "rsi14": 44.90386675479715,
-      "rsiMa242": 58.08238117645723
+      "rsiMa242": null
     },
     {
       "tradeDate": "20131115",
@@ -3113,13 +3113,13 @@
         "480081": 994.3398
       },
       "ratio": 1.2729487444835257,
-      "ratioMa242": 1.212766729164373,
-      "ratioUpper242": 1.4599489761549431,
-      "ratioLower242": 0.9655844821738027,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.024335504858456924,
       "return40Ma242": null,
       "rsi14": 45.699625302244606,
-      "rsiMa242": 58.01822181959603
+      "rsiMa242": null
     },
     {
       "tradeDate": "20131118",
@@ -3128,13 +3128,13 @@
         "480081": 1024.4726
       },
       "ratio": 1.2612162589804743,
-      "ratioMa242": 1.2129996595961812,
-      "ratioUpper242": 1.4596756417068388,
-      "ratioLower242": 0.9663236774855236,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.022847596779733248,
       "return40Ma242": null,
       "rsi14": 41.500248299558756,
-      "rsiMa242": 57.93307762619377
+      "rsiMa242": null
     },
     {
       "tradeDate": "20131119",
@@ -3143,13 +3143,13 @@
         "480081": 1023.2357
       },
       "ratio": 1.2638855348772526,
-      "ratioMa242": 1.2132431326836504,
-      "ratioUpper242": 1.4594261013322751,
-      "ratioLower242": 0.9670601640350257,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.005403464074682951,
       "return40Ma242": null,
       "rsi14": 42.78833453333814,
-      "rsiMa242": 57.85541227699964
+      "rsiMa242": null
     },
     {
       "tradeDate": "20131120",
@@ -3158,13 +3158,13 @@
         "480081": 1031.27
       },
       "ratio": 1.2563479011316145,
-      "ratioMa242": 1.2134483934857836,
-      "ratioUpper242": 1.459113742711453,
-      "ratioLower242": 0.9677830442601142,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": -0.019052912698213964,
       "return40Ma242": null,
       "rsi14": 40.1030253180589,
-      "rsiMa242": 57.764838874147905
+      "rsiMa242": null
     },
     {
       "tradeDate": "20131121",
@@ -3173,13 +3173,13 @@
         "480081": 1027.5022
       },
       "ratio": 1.2519547890019116,
-      "ratioMa242": 1.213630888251263,
-      "ratioUpper242": 1.4587679616402982,
-      "ratioLower242": 0.9684938148622277,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": -0.03091178529894756,
       "return40Ma242": null,
       "rsi14": 38.58321538888166,
-      "rsiMa242": 57.667470227014576
+      "rsiMa242": null
     },
     {
       "tradeDate": "20131122",
@@ -3188,13 +3188,13 @@
         "480081": 1022.6541
       },
       "ratio": 1.2500428052847976,
-      "ratioMa242": 1.2138026425768929,
-      "ratioUpper242": 1.45840927225532,
-      "ratioLower242": 0.9691960128984658,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": -0.03315436406050387,
       "return40Ma242": null,
       "rsi14": 37.90983476296745,
-      "rsiMa242": 57.56768418931737
+      "rsiMa242": null
     },
     {
       "tradeDate": "20131125",
@@ -3203,13 +3203,13 @@
         "480081": 1018.8045
       },
       "ratio": 1.2509368578564386,
-      "ratioMa242": 1.213976981615764,
-      "ratioUpper242": 1.4580590799738213,
-      "ratioLower242": 0.9698948832577065,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": -0.04374348295465058,
       "return40Ma242": null,
       "rsi14": 38.45077382968664,
-      "rsiMa242": 57.471619313138326
+      "rsiMa242": null
     },
     {
       "tradeDate": "20131126",
@@ -3218,13 +3218,13 @@
         "480081": 1018.6668
       },
       "ratio": 1.2518597837879866,
-      "ratioMa242": 1.2141540040558212,
-      "ratioUpper242": 1.457717538478681,
-      "ratioLower242": 0.9705904696329615,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": -0.04371312739336253,
       "return40Ma242": null,
       "rsi14": 39.041179557052665,
-      "rsiMa242": 57.379467114357894
+      "rsiMa242": null
     },
     {
       "tradeDate": "20131127",
@@ -3233,13 +3233,13 @@
         "480081": 1023.9382
       },
       "ratio": 1.263271748236368,
-      "ratioMa242": 1.2143824586799168,
-      "ratioUpper242": 1.457468593230399,
-      "ratioLower242": 0.9712963241294347,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": -0.02429339494481697,
       "return40Ma242": null,
       "rsi14": 45.94574140926274,
-      "rsiMa242": 57.32258290686986
+      "rsiMa242": null
     },
     {
       "tradeDate": "20131128",
@@ -3248,13 +3248,13 @@
         "480081": 1037.0711
       },
       "ratio": 1.271906236708361,
-      "ratioMa242": 1.2146487724670858,
-      "ratioUpper242": 1.4572952335192282,
-      "ratioLower242": 0.9720023114149434,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": -0.03379894749802648,
       "return40Ma242": null,
       "rsi14": 50.512961319766404,
-      "rsiMa242": 57.2888719089139
+      "rsiMa242": null
     },
     {
       "tradeDate": "20131129",
@@ -3263,13 +3263,13 @@
         "480081": 1034.4157
       },
       "ratio": 1.284229444700037,
-      "ratioMa242": 1.2149694207262238,
-      "ratioUpper242": 1.457237802135746,
-      "ratioLower242": 0.9727010393167017,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": -0.02777614647011295,
       "return40Ma242": null,
       "rsi14": 56.200947955731635,
-      "rsiMa242": 57.28351267761743
+      "rsiMa242": null
     },
     {
       "tradeDate": "20131202",
@@ -3278,13 +3278,13 @@
         "480081": 1018.31
       },
       "ratio": 1.254848523534091,
-      "ratioMa242": 1.21515235239048,
-      "ratioUpper242": 1.4569222225464986,
-      "ratioLower242": 0.9733824822344611,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": -0.059427629436437646,
       "return40Ma242": null,
       "rsi14": 43.39451335266649,
-      "rsiMa242": 57.215429347593165
+      "rsiMa242": null
     },
     {
       "tradeDate": "20131203",
@@ -3293,13 +3293,13 @@
         "480081": 1035.7714
       },
       "ratio": 1.2617080371209324,
-      "ratioMa242": 1.2153649354257787,
-      "ratioUpper242": 1.456661695445572,
-      "ratioLower242": 0.9740681754059854,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": -0.06382341241822487,
       "return40Ma242": null,
       "rsi14": 46.461844041095816,
-      "rsiMa242": 57.162972833902934
+      "rsiMa242": null
     },
     {
       "tradeDate": "20131204",
@@ -3308,13 +3308,13 @@
         "480081": 1058.2694
       },
       "ratio": 1.2522388911556928,
-      "ratioMa242": 1.21553254431546,
-      "ratioUpper242": 1.4563291066171515,
-      "ratioLower242": 0.9747359820137687,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": -0.07982720329725279,
       "return40Ma242": null,
       "rsi14": 42.998043026357635,
-      "rsiMa242": 57.09421103872067
+      "rsiMa242": null
     },
     {
       "tradeDate": "20131205",
@@ -3323,13 +3323,13 @@
         "480081": 1061.7905
       },
       "ratio": 1.2353630965807283,
-      "ratioMa242": 1.2156222753211852,
-      "ratioUpper242": 1.455885762055715,
-      "ratioLower242": 0.9753587885866553,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": -0.08254225268532622,
       "return40Ma242": null,
       "rsi14": 37.615782720785425,
-      "rsiMa242": 57.00011235119442
+      "rsiMa242": null
     },
     {
       "tradeDate": "20131206",
@@ -3338,13 +3338,13 @@
         "480081": 1058.3872
       },
       "ratio": 1.2299890815006078,
-      "ratioMa242": 1.2156869906643357,
-      "ratioUpper242": 1.4554140354294525,
-      "ratioLower242": 0.975959945899219,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": -0.07745915419016236,
       "return40Ma242": null,
       "rsi14": 36.067496186883254,
-      "rsiMa242": 56.89947477348138
+      "rsiMa242": null
     },
     {
       "tradeDate": "20131209",
@@ -3353,13 +3353,13 @@
         "480081": 1063.2167
       },
       "ratio": 1.2298067741035295,
-      "ratioMa242": 1.2157503080788612,
-      "ratioUpper242": 1.45494429312647,
-      "ratioLower242": 0.9765563230312524,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": -0.07400119229701219,
       "return40Ma242": null,
       "rsi14": 36.01334166229336,
-      "rsiMa242": 56.79954112223168
+      "rsiMa242": null
     },
     {
       "tradeDate": "20131210",
@@ -3368,13 +3368,13 @@
         "480081": 1082.0748
       },
       "ratio": 1.2102992325484336,
-      "ratioMa242": 1.2157259729202432,
-      "ratioUpper242": 1.4543841576463987,
-      "ratioLower242": 0.9770677881940878,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": -0.08828619473244614,
       "return40Ma242": null,
       "rsi14": 30.701331494202407,
-      "rsiMa242": 56.675263933526786
+      "rsiMa242": null
     },
     {
       "tradeDate": "20131211",
@@ -3383,13 +3383,13 @@
         "480081": 1067.6249
       },
       "ratio": 1.2137129810291984,
-      "ratioMa242": 1.2157170262896162,
-      "ratioUpper242": 1.4538420472308433,
-      "ratioLower242": 0.9775920053483891,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": -0.0894393712192274,
       "return40Ma242": null,
       "rsi14": 32.57557657752693,
-      "rsiMa242": 56.56104740577323
+      "rsiMa242": null
     },
     {
       "tradeDate": "20131212",
@@ -3398,13 +3398,13 @@
         "480081": 1061.2084
       },
       "ratio": 1.2275923371884354,
-      "ratioMa242": 1.2157695719130623,
-      "ratioUpper242": 1.4533700894028048,
-      "ratioLower242": 0.9781690544233198,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": -0.07449104789948235,
       "return40Ma242": null,
       "rsi14": 39.71456052054717,
-      "rsiMa242": 56.48158284499386
+      "rsiMa242": null
     },
     {
       "tradeDate": "20131213",
@@ -3413,13 +3413,13 @@
         "480081": 1063.7656
       },
       "ratio": 1.2267565335822102,
-      "ratioMa242": 1.2158179726252611,
-      "ratioUpper242": 1.452896728594957,
-      "ratioLower242": 0.9787392166555653,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": -0.07871189994289463,
       "return40Ma242": null,
       "rsi14": 39.443718145017705,
-      "rsiMa242": 56.4015928698766
+      "rsiMa242": null
     },
     {
       "tradeDate": "20131216",
@@ -3428,13 +3428,13 @@
         "480081": 1046.5954
       },
       "ratio": 1.2250494317097134,
-      "ratioMa242": 1.2158584614808945,
-      "ratioUpper242": 1.4524176012541141,
-      "ratioLower242": 0.9792993217076749,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": -0.08036003959890348,
       "return40Ma242": null,
       "rsi14": 38.860785589342285,
-      "rsiMa242": 56.31962648071523
+      "rsiMa242": null
     },
     {
       "tradeDate": "20131217",
@@ -3443,13 +3443,13 @@
         "480081": 1033.6293
       },
       "ratio": 1.2309309536794282,
-      "ratioMa242": 1.2159242802241197,
-      "ratioUpper242": 1.4519724855335967,
-      "ratioLower242": 0.9798760749146427,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": -0.07604263430768898,
       "return40Ma242": null,
       "rsi14": 42.03905625989811,
-      "rsiMa242": 56.25320522387422
+      "rsiMa242": null
     },
     {
       "tradeDate": "20131218",
@@ -3458,13 +3458,13 @@
         "480081": 1031.267
       },
       "ratio": 1.2326360680599688,
-      "ratioMa242": 1.215996940171232,
-      "ratioUpper242": 1.4515395032011253,
-      "ratioLower242": 0.9804543771413387,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": -0.0654127859901179,
       "return40Ma242": null,
       "rsi14": 42.964740615343516,
-      "rsiMa242": 56.191684554390285
+      "rsiMa242": null
     },
     {
       "tradeDate": "20131219",
@@ -3473,13 +3473,13 @@
         "480081": 1023.3973
       },
       "ratio": 1.2345032569462515,
-      "ratioMa242": 1.216077054096665,
-      "ratioUpper242": 1.451119626330125,
-      "ratioLower242": 0.9810344818632052,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": -0.05266671201411455,
       "return40Ma242": null,
       "rsi14": 44.01909548229737,
-      "rsiMa242": 56.135589673873724
+      "rsiMa242": null
     },
     {
       "tradeDate": "20131220",
@@ -3488,13 +3488,13 @@
         "480081": 1000.5431
       },
       "ratio": 1.2386551863682833,
-      "ratioMa242": 1.2161743736323185,
-      "ratioUpper242": 1.450726380753917,
-      "ratioLower242": 0.9816223665107199,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": -0.053343239189975855,
       "return40Ma242": null,
       "rsi14": 46.39220469227879,
-      "rsiMa242": 56.09089524735264
+      "rsiMa242": null
     },
     {
       "tradeDate": "20131223",
@@ -3503,13 +3503,13 @@
         "480081": 1006.1166
       },
       "ratio": 1.2293271972652078,
-      "ratioMa242": 1.216230823519155,
-      "ratioUpper242": 1.4502831293398695,
-      "ratioLower242": 0.9821785176984406,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": -0.0674350977489685,
       "return40Ma242": null,
       "rsi14": 42.07660408021076,
-      "rsiMa242": 56.0269030502424
+      "rsiMa242": null
     },
     {
       "tradeDate": "20131224",
@@ -3518,13 +3518,13 @@
         "480081": 1012.1217
       },
       "ratio": 1.2340535728065114,
-      "ratioMa242": 1.2163069891144,
-      "ratioUpper242": 1.449868121191252,
-      "ratioLower242": 0.9827458570375479,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": -0.05778398643157612,
       "return40Ma242": null,
       "rsi14": 44.87475813661362,
-      "rsiMa242": 55.97621148245318
+      "rsiMa242": null
     },
     {
       "tradeDate": "20131225",
@@ -3533,13 +3533,13 @@
         "480081": 1015.4135
       },
       "ratio": 1.252913517498044,
-      "ratioMa242": 1.216462761575607,
-      "ratioUpper242": 1.449573225703365,
-      "ratioLower242": 0.9833522974478488,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": -0.031881751272241576,
       "return40Ma242": null,
       "rsi14": 54.35117363094439,
-      "rsiMa242": 55.96885837000291
+      "rsiMa242": null
     },
     {
       "tradeDate": "20131226",
@@ -3548,13 +3548,13 @@
         "480081": 994.2607
       },
       "ratio": 1.2566098609750942,
-      "ratioMa242": 1.216632876403571,
-      "ratioUpper242": 1.449305545258924,
-      "ratioLower242": 0.9839602075482179,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": -0.00789136772665866,
       "return40Ma242": null,
       "rsi14": 55.949484207442865,
-      "rsiMa242": 55.9687710990004
+      "rsiMa242": null
     },
     {
       "tradeDate": "20131227",
@@ -3563,13 +3563,13 @@
         "480081": 1011.7341
       },
       "ratio": 1.2548953326768368,
-      "ratioMa242": 1.2167943213667494,
-      "ratioUpper242": 1.4490267215747306,
-      "ratioLower242": 0.9845619211587681,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.007671647915258317,
       "return40Ma242": null,
       "rsi14": 54.98775116803809,
-      "rsiMa242": 55.96437190648487
+      "rsiMa242": null
     },
     {
       "tradeDate": "20131230",
@@ -3578,13 +3578,13 @@
         "480081": 1006.9731
       },
       "ratio": 1.2607136178712222,
-      "ratioMa242": 1.2169788562260118,
-      "ratioUpper242": 1.448790731598124,
-      "ratioLower242": 0.9851669808538995,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.011058283876843267,
       "return40Ma242": null,
       "rsi14": 57.64826018896017,
-      "rsiMa242": 55.97188926488878
+      "rsiMa242": null
     },
     {
       "tradeDate": "20131231",
@@ -3593,13 +3593,13 @@
         "480081": 1020.4536
       },
       "ratio": 1.2533884931171784,
-      "ratioMa242": 1.2171311978029622,
-      "ratioUpper242": 1.448503511886371,
-      "ratioLower242": 0.9857588837195533,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": -0.007562338979926864,
       "return40Ma242": null,
       "rsi14": 53.37119695292751,
-      "rsiMa242": 55.96033063239117
+      "rsiMa242": null
     },
     {
       "tradeDate": "20140102",
@@ -3608,13 +3608,13 @@
         "480081": 1011.9393
       },
       "ratio": 1.2708261256381683,
-      "ratioMa242": 1.2173549266689423,
-      "ratioUpper242": 1.448346727561903,
-      "ratioLower242": 0.9863631257759815,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.003533522781375975,
       "return40Ma242": null,
       "rsi14": 60.82280472000484,
-      "rsiMa242": 55.98184600446026
+      "rsiMa242": null
     },
     {
       "tradeDate": "20140103",
@@ -3623,13 +3623,13 @@
         "480081": 995.0841
       },
       "ratio": 1.2928327364491101,
-      "ratioMa242": 1.21766811260164,
-      "ratioUpper242": 1.4483831851820637,
-      "ratioLower242": 0.9869530400212163,
+      "ratioMa242": null,
+      "ratioUpper242": null,
+      "ratioLower242": null,
       "return40Spread": 0.027916571538391333,
       "return40Ma242": null,
       "rsi14": 67.81349241177662,
-      "rsiMa242": 56.03396779480086
+      "rsiMa242": null
     },
     {
       "tradeDate": "20140106",
@@ -3644,7 +3644,7 @@
       "return40Spread": 0.03576960680868713,
       "return40Ma242": null,
       "rsi14": 69.22402010392906,
-      "rsiMa242": 56.09181890141984
+      "rsiMa242": null
     },
     {
       "tradeDate": "20140107",
@@ -3659,7 +3659,7 @@
       "return40Spread": 0.038016284419101876,
       "return40Ma242": null,
       "rsi14": 72.45502457355576,
-      "rsiMa242": 56.163273948023054
+      "rsiMa242": null
     },
     {
       "tradeDate": "20140108",
@@ -3674,7 +3674,7 @@
       "return40Spread": 0.05522852753964913,
       "return40Ma242": null,
       "rsi14": 76.05433371670199,
-      "rsiMa242": 56.24975681658253
+      "rsiMa242": null
     },
     {
       "tradeDate": "20140109",
@@ -3689,7 +3689,7 @@
       "return40Spread": 0.05431837599486922,
       "return40Ma242": null,
       "rsi14": 75.84935298098469,
-      "rsiMa242": 56.33460355322496
+      "rsiMa242": null
     },
     {
       "tradeDate": "20140110",
@@ -3704,7 +3704,7 @@
       "return40Spread": 0.03255178380333934,
       "return40Ma242": null,
       "rsi14": 67.4193511466072,
-      "rsiMa242": 56.38238263767919
+      "rsiMa242": null
     },
     {
       "tradeDate": "20140113",
@@ -3719,7 +3719,7 @@
       "return40Spread": 0.03795701044723776,
       "return40Ma242": null,
       "rsi14": 69.99240170108513,
-      "rsiMa242": 56.44079473666377
+      "rsiMa242": null
     },
     {
       "tradeDate": "20140114",
@@ -3734,7 +3734,7 @@
       "return40Spread": 0.049120531561368086,
       "return40Ma242": null,
       "rsi14": 70.84439931610314,
-      "rsiMa242": 56.50234860238787
+      "rsiMa242": null
     },
     {
       "tradeDate": "20140115",
@@ -3749,7 +3749,7 @@
       "return40Spread": 0.05404308555962989,
       "return40Ma242": null,
       "rsi14": 73.02347440139187,
-      "rsiMa242": 56.57265126536236
+      "rsiMa242": null
     },
     {
       "tradeDate": "20140116",
@@ -3764,7 +3764,7 @@
       "return40Spread": 0.055649230458816645,
       "return40Ma242": null,
       "rsi14": 69.81477751808629,
-      "rsiMa242": 56.62876196982305
+      "rsiMa242": null
     },
     {
       "tradeDate": "20140117",
@@ -3779,7 +3779,7 @@
       "return40Spread": 0.0628285390667701,
       "return40Ma242": null,
       "rsi14": 71.32087799876007,
-      "rsiMa242": 56.69075402057806
+      "rsiMa242": null
     },
     {
       "tradeDate": "20140120",
@@ -3794,7 +3794,7 @@
       "return40Spread": 0.048118742935973624,
       "return40Ma242": null,
       "rsi14": 59.13818015134825,
-      "rsiMa242": 56.70103732364853
+      "rsiMa242": null
     },
     {
       "tradeDate": "20140121",
@@ -3809,7 +3809,7 @@
       "return40Spread": 0.05403936749927096,
       "return40Ma242": null,
       "rsi14": 61.615924341048164,
-      "rsiMa242": 56.721601704474466
+      "rsiMa242": null
     },
     {
       "tradeDate": "20140122",
@@ -3824,7 +3824,7 @@
       "return40Spread": 0.053432930374976984,
       "return40Ma242": null,
       "rsi14": 60.59362432476342,
-      "rsiMa242": 56.737735132059
+      "rsiMa242": null
     },
     {
       "tradeDate": "20140123",
@@ -3839,7 +3839,7 @@
       "return40Spread": 0.05767161246993768,
       "return40Ma242": null,
       "rsi14": 65.90956108070961,
-      "rsiMa242": 56.775792501140536
+      "rsiMa242": null
     },
     {
       "tradeDate": "20140124",
