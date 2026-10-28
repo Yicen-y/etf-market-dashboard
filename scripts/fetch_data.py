@@ -1,7 +1,9 @@
 from datetime import date
 import akshare as ak
 from datetime import datetime, timedelta
+import json
 import os
+import subprocess
 import time
 from .config import PRODUCT_START_DATES
 
@@ -28,6 +30,18 @@ def discover_start_date(product_code: str, end_date: str) -> str:
     except Exception:
         pass
     return PRODUCT_START_DATES.get(product_code, "20130101")
+
+
+def fetch_product_history_etfirst(product_code: str, start_date: str, end_date: str) -> list[dict]:
+    command = ["etfirst", "--json", "etf-detail", "all", "--product-code", product_code,
+               "--start-date", start_date, "--end-date", end_date]
+    result = subprocess.run(command, capture_output=True, text=False, check=False)
+    if result.returncode != 0:
+        error = result.stderr.decode("utf-8", errors="replace").strip()
+        raise RuntimeError(error or "ETFirst request failed")
+    payload = json.loads((result.stdout or b"").decode("utf-8-sig"))
+    rows = payload.get("results", {}).get("getReturnTrendList", {}).get(product_code, [])
+    return [{"tradeDate": row["tradeDate"], "productCode": product_code, "closePrice": float(row["closePrice"])} for row in rows]
 
 
 def fetch_product_history(product_code: str, start_date: str, end_date: str, api_key=None) -> list[dict]:

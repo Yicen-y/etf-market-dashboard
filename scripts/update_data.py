@@ -6,7 +6,7 @@ from pathlib import Path
 from typing import Optional
 
 from .config import DATA_PATH, DATABASE_PATH, PRODUCT_START_DATES, PRODUCTS, START_DATE
-from .fetch_data import current_end_date, fetch_product_history
+from .fetch_data import current_end_date, fetch_product_history, fetch_product_history_etfirst
 from .validate_data import validate_records
 from .storage import read_records, upsert_records
 
@@ -28,7 +28,15 @@ def update_dataset(path: Path = DATA_PATH, api_key: Optional[str] = None, end_da
     payload = json.loads(path.read_text(encoding="utf-8")) if path.exists() else {"records": []}
     incoming: list[dict] = []
     for code in PRODUCTS:
-        incoming.extend(fetch_product_history(code, PRODUCT_START_DATES.get(code, START_DATE), end_date or current_end_date(), api_key))
+        fetch_start = PRODUCT_START_DATES.get(code, START_DATE)
+        fetch_end = end_date or current_end_date()
+        try:
+            incoming.extend(fetch_product_history(code, fetch_start, fetch_end, api_key))
+        except Exception as primary_error:
+            try:
+                incoming.extend(fetch_product_history_etfirst(code, fetch_start, fetch_end))
+            except Exception as fallback_error:
+                raise RuntimeError(f"AkShare and ETFirst both failed for {code}. AkShare: {primary_error}; ETFirst: {fallback_error}") from fallback_error
     existing = read_records(DATABASE_PATH)
     records = merge_records(existing or payload.get("flatRecords", []), incoming)
     errors = validate_records(records, set(PRODUCTS))
