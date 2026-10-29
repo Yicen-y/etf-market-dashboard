@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
   "source": "ETFirst/AkShare",
-  "updatedAt": "2026-10-29T00:07:38+08:00",
-  "latestTradeDate": "20261028",
+  "updatedAt": "2026-10-29T21:41:47+08:00",
+  "latestTradeDate": "20261029",
   "indexes": {
     "480080": {
       "name": "成长100R",
@@ -87104,6 +87104,31 @@
       "return40Ma242": 0.025252555599801926,
       "rsi14": 33.92875492631234,
       "rsiMa242": 51.309597001078735
+    },
+    {
+      "tradeDate": "20261029",
+      "values": {
+        "480080": 9426.6329,
+        "480081": 8050.943,
+        "932000CNY010": 2966.87,
+        "H00811": 10773.22,
+        "H00813": 4156.79,
+        "H00821": 15952.41,
+        "H00918": 6181.73,
+        "H00919": 10137.43,
+        "H00922": 12093.93,
+        "H20035": 12841.63,
+        "H20180": 16583.5,
+        "H20903": 4888.88
+      },
+      "ratio": 1.1708731387118254,
+      "ratioMa242": 1.5374323301223976,
+      "ratioUpper242": 2.0946724545804023,
+      "ratioLower242": 0.9801922056643928,
+      "return40Spread": -0.24892315292703016,
+      "return40Ma242": 0.023880442550708578,
+      "rsi14": 29.39580747425289,
+      "rsiMa242": 51.191463546688354
     }
   ],
   "flatRecords": [
@@ -303981,6 +304006,66 @@
       "tradeDate": "20261028",
       "indexCode": "H20903",
       "closeValue": 4992.61
+    },
+    {
+      "tradeDate": "20261029",
+      "indexCode": "480080",
+      "closeValue": 9426.6329
+    },
+    {
+      "tradeDate": "20261029",
+      "indexCode": "480081",
+      "closeValue": 8050.943
+    },
+    {
+      "tradeDate": "20261029",
+      "indexCode": "932000CNY010",
+      "closeValue": 2966.87
+    },
+    {
+      "tradeDate": "20261029",
+      "indexCode": "H00811",
+      "closeValue": 10773.22
+    },
+    {
+      "tradeDate": "20261029",
+      "indexCode": "H00813",
+      "closeValue": 4156.79
+    },
+    {
+      "tradeDate": "20261029",
+      "indexCode": "H00821",
+      "closeValue": 15952.41
+    },
+    {
+      "tradeDate": "20261029",
+      "indexCode": "H00918",
+      "closeValue": 6181.73
+    },
+    {
+      "tradeDate": "20261029",
+      "indexCode": "H00919",
+      "closeValue": 10137.43
+    },
+    {
+      "tradeDate": "20261029",
+      "indexCode": "H00922",
+      "closeValue": 12093.93
+    },
+    {
+      "tradeDate": "20261029",
+      "indexCode": "H20035",
+      "closeValue": 12841.63
+    },
+    {
+      "tradeDate": "20261029",
+      "indexCode": "H20180",
+      "closeValue": 16583.5
+    },
+    {
+      "tradeDate": "20261029",
+      "indexCode": "H20903",
+      "closeValue": 4888.88
     }
   ]
 }

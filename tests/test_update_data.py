@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from scripts.update_data import merge_records, next_fetch_start, records_to_calendar
+from scripts.update_data import merge_records, next_fetch_start, records_to_calendar, should_fetch_range
 from scripts.validate_data import validate_records
 
 
@@ -29,4 +29,9 @@ def test_records_are_grouped_by_trade_date():
 def test_next_fetch_start_is_day_after_latest_record():
     rows = [{"tradeDate": "20261028", "productCode": "512530"}]
     assert next_fetch_start(rows, "512530", "20180101", "productCode") == "20261029"
+
+
+def test_today_is_included_in_fetch_range():
+    assert should_fetch_range("20261029", "20261029") is True
+    assert should_fetch_range("20261030", "20261029") is False
 

@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
   "source": "AkShare",
-  "updatedAt": "2026-10-29T00:07:38+08:00",
-  "latestTradeDate": "20261028",
+  "updatedAt": "2026-10-29T21:41:47+08:00",
+  "latestTradeDate": "20261029",
   "products": {
     "512530": {
       "name": "沪深300红利ETF建信",
@@ -22948,6 +22948,14 @@
         "510330": 2.2299,
         "512530": 1.6839,
         "562310": 0.877
+      }
+    },
+    {
+      "tradeDate": "20261029",
+      "prices": {
+        "510330": 2.207,
+        "512530": 1.7106,
+        "562310": 0.8554
       }
     }
   ],
@@ -53461,6 +53469,21 @@
       "tradeDate": "20261028",
       "productCode": "562310",
       "closePrice": 0.877
+    },
+    {
+      "tradeDate": "20261029",
+      "productCode": "510330",
+      "closePrice": 2.207
+    },
+    {
+      "tradeDate": "20261029",
+      "productCode": "512530",
+      "closePrice": 1.7106
+    },
+    {
+      "tradeDate": "20261029",
+      "productCode": "562310",
+      "closePrice": 0.8554
     }
   ]
 }

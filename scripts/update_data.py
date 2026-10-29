@@ -45,7 +45,12 @@ def next_fetch_start(records: list[dict], code: str, fallback: str, key: str) ->
     return (datetime.strptime(latest, "%Y%m%d") + timedelta(days=1)).strftime("%Y%m%d")
 
 
-def update_dataset(path: Path = DATA_PATH, api_key: Optional[str] = None, end_date: Optional[str] = None) -> None:
+def should_fetch_range(fetch_start: str, end_date: str) -> bool:
+    """Allow a one-day request when the next missing date is today."""
+    return fetch_start <= end_date
+
+
+def update_dataset(path: Path = DATA_PATH, api_key: Optional[str] = None, end_date: Optional[str] = None) -> dict:
     payload = json.loads(path.read_text(encoding="utf-8")) if path.exists() else {"records": []}
     incoming: list[dict] = []
     existing = read_records(DATABASE_PATH)
@@ -87,7 +92,7 @@ def update_dataset(path: Path = DATA_PATH, api_key: Optional[str] = None, end_da
     existing_indexes = read_index_records(DATABASE_PATH)
     for code in INDEXES:
         fetch_start = next_fetch_start(existing_indexes, code, INDEX_START_DATE, "indexCode")
-        if fetch_start >= index_end:
+        if not should_fetch_range(fetch_start, index_end):
             continue
         try:
             index_incoming.extend(fetch_index_history_etfirst(code, fetch_start, index_end))
@@ -114,6 +119,14 @@ def update_dataset(path: Path = DATA_PATH, api_key: Optional[str] = None, end_da
         temp.flush()
         index_temp_path = Path(temp.name)
     index_temp_path.replace(INDEX_DATA_PATH)
+    return {
+        "etfCount": len(PRODUCTS),
+        "indexCount": len(INDEXES),
+        "strategyCount": len(STRATEGIES) + 2,
+        "etfLatestTradeDate": output["latestTradeDate"],
+        "indexLatestTradeDate": index_output["latestTradeDate"],
+        "updatedAt": updated_at,
+    }
 
 
 if __name__ == "__main__":

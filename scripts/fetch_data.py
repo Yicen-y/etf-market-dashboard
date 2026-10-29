@@ -110,11 +110,26 @@ def fetch_index_history(index_code: str, start_date: str, end_date: str, api_key
 
 def fetch_csi_total_return_history(index_code: str, start_date: str, end_date: str, api_key=None) -> list[dict]:
     _disable_process_proxy()
-    frame = ak.stock_zh_index_hist_csindex(symbol=index_code, start_date=start_date, end_date=end_date)
-    if frame is None or frame.empty:
-        return []
-    return [{"tradeDate": row.iloc[0].strftime("%Y%m%d"), "indexCode": index_code, "closeValue": float(row.iloc[9])}
-            for _, row in frame.iterrows()]
+    for attempt in range(3):
+        try:
+            frame = ak.stock_zh_index_hist_csindex(symbol=index_code, start_date=start_date, end_date=end_date)
+            if frame is None or frame.empty:
+                if attempt < 2:
+                    time.sleep(2 ** attempt)
+                    continue
+                return []
+            return [{"tradeDate": row.iloc[0].strftime("%Y%m%d"), "indexCode": index_code, "closeValue": float(row.iloc[9])}
+                    for _, row in frame.iterrows()]
+        except ValueError as error:
+            # AkShare currently raises this when the upstream endpoint returns
+            # an empty response and then tries to assign the normal columns.
+            if "Length mismatch" not in str(error):
+                raise
+            if attempt < 2:
+                time.sleep(2 ** attempt)
+                continue
+            return []
+    return []
 
 
 def current_end_date() -> str:
