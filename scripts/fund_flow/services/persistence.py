@@ -33,17 +33,20 @@ def rebuild_materialized(db_path: Path = DATABASE_PATH, codes: list[str] | None 
         raw_rows = connection.execute(
             """SELECT r.etf_code,r.record_date,r.effective_trade_date,r.published_at,
                       r.total_share,r.share_unit,r.share_scope,r.share_date_basis,
-                      COALESCE(n.nav,r.nav),r.close,r.total_size,r.source_id,
-                      r.source_version,r.import_batch_id
+                      COALESCE((SELECT n.nav FROM fund_flow_nav_daily_raw n
+                                WHERE n.etf_code=r.etf_code AND n.nav_date=r.effective_trade_date
+                                ORDER BY n.rowid DESC LIMIT 1), r.nav),
+                      r.close,r.total_size,r.source_id,r.source_version,r.import_batch_id
                FROM fund_flow_etf_daily_raw r
-               LEFT JOIN fund_flow_nav_daily_raw n
-                 ON n.etf_code=r.etf_code AND n.nav_date=r.effective_trade_date
                WHERE r.etf_code IN ({})
                ORDER BY r.etf_code,r.effective_trade_date,r.rowid""".format(",".join("?" for _ in codes)), codes
         ).fetchall()
         grouped: dict[str, list[RawETFRecord]] = {code: [] for code in codes}
+        latest_by_key = {}
         for row in raw_rows:
-            grouped.setdefault(row[0], []).append(_raw_from_row(row))
+            latest_by_key[(row[0], row[2], row[6])] = _raw_from_row(row)
+        for row in latest_by_key.values():
+            grouped.setdefault(row.etf_code, []).append(row)
         clean_count = metric_count = 0
         for code, raw in grouped.items():
             if not raw:
