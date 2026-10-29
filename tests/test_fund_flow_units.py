@@ -247,7 +247,7 @@ def test_schema_can_be_initialized_twice_without_changing_existing_data(tmp_path
     init_fund_flow_schema(path)
     with sqlite3.connect(path) as conn:
         names = {r[0] for r in conn.execute("SELECT name FROM sqlite_master WHERE type='table'")}
-        assert names == {"etf_prices", "index_prices", "fund_master", "fund_flow_etf_daily_raw",
+        assert names == {"etf_prices", "index_prices", "fund_master", "fund_flow_etf_daily_raw", "fund_flow_nav_daily_raw",
                          "fund_flow_index_daily_raw", "fund_flow_corporate_actions", "fund_flow_etf_daily_clean",
                          "fund_flow_etf_daily_metrics", "fund_flow_data_sources", "fund_flow_import_jobs"}
         for name, rows in before.items():

@@ -80,6 +80,24 @@ class RawETFRecord:
 
 
 @dataclass(frozen=True)
+class RawNAVRecord:
+    etf_code: str
+    nav_date: DateValue
+    nav: float
+    cumulative_nav: Optional[float]
+    unit: str
+    source_id: str
+    source_version: str
+
+    def __post_init__(self):
+        _identity(self.etf_code, self.nav_date)
+        _number(self.nav, "nav", nonnegative=True)
+        _number(self.cumulative_nav, "cumulative_nav", nonnegative=True)
+        for name in ("unit", "source_id", "source_version"):
+            _text(getattr(self, name), name)
+
+
+@dataclass(frozen=True)
 class CleanETFRecord:
     etf_code: str
     trade_date: DateValue

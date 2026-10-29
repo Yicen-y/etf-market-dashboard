@@ -47,6 +47,16 @@ CREATE TABLE IF NOT EXISTS fund_flow_etf_daily_raw (
     import_batch_id TEXT NOT NULL REFERENCES fund_flow_import_jobs(import_batch_id),
     PRIMARY KEY (etf_code, record_date, share_scope, source_id, source_version, import_batch_id)
 );
+CREATE TABLE IF NOT EXISTS fund_flow_nav_daily_raw (
+    etf_code TEXT NOT NULL REFERENCES fund_master(etf_code),
+    nav_date TEXT NOT NULL,
+    nav REAL NOT NULL CHECK (nav >= 0),
+    cumulative_nav REAL CHECK (cumulative_nav >= 0),
+    unit TEXT NOT NULL,
+    source_id TEXT NOT NULL REFERENCES fund_flow_data_sources(source_id),
+    source_version TEXT NOT NULL,
+    PRIMARY KEY (etf_code, nav_date, source_id, source_version)
+);
 CREATE TABLE IF NOT EXISTS fund_flow_index_daily_raw (
     index_code TEXT NOT NULL,
     record_date TEXT NOT NULL,

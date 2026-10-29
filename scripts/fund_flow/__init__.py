@@ -10,11 +10,12 @@ from .models import (
     MetricStatus,
     QualityIssue,
     RawETFRecord,
+    RawNAVRecord,
     ValidationStatus,
 )
 
 __all__ = [
     "RawETFRecord", "CleanETFRecord", "DailyMetric", "CorporateAction",
-    "QualityIssue", "ImportJob", "ValidationStatus", "MetricStatus",
+    "QualityIssue", "ImportJob", "RawNAVRecord", "ValidationStatus", "MetricStatus",
     "ImportJobStatus", "CorporateActionStatus",
 ]
