@@ -2,15 +2,16 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** 在现有本地 FastAPI ETF 看板中增加一个可离线运行、可审计、支持 CSV 导入和 SQLite 增量存储的“沪深300ETF资金流向监测看板”，优先完成份额曲线、估算净申赎计算、累计净申赎和每日净申赎三张 P0 核心图表。
+**Goal:** 在现有本地 FastAPI ETF 看板中增加一个可离线运行、可审计、能够每日自动抓取官方公开数据并增量写入 SQLite 的“沪深300ETF资金流向监测看板”，优先完成份额曲线、估算净申赎计算、累计净申赎和每日净申赎三张 P0 核心图表。
 
-**Architecture:** 沿用仓库现有的 FastAPI 本地服务、SQLite 和原生 JavaScript + ECharts 架构，不引入新的前端构建链或强制 Streamlit。资金流功能使用独立的 `scripts/fund_flow/` 领域模块和 `fund_flow_` 前缀数据库表，与现有 ETF 价格/指数策略表增量共存；网页通过 FastAPI API 读取已审核的清洗结果和质量状态。CSV 是 P0 的离线首选数据源，Tushare 作为拥有 Token 时可启用的可选适配器，不能成为应用启动依赖。
+**Architecture:** 沿用仓库现有的 FastAPI 本地服务、SQLite 和原生 JavaScript + ECharts 架构，不引入新的前端构建链或强制 Streamlit。资金流功能使用独立的 `scripts/fund_flow/` 领域模块和 `fund_flow_` 前缀数据库表，与现有 ETF 价格/指数策略表增量共存；网页通过 FastAPI API 读取已审核的清洗结果和质量状态。P0 的每日主路径是官方公开页面采集，CSV 用于首次历史回填、缺口补录和爬虫失败时的兜底，Tushare 作为拥有权限时可启用的可选适配器，不能成为应用启动依赖。
 
 **Tech Stack:** Python 3.9+、FastAPI、SQLite、Pandas、Pydantic/dataclasses、ECharts、pytest、CSV、可选 Tushare Pro。
 
 ## Global Constraints
 
-- P0 必须支持 CSV 上传、导入预览、验证后入库，以及无 Token 离线启动。
+- P0 必须支持官方公开页面自动采集、最近交易日增量更新、CSV 上传/预览/验证后入库，以及无 Token 离线启动。
+- P0 的“刷新数据”按钮必须抓取最近若干交易日并幂等写入 SQLite；不得要求用户每天手动上传 CSV。
 - 所有真实行情数据必须携带来源、取得时间、数据单位、份额口径和状态；测试集只能使用明确标注为模拟的数据。
 - 份额变化不得直接解释为“国家队交易”；页面统一使用“ETF资金流向 / 估算净申赎”。
 - 份额合并、拆分和分红必须使用通用公司行为机制，不能为 510310 写一次性硬编码。
@@ -20,6 +21,8 @@
 - 保留现有 `etf_prices`、`index_prices` 和策略看板行为；新表采用 `fund_flow_` 前缀并通过增量迁移创建。
 - API Token 只从环境变量或本地配置读取，禁止写入 CSV 样例、测试输出、日志或 Git。
 - P0 完成后必须通过 T01—T10 自动化测试，并能使用没有网络和 Token 的模拟 CSV 启动页面。
+- 爬虫只使用官方公开入口或得到许可的公开接口，遵守站点访问频率、robots/使用条款和正常 HTTP 行为；不绕过登录、验证码或访问限制。
+- 爬虫失败时保留历史库和上次成功状态，不用空响应覆盖有效数据；每次采集保存 URL、抓取时间、响应校验值、字段映射和错误信息。
 
 ---
 
@@ -44,12 +47,17 @@ etf-market-dashboard/
     db.py                                  # SQLite 增量 schema、事务和查询
     providers/base.py                     # ETFDataProvider Protocol
     providers/csv_provider.py             # CSV 解析、字段映射和单位标准化
+    providers/sse_provider.py             # 上交所公开ETF规模页面适配器
+    providers/szse_provider.py            # 深交所公开ETF数据页面适配器
+    providers/nav_provider.py             # 独立单位净值数据适配器
+    providers/announcement_provider.py   # 官方公告元数据和候选公司行为
     providers/tushare_provider.py         # 可选 Tushare Pro 适配器
     services/calendar.py                  # 交易日、日期缺口和窗口规则
     services/corporate_actions.py         # 通用折算/拆分/分红事件审核和复权
     services/quality.py                   # Q1-Q10 质量规则
     services/flows.py                     # DeltaS、F、累计、滚动和强度计算
     services/ingest.py                    # 导入预览、验证、提交和增量重算
+    services/sync.py                      # 官方页面增量同步、重试和最近窗口重取
     services/export.py                    # 清洗明细和组合汇总 CSV 导出
   web/
     fund-flow.html                        # 独立资金流看板页面
@@ -143,65 +151,105 @@ git commit -m "feat: add ETF fund flow data model"
 
 ---
 
-## Task 2: CSV 导入、单位换算和可选数据源适配器
+## Task 2: AKShare 官方份额采集、独立 NAV、CSV 回填和增量同步
 
 **Files:**
 - Create: `scripts/fund_flow/providers/base.py`
 - Create: `scripts/fund_flow/providers/csv_provider.py`
+- Create: `scripts/fund_flow/providers/sse_provider.py`
+- Create: `scripts/fund_flow/providers/szse_provider.py`
+- Create: `scripts/fund_flow/providers/nav_provider.py`
 - Create: `scripts/fund_flow/providers/tushare_provider.py`
 - Create: `scripts/fund_flow/services/ingest.py`
+- Create: `scripts/fund_flow/services/sync.py`
 - Create: `data/samples/fund_flow_demo.csv`
-- Create: `.env.example` additions for `TUSHARE_TOKEN`
+- Create: `.env.example` additions for `TUSHARE_TOKEN`, `FUND_FLOW_HTTP_TIMEOUT`, `FUND_FLOW_RETRY_COUNT`
 - Test: `tests/test_fund_flow_import.py`
+- Test: `tests/test_fund_flow_providers.py`
+- Test: `tests/test_fund_flow_sync.py`
+
+**审查结论与复用边界：**
+- AKShare 是 MIT 许可的公共数据工具库；本项目通过已发布包调用接口，不复制其内部实现。
+- `digger-yu/etf` 是 MIT 许可，可复用其“按日抓取、深交所窗口回填、分层脚本”的设计；但其聚合结果和 AUM 字段不直接作为本项目的净申赎结果，所有接口输出必须经过字段、单位和日期核验。
+- `zxtcc/szse-etf-share` 未发现许可证文件，只参考其对深交所单日/窗口接口、分页、重试和去重的观察，不复制代码。
+- `steve849739/Etf-tracker` 未发现许可证文件，只参考其采集、更新、展示分层，不复制代码。所有实际数据必须来自可追溯的公开来源。
 
 **Interfaces:**
-- `class ETFDataProvider(Protocol): get_daily(self, codes: list[str], start: date, end: date) -> pd.DataFrame`.
-- `parse_csv(file: BinaryIO, source_id: str) -> ImportPreview` returns normalized columns, row count, field mapping, units, warnings and errors without writing to the database.
-- `commit_import(preview: ImportPreview, db_path: Path) -> ImportJob` writes raw rows in one transaction only after validation passes.
-- `CsvProvider.get_daily(codes, start, end) -> pd.DataFrame` reads the documented template fields and never converts blank values to zero.
-- `TushareProvider` reads `TUSHARE_TOKEN` only at runtime and raises a user-facing `ProviderUnavailable` when the token is absent; it does not prevent application startup.
+- `class ShareProvider(Protocol): fetch(codes: list[str], start: date, end: date) -> list[RawETFRecord]`，返回原始份额、单位、日期口径、来源 URL、抓取时间和响应校验值。
+- `class NavProvider(Protocol): fetch_nav(codes: list[str], start: date, end: date) -> list[RawNAVRecord]`，必须与份额接口独立，返回单位净值元/份和来源元数据。
+- `AkshareSSEProvider.fetch(...)` 调用 AKShare 的 `fund_etf_scale_sse(date=YYYYMMDD)`，核验 `基金代码`、`基金份额` 字段及其万份口径。
+- `AkshareSZSEProvider.fetch(...)` 调用 AKShare 的 `fund_scale_daily_szse(start_date=..., end_date=..., symbol="ETF")`，按不超过接口窗口的区间回填，并核验分页、日期和万份口径。
+- `parse_csv(file: BinaryIO, source_id: str) -> ImportPreview` 只预览不写库；`commit_import(preview, db_path) -> ImportJob` 在事务中提交。
+- `sync_recent(db_path, provider_chain, start, end, retry_policy) -> SyncReport`：按“AKShare 份额 → 独立 NAV → 官方公告/页面核验 → CSV/可选 Tushare 兜底”的顺序执行；失败时保留上次成功数据。
 
-- [ ] **Step 1: Write CSV import tests for date formats, units, blank values and scope.**
+- [ ] **Step 1: Write provider contract tests before implementation.**
+
+测试用 monkeypatch 模拟 AKShare 返回的数据，不调用真实行情网络；覆盖：SSE/SZSE 字段映射、万份单位、日期规范化、空值保留、接口异常重试、重复行、来源元数据、独立 NAV 关联。
 
 ```python
-def test_csv_preview_normalizes_wan_and_yyyy_mm_dd():
-    csv_text = (
-        "trade_date,ts_code,total_share_wan,nav,close,total_size_wan,"
-        "share_scope,share_date_basis,source_url\n"
-        "2024-01-02,510300.SH,100000,4.0,,400000,on_exchange,post_close,https://example.test\n"
+def test_akshare_sse_maps_share_units_and_source(monkeypatch):
+    monkeypatch.setattr(
+        ak, "fund_etf_scale_sse",
+        lambda date: pd.DataFrame([{"基金代码": "510300", "基金简称": "沪深300ETF", "基金份额": "123,456.78"}]),
     )
-    preview = parse_csv(io.BytesIO(csv_text.encode()), source_id="test-csv")
-    assert preview.errors == []
-    assert preview.rows[0].total_share == 100000
-    assert preview.rows[0].record_date.isoformat() == "2024-01-02"
-    assert preview.rows[0].share_scope == "on_exchange"
+    rows = AkshareSSEProvider().fetch(["510300.SH"], date(2024, 1, 2), date(2024, 1, 2))
+    assert rows[0].total_share == pytest.approx(123456.78)
+    assert rows[0].share_unit == "万份"
+    assert rows[0].source_id.startswith("akshare:sse")
+
+
+def test_sync_never_uses_aum_delta_as_flow(nav_rows, nav_rows_current):
+    report = sync_recent(...)
+    assert report.metrics[0].net_flow_yi == pytest.approx(
+        (nav_rows_current[0].shares_wan - nav_rows[0].shares_wan)
+        * nav_rows_current[0].nav / 10000
+    )
 ```
 
-- [ ] **Step 2: Run the focused test to verify it fails.**
+- [ ] **Step 2: Run focused tests and verify they fail before implementation.**
 
-Run: `python -m pytest tests/test_fund_flow_import.py -q`
+Run: `python -m pytest tests/test_fund_flow_providers.py tests/test_fund_flow_sync.py -q`
 
-Expected: FAIL because the provider and import service are not implemented.
+Expected: FAIL because the provider chain and sync service do not exist.
 
-- [ ] **Step 3: Implement the CSV provider and import preview.**
+- [ ] **Step 3: Implement AKShare primary providers.**
 
-Accept `YYYY-MM-DD` and `YYYYMMDD`; accept source units `份`, `万份`, `亿份`; normalize shares to `万份`; accept `万元` and `亿元` for asset size and normalize to `亿元`; accept scopes `on_exchange`, `total_fund`, `unknown`; accept bases `pre_open`, `post_close`, `unknown`. Reject unknown units, non-positive NAV, invalid dates and missing `ts_code` instead of treating them as zero. Store the original source URL and import batch ID.
+Use the verified public AKShare functions only. SSE history is requested one trading day at a time; SZSE history is requested in provider-safe windows (maximum 6 calendar months, implemented with 180-day chunks), with explicit retry/backoff and a small request interval. Skip weekends only as an optimization; the returned exchange rows remain authoritative. Never silently convert an empty response into zero shares.
 
-The sample CSV must contain only rows with a `SIMULATED` source marker and dates outside the real analysis window, for example `2099-01-04`; its README comment must state that it is not market data. Tests use in-memory CSV text and do not depend on that sample's numeric values.
+The provider must normalize exchange code to `510300.SH` / `159919.SZ`, normalize date to `YYYY-MM-DD`, and normalize shares to `万份` only after applying an exchange-specific source-unit mapping. The mapping is tested against documented examples and range checks: SSE `基金份额` is treated as the source unit documented by the SSE/AKShare adapter; SZSE `基金份额` is treated as raw shares where the AKShare daily example is in shares. If a future AKShare version changes the unit or column type, the provider fails visibly and creates a `BLOCKED` issue instead of silently dividing/multiplying. Preserve raw values and record the exact AKShare function, request parameters, source-unit mapping, response row count, retrieval time, and checksum in `fund_flow_data_sources`.
 
-- [ ] **Step 4: Implement the optional Tushare adapter.**
+- [ ] **Step 4: Implement an independent NAV provider.**
 
-Map `trade_date`, `ts_code`, `total_share`, `total_size`, `nav`, `close`, `exchange` from `etf_share_size`; preserve the original response metadata in `fund_flow_data_sources`; enforce the documented permission error as a visible `ProviderUnavailable` state. Do not call Tushare during import unless the user explicitly chooses it.
+Use a separately named adapter and source metadata for historical daily NAV. It may use a stable AKShare NAV/history endpoint or a separately configured official/public fund-data endpoint after field-level verification. Do not derive NAV from AUM/shares unless the source explicitly identifies it as unit NAV. If NAV is unavailable or conflicts with an independently retrieved value, persist the row with `WARNING`/`BLOCKED`; do not calculate flow with zero or with total asset size.
 
-- [ ] **Step 5: Commit and run tests.**
+- [ ] **Step 5: Implement complete history backfill and daily incremental sync.**
 
-Run: `python -m pytest tests/test_fund_flow_import.py -q`
+The default start date is the last trading day of 2023, resolved from the exchange calendar. Backfill through today for every configured ETF; daily sync re-fetches a recent overlap window (default 5 trading days) to repair late-published/corrected rows and then upserts by `(etf_code, trade_date, source_scope)`. All writes are idempotent and transactional. A failed provider cannot delete or overwrite the last successful clean record.
 
-Expected: all import tests pass, and the application can start without `TUSHARE_TOKEN`.
+Provide both a CLI and a service entry point:
 
 ```cmd
-git add scripts/fund_flow/providers scripts/fund_flow/services/ingest.py data/samples .env.example tests/test_fund_flow_import.py
-git commit -m "feat: add auditable ETF CSV import"
+python -m scripts.fund_flow_sync --backfill --start 2023-12-29
+python -m scripts.fund_flow_sync --incremental --overlap-days 5
+```
+
+The web refresh button will call the same service rather than implement a second data path. A local Windows Task Scheduler recipe is documented later, but is not required for offline tests.
+
+- [ ] **Step 6: Implement CSV fallback and optional Tushare adapter.**
+
+Accept `YYYY-MM-DD` and `YYYYMMDD`; accept source units `份`, `万份`, `亿份`; normalize shares to `万份`; accept `万元` and `亿元` for asset size and normalize to `亿元`; accept scopes `on_exchange`, `total_fund`, `unknown`; accept bases `pre_open`, `post_close`, `unknown`. Reject unknown units, non-positive NAV, invalid dates and missing `ts_code` instead of treating them as zero.
+
+The sample CSV must contain only rows with a `SIMULATED` source marker and dates outside the real analysis window, for example `2099-01-04`; its README comment must state that it is not market data. Tushare maps `etf_share_size` only when the user explicitly chooses it and has permission; it never becomes a startup dependency or a hidden fallback.
+
+- [ ] **Step 7: Run tests and commit the acquisition boundary.**
+
+Run: `python -m pytest tests/test_fund_flow_import.py tests/test_fund_flow_providers.py tests/test_fund_flow_sync.py -q`
+
+Expected: all provider/import/sync tests pass without network access, without a Token, and without real market fixtures.
+
+```cmd
+git add scripts/fund_flow/providers scripts/fund_flow/services/ingest.py scripts/fund_flow/services/sync.py scripts/fund_flow_sync.py data/samples .env.example tests/test_fund_flow_import.py tests/test_fund_flow_providers.py tests/test_fund_flow_sync.py
+git commit -m "feat: add official ETF share sync providers"
 ```
 
 ---
@@ -362,11 +410,12 @@ git commit -m "feat: calculate audited ETF net subscriptions"
 
 ---
 
-## Task 5: 导入、质量、查询和 CSV 导出 API
+## Task 5: 导入、同步、质量、查询和 CSV 导出 API
 
 **Files:**
 - Create: `scripts/fund_flow/services/export.py`
 - Create: `scripts/fund_flow/api.py`
+- Modify: `scripts/fund_flow/services/sync.py` only to expose the API-safe sync report
 - Modify: `server.py`
 - Test: `tests/test_fund_flow_api.py`
 
@@ -376,6 +425,7 @@ git commit -m "feat: calculate audited ETF net subscriptions"
 - `GET /api/fund-flow/quality?start=...&end=...`
 - `POST /api/fund-flow/import/preview` accepts a multipart CSV and returns row count, field mapping, warnings and errors without writing.
 - `POST /api/fund-flow/import/commit` accepts a validated import batch ID and writes raw/clean/metric rows transactionally.
+- `POST /api/fund-flow/sync` starts an idempotent recent-window sync using the same AKShare-first provider chain as the CLI; it returns provider status, latest date, inserted/updated counts and quality issues.
 - `GET /api/fund-flow/export/clean.csv?...` and `GET /api/fund-flow/export/summary.csv?...`
 - `GET /api/fund-flow/health` returns data counts, latest trade date, source status and blocked issue count.
 
@@ -411,7 +461,11 @@ Support presets and arbitrary ETF selection. For weekly/monthly views, aggregate
 
 Preview must not mutate SQLite. Commit must re-read the preview batch, refuse unvalidated batches, write in a transaction, and recalculate only affected dates plus the recent re-fetch window. Export must include raw/adjusted shares, NAV, delta shares, flow, cumulative flow, status, source ID, action ID and calculation version.
 
-- [ ] **Step 5: Run API and existing server tests.**
+- [ ] **Step 5: Implement the refresh endpoint with failure-safe semantics.**
+
+The endpoint must reuse `sync_recent`, reject concurrent syncs with a visible `409`/busy state, return partial provider failures as structured warnings, and never replace valid historical rows with an empty provider response. The UI must show “刷新中 / 完成 / 部分失败” and the last successful update time.
+
+- [ ] **Step 6: Run API and existing server tests.**
 
 Run: `python -m pytest tests/test_fund_flow_api.py tests/test_server.py -q`
 
@@ -462,7 +516,7 @@ Expected: FAIL because the page and link do not exist.
 
 - [ ] **Step 3: Implement the page shell and controls.**
 
-The top area must show latest trade date, last update time, quality state, selected preset, selected ETF names, latest daily flow, 5/20/60-day flow, cumulative flow since the 2024 first trading day, coverage ratio and blocked issue count. Controls must include the three presets, arbitrary ETF checkboxes, date range, daily/weekly/monthly frequency, CSV preview/commit, and clean/summary export.
+The top area must show latest trade date, last update time, quality state, selected preset, selected ETF names, latest daily flow, 5/20/60-day flow, cumulative flow since the 2024 first trading day, coverage ratio and blocked issue count. Controls must include the three presets, arbitrary ETF checkboxes, date range, daily/weekly/monthly frequency, a “刷新全部数据” button calling `/api/fund-flow/sync`, CSV preview/commit, and clean/summary export. The refresh result must identify whether AKShare, independent NAV, official verification and fallback providers succeeded.
 
 - [ ] **Step 4: Implement G1 ETF shares history.**
 
@@ -504,6 +558,7 @@ git commit -m "feat: add ETF fund flow P0 dashboard"
 
 **Interfaces:**
 - Documentation must define CSV template, database tables, formulas, event status, quality states, sources, evidence limits, and local commands.
+- Documentation must include `docs/research/2026-10-29-etf-data-reference-projects.md` as the audit record for the four reference projects, including license status and API reuse decisions.
 - The README must distinguish implemented P0, planned P1 and planned P2; it must not claim that unimported real market data has been reproduced.
 
 - [ ] **Step 1: Write documentation acceptance checks.**
@@ -526,7 +581,14 @@ python -m pip install -r requirements.txt
 python -m uvicorn server:app --host 127.0.0.1 --port 8000
 ```
 
-Then open `http://127.0.0.1:8000/web/fund-flow.html`. The document must describe CSV import as the no-network path and Tushare as optional. The sample data section must state `SIMULATED` and must not present its values as real market data.
+The document must also describe the first-run and daily paths:
+
+```cmd
+python -m scripts.fund_flow_sync --backfill --start 2023-12-29
+python -m scripts.fund_flow_sync --incremental --overlap-days 5
+```
+
+Then open `http://127.0.0.1:8000/web/fund-flow.html` and use “刷新全部数据” for the same incremental service path. The README must include a Windows Task Scheduler example that runs the incremental command after the expected exchange publication time, while stating that the UI button remains the manual recovery path. It must describe CSV import as the no-network/history-gap path and Tushare as optional. The sample data section must state `SIMULATED` and must not present its values as real market data.
 
 - [ ] **Step 3: Run the full test suite and the manual offline smoke test.**
 
@@ -543,6 +605,8 @@ Expected:
 - the server starts without `TUSHARE_TOKEN`;
 - the existing `/web/` strategy dashboard remains usable;
 - the new `/web/fund-flow.html` loads with zero or simulated rows;
+- provider failure leaves the previous successful rows intact and exposes a structured warning;
+- the refresh endpoint and CLI use the same sync service and are idempotent;
 - previewing a CSV does not write before commit;
 - after committing a simulated CSV, G1/G2/G3 show only the supplied rows and quality status;
 - no API key or fabricated real quote appears in the repository.
@@ -560,8 +624,8 @@ git commit -m "docs: document ETF fund flow P0"
 
 ### P1
 
-- Tushare 增量自动同步和最近若干交易日重取；
-- 上交所/深交所官方数据适配器及来源交叉核对；
+- Tushare permission-enabled cross-check and additional recent-window fallback;
+- independent official-page cross-check beyond the AKShare wrapper;
 - G4 沪深300指数与申赎双轴对照；
 - G5 申赎强度比较；
 - 增量重算日志、季度份额对账和缺口预警。
@@ -577,9 +641,11 @@ git commit -m "docs: document ETF fund flow P0"
 
 ## Self-review checklist
 
-- 需求覆盖：P0 CSV 导入、SQLite、份额合并、净申赎、G1/G2/G3、质量状态、导出和 T01—T10 均有对应任务。
+- 需求覆盖：P0 AKShare 优先份额采集、2023 年末起历史回填、每日增量、SQLite 去重、独立 NAV、份额合并、净申赎、G1/G2/G3、质量状态、导出和 T01—T10 均有对应任务。
+- 参考项目审查：四个项目均有明确的 API/实现/许可证结论；无许可证的项目只作设计参考，不复制代码；MIT 项目也只复用经过本项目测试验证的思路或接口。
 - 真实数据约束：示例数据明确为 `SIMULATED`；510310 只保存官方事件证据，不写入虚构行情。
 - 口径一致：份额使用万份、NAV 使用元/份、资金流使用亿元；每只 ETF 先算金额再聚合。
 - 失败安全：缺失、冲突、未核验事件和跨日缺口返回 `None`/`BLOCKED`，不会静默填零。
+- 来源可审计：每次请求记录 provider、函数/URL、参数、抓取时间、响应校验值、字段映射和错误；AKShare 份额与独立 NAV 不混为同一来源。
 - 现有项目兼容：新表使用 `fund_flow_` 前缀，新页面和 API 独立，现有策略路由及测试继续运行。
 - 计划无未定义接口：各任务已声明输入、输出、文件和测试命令，可按任务顺序执行。
