@@ -10,6 +10,7 @@ from ..config import DATABASE_PATH, ETF_UNIVERSE
 from ..db import init_fund_flow_schema, open_fund_flow_connection, seed_default_fund_master
 from ..models import RawETFRecord, RawNAVRecord
 from ..providers.base import NavProvider, ProviderUnavailable, ShareProvider, now_iso
+from .persistence import rebuild_materialized
 
 
 @dataclass
@@ -126,7 +127,10 @@ def sync_recent(
                     source_ids = {row.source_id for row in rows} or {f"{provider_name}:empty"}
                     for source_id in source_ids:
                         _source_row(connection, source_id, provider, sum(row.source_id == source_id for row in rows))
-                    report.provider_status.append({"provider": provider_name, "status": "success", "rows": len(rows)})
+                    state = "success" if rows else "warning"
+                    report.provider_status.append({"provider": provider_name, "status": state, "rows": len(rows)})
+                    if not rows:
+                        report.warnings.append(f"{provider_name}: empty response; existing data retained")
                 except Exception as exc:
                     report.provider_status.append({"provider": provider_name, "status": "failed", "error": str(exc)})
                     report.warnings.append(f"{provider_name}: {exc}")
@@ -139,7 +143,10 @@ def sync_recent(
                         _source_row(connection, source_id, nav_provider, sum(row.source_id == source_id for row in nav_rows))
                     _insert_nav_rows(connection, nav_rows)
                     share_rows = _attach_nav(share_rows, nav_rows)
-                    report.provider_status.append({"provider": nav_provider.__class__.__name__, "status": "success", "rows": len(nav_rows)})
+                    state = "success" if nav_rows else "warning"
+                    report.provider_status.append({"provider": nav_provider.__class__.__name__, "status": state, "rows": len(nav_rows)})
+                    if not nav_rows:
+                        report.warnings.append(f"{nav_provider.__class__.__name__}: empty response; NAV remains unavailable")
                 except Exception as exc:
                     report.provider_status.append({"provider": nav_provider.__class__.__name__, "status": "failed", "error": str(exc)})
                     report.warnings.append(f"{nav_provider.__class__.__name__}: {exc}")
@@ -163,5 +170,7 @@ def sync_recent(
                     flow = calculate_flow_yi(row, previous)
                     report.metrics.append({"etf_code": code, "trade_date": row.effective_trade_date.isoformat(), "net_flow_yi": flow})
                     previous = row
+    materialized = rebuild_materialized(db_path, codes)
+    report.warnings.extend([] if materialized["metricCount"] else ["no metrics materialized; raw data may be unavailable"])
     return report
 
