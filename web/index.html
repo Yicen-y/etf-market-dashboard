@@ -3,22 +3,43 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>沪深300 ETF 市场看板</title>
-  <link rel="stylesheet" href="styles.css">
-  <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.1/dist/echarts.min.js"></script>
+  <title>A股ETF看板</title>
+  <link rel="stylesheet" href="styles.css?v=20261029-6">
+  <script>
+    window.MathJax = { tex: { inlineMath: [["\\(", "\\)"]], displayMath: [["\\[", "\\]"]] }, svg: { fontCache: "global" } };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+  <script src="echarts.min.js"></script>
 </head>
 <body>
-  <main class="shell">
+  <main class="shell app-layout">
+    <aside class="strategy-sidebar">
+      <div class="sidebar-title">ETF 看板</div>
+      <button class="strategy-item active" data-strategy="dividend-growth">300红利与300成长轮动</button>
+      <button class="strategy-item" data-strategy="prism">成长100R与价值100R轮动三棱镜</button>
+      <button class="strategy-item" data-strategy="dividend-hs300">沪深300红利与沪深300轮动</button>
+      <button class="strategy-item" data-strategy="growth-value-300">沪深300成长与沪深300价值轮动</button>
+      <button class="strategy-item" data-strategy="csi2000-hs300">中证2000与沪深300轮动</button>
+      <button class="strategy-item" data-strategy="nonferrous-chemical">中证细分有色与中证细分化工轮动</button>
+      <button class="strategy-item" data-strategy="banks-exbank-financial">中证银行与沪深300非银金融轮动</button>
+      <button class="strategy-item" data-strategy="dividend-growth-300">沪深300红利与沪深300成长轮动</button>
+      <button class="strategy-item" data-strategy="dividend-a-share">中证红利与中证A股轮动</button>
+      <p class="sidebar-note">选择看板后，基准日期和图表会随之切换。</p>
+    </aside>
+    <div class="content-column">
     <header class="hero">
       <div>
         <p class="eyebrow">ETFirst · ETF MARKET DASHBOARD</p>
-        <h1>2026年以来，300红利对比300成长</h1>
-        <p class="subline">以选定交易日收盘价为基准，比较红利、成长与沪深300 ETF 的表现。</p>
+      <h1 id="page-title">300红利与300成长轮动</h1>
+        <p id="page-subline" class="subline">以选定交易日收盘价为基准，比较红利、成长与沪深300 ETF 的表现。</p>
+        <p id="strategy-universe" class="strategy-universe"></p>
       </div>
       <div class="control-panel">
         <label for="benchmark-date">基准日期</label>
         <input id="benchmark-date" type="date" value="2025-12-31">
         <span id="benchmark-status" class="hint">实际基准交易日：加载中</span>
+        <button id="refresh-data" class="button refresh-button">刷新全部数据</button>
+        <button id="strategy-guide-button" class="button guide-button">策略说明</button>
       </div>
     </header>
 
@@ -36,12 +57,30 @@
       <div id="main-chart" class="chart"></div>
     </section>
 
-    <section class="panel">
+    <section class="panel data-table-panel">
       <div class="panel-heading"><div><h2>交易日数据</h2><p>数值随基准日期动态重算。</p></div></div>
       <div class="table-wrap"><table id="data-table"><thead></thead><tbody></tbody></table></div>
     </section>
+    <section id="prism-content" class="hidden">
+      <section class="panel chart-panel"><div class="panel-heading"><div><h2 id="prism-main-title">同一基准下的成长100R与价值100R累计收益</h2><p id="prism-freshness">数据加载中</p></div><button id="download-prism-csv" class="button">下载 CSV</button></div><div id="prism-main-chart" class="chart"></div></section>
+      <section class="panel"><h2 id="prism-ratio-title">成长100R / 价值100R 比值及242日布林线</h2><div id="prism-ratio-chart" class="chart"></div></section>
+      <section class="panel"><h2 id="prism-spread-title">40日收益差及242日均线</h2><div id="prism-spread-chart" class="chart"></div></section>
+      <section class="panel"><h2 id="prism-rsi-title">比值14日 RSI 及242日均线</h2><div id="prism-rsi-chart" class="chart"></div></section>
+      <section class="panel data-table-panel"><div class="panel-heading"><div><h2>三棱镜交易日数据</h2><p>原始指数点位计算，不对指数分别归一化。</p></div></div><div class="table-wrap"><table id="prism-table"><thead></thead><tbody></tbody></table></div></section>
+    </section>
+    </div>
   </main>
-  <script src="app.js"></script>
+  <section id="strategy-guide-modal" class="guide-modal hidden" role="dialog" aria-modal="true" aria-labelledby="strategy-guide-title">
+    <div class="guide-backdrop" data-guide-close="true"></div>
+    <div class="guide-dialog" role="document">
+      <div class="guide-dialog-header">
+        <h2 id="strategy-guide-title">策略说明</h2>
+        <button id="strategy-guide-close" class="guide-close" type="button" aria-label="关闭策略说明">×</button>
+      </div>
+      <div id="strategy-guide-content" class="guide-content"></div>
+    </div>
+  </section>
+  <script src="app.js?v=20261029-8"></script>
 </body>
 </html>
 
