@@ -4,7 +4,11 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>A股ETF看板</title>
-  <link rel="stylesheet" href="styles.css?v=20261029-5">
+  <link rel="stylesheet" href="styles.css?v=20261029-6">
+  <script>
+    window.MathJax = { tex: { inlineMath: [["\\(", "\\)"]], displayMath: [["\\[", "\\]"]] }, svg: { fontCache: "global" } };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
   <script src="echarts.min.js"></script>
 </head>
 <body>
@@ -35,6 +39,7 @@
         <input id="benchmark-date" type="date" value="2025-12-31">
         <span id="benchmark-status" class="hint">实际基准交易日：加载中</span>
         <button id="refresh-data" class="button refresh-button">刷新全部数据</button>
+        <button id="strategy-guide-button" class="button guide-button">策略说明</button>
       </div>
     </header>
 
@@ -65,7 +70,17 @@
     </section>
     </div>
   </main>
-  <script src="app.js?v=20261029-7"></script>
+  <section id="strategy-guide-modal" class="guide-modal hidden" role="dialog" aria-modal="true" aria-labelledby="strategy-guide-title">
+    <div class="guide-backdrop" data-guide-close="true"></div>
+    <div class="guide-dialog" role="document">
+      <div class="guide-dialog-header">
+        <h2 id="strategy-guide-title">策略说明</h2>
+        <button id="strategy-guide-close" class="guide-close" type="button" aria-label="关闭策略说明">×</button>
+      </div>
+      <div id="strategy-guide-content" class="guide-content"></div>
+    </div>
+  </section>
+  <script src="app.js?v=20261029-8"></script>
 </body>
 </html>
 

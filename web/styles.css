@@ -50,4 +50,33 @@ tr:nth-child(even) td { background:#f8fbff; }
 .prism-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px; }
 .small-chart { height:280px; }
 @media (max-width:900px) { .prism-grid { grid-template-columns:1fr; } }
+.guide-button { margin-top:10px; width:100%; }
+.guide-modal { position:fixed; inset:0; z-index:20; display:grid; place-items:center; padding:24px; }
+.guide-modal.hidden { display:none; }
+.guide-backdrop { position:absolute; inset:0; background:rgba(15,27,51,.48); backdrop-filter:blur(3px); }
+.guide-dialog { position:relative; width:min(900px,100%); max-height:min(86vh,900px); overflow:hidden; background:var(--surface); border:1px solid var(--line); border-radius:18px; box-shadow:0 20px 70px rgba(15,27,51,.25); display:flex; flex-direction:column; }
+.guide-dialog-header { display:flex; justify-content:space-between; align-items:center; padding:18px 24px; border-bottom:1px solid var(--line); }
+.guide-dialog-header h2 { margin:0; }
+.guide-close { border:0; background:transparent; font-size:30px; line-height:1; color:var(--muted); cursor:pointer; padding:0 4px; }
+.guide-close:hover { color:var(--ink); }
+.guide-content { overflow:auto; padding:24px; color:var(--ink); line-height:1.75; }
+.guide-content h3 { margin:24px 0 10px; color:var(--ink); }
+.guide-content h3:first-child { margin-top:0; }
+.guide-intro { margin:0 0 18px; color:var(--muted); }
+.guide-formula { margin:12px 0; padding:14px 16px; background:#f7faff; border:1px solid #dbe7f8; border-radius:10px; overflow-x:auto; }
+.guide-formula-label { font-weight:600; margin-bottom:4px; color:var(--ink); }
+.guide-note { margin:6px 0 0; color:var(--muted); font-size:13px; }
+.guide-table { width:100%; border-collapse:collapse; margin:8px 0; }
+.guide-table th,.guide-table td { padding:9px 10px; border-bottom:1px solid var(--line); text-align:left; }
+.guide-table th { background:#edf3ff; color:var(--ink); }
+.guide-use { padding:14px 16px; margin:10px 0; border-left:4px solid var(--blue); background:#f7faff; border-radius:0 10px 10px 0; }
+.guide-use-head { display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+.guide-use-number { font-weight:700; color:var(--blue); }
+.guide-use-tag { font-size:12px; border:1px solid #bcd0f2; color:var(--blue); padding:2px 7px; border-radius:999px; }
+.guide-use-title { font-weight:700; color:var(--ink); }
+.guide-use p { margin:7px 0 0; }
+.guide-notice { padding:14px 16px; background:#fff8e8; border:1px solid #f1d59a; border-radius:10px; color:#765315; }
+.guide-dynamic-pair { font-size:16px; font-weight:600; padding:12px 14px; background:#edf3ff; border-radius:10px; color:var(--blue); }
+.guide-dialog mjx-container { max-width:100%; overflow-x:auto; overflow-y:hidden; }
+@media (max-width:850px) { .guide-modal{padding:10px}.guide-dialog{max-height:92vh;border-radius:14px}.guide-content{padding:18px}.guide-dialog-header{padding:14px 18px}.guide-table{font-size:13px} }
 
