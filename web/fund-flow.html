@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>沪深300 ETF资金流向监测</title>
+  <link rel="stylesheet" href="fund-flow.css">
+  <script src="echarts.min.js"></script>
+</head>
+<body>
+  <main class="fund-flow-shell">
+    <header class="fund-flow-hero">
+      <div><p class="eyebrow">A股ETF看板 · P0</p><h1>沪深300 ETF资金流向监测</h1><p>以公开份额与独立单位净值估算净申赎，不以资产规模变化替代资金流。</p></div>
+      <div class="fund-flow-controls">
+        <label>ETF组合<select id="preset"><option value="core_four">核心四只</option><option value="original_shanghai_five">原上海五只</option><option value="all_six">全部六只</option></select></label>
+        <label>开始日期<input id="start" type="date" value="2023-12-29"></label>
+        <button id="refresh" type="button">刷新全部数据</button>
+        <a href="/web/">返回ETF看板</a>
+      </div>
+    </header>
+    <section id="status" class="status">正在读取资金流数据…</section>
+    <section class="summary" id="summary"></section>
+    <section class="panel"><div class="panel-heading"><h2>ETF份额变化（万份）</h2><span>来源：交易所公开份额口径</span></div><div id="shares-chart" class="chart"></div></section>
+    <section class="panel"><div class="panel-heading"><h2>累计估算净申赎（亿元）</h2><span>F = ΔS × NAV ÷ 10000</span></div><div id="cumulative-flow-chart" class="chart"></div></section>
+    <section class="panel"><div class="panel-heading"><h2>每日估算净申赎（亿元）</h2><span>缺少前一交易日或NAV时显示为空，不填零</span></div><div id="daily-flow-chart" class="chart"></div></section>
+  </main>
+  <script src="fund-flow.js"></script>
+</body>
+</html>

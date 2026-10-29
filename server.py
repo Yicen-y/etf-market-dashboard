@@ -10,12 +10,14 @@ from fastapi.staticfiles import StaticFiles
 
 from scripts.config import DATA_PATH, INDEX_DATA_PATH
 from scripts.update_data import update_dataset
+from scripts.fund_flow.api import router as fund_flow_router
 
 
 ROOT = Path(__file__).resolve().parent
 app = FastAPI(title="ETF Market Dashboard Local Data Service")
 app.mount("/web", StaticFiles(directory=ROOT / "web", html=True), name="web")
 app.mount("/data", StaticFiles(directory=ROOT / "data"), name="data")
+app.include_router(fund_flow_router)
 update_lock = threading.Lock()
 status = {"state": "idle", "message": "尚未刷新", "updatedAt": None, "summary": None}
 
