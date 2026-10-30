@@ -105,7 +105,7 @@ def fund_flow_series(codes: str, start: Optional[str] = None, end: str = "latest
         grouped: dict[str, dict] = {}
         for row in payload["rows"]:
             key = row["trade_date"][:7] if frequency == "monthly" else f"{date.fromisoformat(row['trade_date']).isocalendar().year}-W{date.fromisoformat(row['trade_date']).isocalendar().week:02d}"
-            item = grouped.setdefault(key, {"period": key, "by_code": {code: [] for code in selected}})
+            item = grouped.setdefault(key, {"period": key, "by_code": {code: [] for code in selected}, "dates": set()})
             item["by_code"].setdefault(row["etf_code"], []).append(row)
         compact = []
         for item in grouped.values():
@@ -113,11 +113,13 @@ def fund_flow_series(codes: str, start: Optional[str] = None, end: str = "latest
             valid_codes = []
             quality = []
             total = 0.0
+            period_dates = {row["trade_date"] for code_rows in item["by_code"].values() for row in code_rows}
             for code in selected:
                 code_rows = item["by_code"].get(code, [])
-                if not code_rows or any(row["net_flow_yi"] is None for row in code_rows):
+                code_dates = {row["trade_date"] for row in code_rows}
+                if not code_rows or code_dates != period_dates or any(row["net_flow_yi"] is None for row in code_rows):
                     missing.append(code)
-                    quality.append({"code": code, "reason": "missing_or_blocked_daily_flow"})
+                    quality.append({"code": code, "reason": "missing_or_blocked_daily_flow", "missingDates": sorted(period_dates - code_dates)})
                 else:
                     valid_codes.append(code)
                     total += sum(row["net_flow_yi"] for row in code_rows)

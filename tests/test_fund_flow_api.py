@@ -5,6 +5,7 @@ from fastapi.testclient import TestClient
 
 import scripts.fund_flow.api as fund_flow_api
 from server import app
+from scripts.fund_flow.db import init_fund_flow_schema, open_fund_flow_connection, seed_default_fund_master
 
 
 @pytest.fixture()
@@ -35,3 +36,16 @@ def test_import_commit_materializes_metrics(client):
     response = client.post("/api/fund-flow/import/commit", params={"source_id": preview["sourceId"]})
     assert response.status_code == 200
     assert response.json()["metricCount"] == 2
+
+
+def test_periodic_series_marks_intra_period_missing_code_incomplete(client, tmp_path, monkeypatch):
+    db_path = fund_flow_api.DATABASE_PATH
+    init_fund_flow_schema(db_path)
+    seed_default_fund_master(db_path)
+    with open_fund_flow_connection(db_path) as connection:
+        for code, day in [("510300.SH", "2024-01-02"), ("510300.SH", "2024-01-03"), ("510310.SH", "2024-01-02")]:
+            connection.execute("INSERT INTO fund_flow_etf_daily_metrics (etf_code,trade_date,shares_adj_wan,nav_adj,delta_shares_wan,net_flow_yi,cum_flow_yi,intensity_pct,calc_version,status) VALUES (?,?,?,?,?,?,?,?,?,?)", (code, day, 100, 4, 1, 0.004, 0.004, 1, "test", "PASS"))
+    response = client.get("/api/fund-flow/series", params={"codes": "510300.SH,510310.SH", "start": "2024-01-01", "end": "2024-01-05", "frequency": "weekly"})
+    assert response.status_code == 200
+    assert response.json()["rows"][0]["status"] == "INCOMPLETE"
+    assert response.json()["rows"][0]["missing_codes"] == ["510310.SH"]
