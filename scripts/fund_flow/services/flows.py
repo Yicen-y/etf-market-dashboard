@@ -62,14 +62,15 @@ def calculate_series(
     ordered_all = sorted(adjusted, key=lambda row: row.trade_date)
     result: list[DailyMetric] = []
     previous = None
+    previous_valid = False
     cumulative = 0.0
     cumulative_available = True
     for row in ordered_all:
         day = row.trade_date if isinstance(row.trade_date, date) else date.fromisoformat(row.trade_date)
-        metric = calculate_daily_metric(row, previous, row.validation_status)
+        metric = calculate_daily_metric(row, previous if previous_valid else None, row.validation_status)
         if previous is None:
             metric = DailyMetric(row.etf_code, row.trade_date, metric.shares_adj_wan, metric.nav_adj, None, None, 0.0, None, CALC_VERSION, "BLOCKED")
-        elif metric.net_flow_yi is None:
+        elif not previous_valid or metric.net_flow_yi is None:
             cumulative_available = False
             metric = DailyMetric(row.etf_code, row.trade_date, metric.shares_adj_wan, metric.nav_adj, metric.delta_shares_wan, None, None, metric.intensity_pct, CALC_VERSION, "BLOCKED")
         elif cumulative_available:
@@ -78,6 +79,7 @@ def calculate_series(
         if day >= start and day <= end:
             result.append(metric)
         previous = row
+        previous_valid = row.validation_status != "BLOCKED" and row.shares_wan is not None and row.nav is not None
     return result
 
 

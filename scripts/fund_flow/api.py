@@ -105,13 +105,24 @@ def fund_flow_series(codes: str, start: Optional[str] = None, end: str = "latest
         grouped: dict[str, dict] = {}
         for row in payload["rows"]:
             key = row["trade_date"][:7] if frequency == "monthly" else f"{date.fromisoformat(row['trade_date']).isocalendar().year}-W{date.fromisoformat(row['trade_date']).isocalendar().week:02d}"
-            item = grouped.setdefault(key, {"period": key, "net_flow_yi": 0.0, "codes": set(), "status": "PASS"})
-            if row["net_flow_yi"] is None:
-                item["status"] = "INCOMPLETE"
-            else:
-                item["net_flow_yi"] += row["net_flow_yi"]
-            item["codes"].add(row["etf_code"])
-        payload["rows"] = [{**item, "codes": sorted(item["codes"])} for item in grouped.values()]
+            item = grouped.setdefault(key, {"period": key, "by_code": {code: [] for code in selected}})
+            item["by_code"].setdefault(row["etf_code"], []).append(row)
+        compact = []
+        for item in grouped.values():
+            missing = []
+            valid_codes = []
+            quality = []
+            total = 0.0
+            for code in selected:
+                code_rows = item["by_code"].get(code, [])
+                if not code_rows or any(row["net_flow_yi"] is None for row in code_rows):
+                    missing.append(code)
+                    quality.append({"code": code, "reason": "missing_or_blocked_daily_flow"})
+                else:
+                    valid_codes.append(code)
+                    total += sum(row["net_flow_yi"] for row in code_rows)
+            compact.append({"period": item["period"], "net_flow_yi": total if not missing else None, "coverage_codes": valid_codes, "missing_codes": missing, "coverage_ratio": len(valid_codes) / len(selected) if selected else 0, "qualityIssues": quality, "status": "PASS" if not missing else "INCOMPLETE"})
+        payload["rows"] = compact
     return payload
 
 

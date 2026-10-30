@@ -23,6 +23,27 @@ def _raw_from_row(row):
     )
 
 
+def _ensure_seed_actions(connection):
+    """Load reviewed metadata files into the audit table, without quote data."""
+    event_root = Path(__file__).resolve().parents[3] / "data" / "source_events"
+    for path in sorted(event_root.glob("*.json")):
+        payload = json.loads(path.read_text(encoding="utf-8"))
+        source_id = f"seed:event:{path.stem}"
+        connection.execute("INSERT OR IGNORE INTO fund_flow_data_sources(source_id,url,retrieved_at,row_count,error_message) VALUES (?,?,?,?,?)", (source_id, None, None, 0, "metadata seed; official source URL pending"))
+        connection.execute(
+            """INSERT OR IGNORE INTO fund_flow_corporate_actions
+               (etf_code,ex_date,action_type,event_date,ratio,first_post_record_date,status,value,source_id)
+               VALUES (?,?,?,?,?,?,?,?,?)""",
+            (payload["etf_code"], payload["ex_date"], payload["action_type"], payload.get("event_date"), payload.get("ratio"), payload.get("first_post_record_date"), payload.get("status", "source_verified"), payload.get("value"), source_id),
+        )
+
+
+def _load_actions(connection, code: str):
+    from ..models import CorporateAction
+    rows = connection.execute("SELECT etf_code,ex_date,action_type,event_date,ratio,first_post_record_date,status,value FROM fund_flow_corporate_actions WHERE etf_code=? ORDER BY ex_date", (code,)).fetchall()
+    return [CorporateAction(etf_code=row[0], ex_date=row[1], action_type=row[2], event_date=row[3], ratio=row[4], first_post_record_date=row[5], status=row[6], value=row[7]) for row in rows]
+
+
 def rebuild_materialized(db_path: Path = DATABASE_PATH, codes: list[str] | None = None) -> dict:
     """Rebuild clean/metric tables from raw data without deleting raw history."""
 
@@ -30,6 +51,7 @@ def rebuild_materialized(db_path: Path = DATABASE_PATH, codes: list[str] | None 
     init_fund_flow_schema(db_path)
     seed_default_fund_master(db_path)
     with open_fund_flow_connection(db_path) as connection:
+        _ensure_seed_actions(connection)
         raw_rows = connection.execute(
             """SELECT r.etf_code,r.record_date,r.effective_trade_date,r.published_at,
                       r.total_share,r.share_unit,r.share_scope,r.share_date_basis,
@@ -51,9 +73,7 @@ def rebuild_materialized(db_path: Path = DATABASE_PATH, codes: list[str] | None 
         for code, raw in grouped.items():
             if not raw:
                 continue
-            actions = []
-            if code == "510310.SH":
-                actions.append(load_seed_action("510310_consolidation"))
+            actions = _load_actions(connection, code)
             clean_rows = apply_share_unit_adjustment(raw, actions)
             issues = validate_daily_records(clean_rows)
             issue_map = {(issue.etf_code, str(issue.trade_date)): issue for issue in issues}

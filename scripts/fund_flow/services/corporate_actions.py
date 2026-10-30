@@ -33,6 +33,9 @@ def validate_corporate_action(action: CorporateAction) -> list[QualityIssue]:
 
     event_date = _as_date(action.ex_date)
     issues: list[QualityIssue] = []
+    if action.action_type not in {"consolidation", "split", "reverse_split", "share_adjustment", "candidate_share_jump"}:
+        issues.append(QualityIssue(action.etf_code, event_date, "corporate_action_type_unsupported", "该公司行为类型不是份额单位调整，不得套用份额/NAV复权", "BLOCKED"))
+        return issues
     if action.status == "rejected":
         issues.append(QualityIssue(action.etf_code, event_date, "corporate_action_rejected", "公司行为已被拒绝", "BLOCKED"))
         return issues

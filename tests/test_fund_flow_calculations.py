@@ -46,3 +46,12 @@ def test_series_uses_previous_observation_before_requested_start():
     )
     assert result[0].net_flow_yi == pytest.approx(0.004)
     assert result[0].cum_flow_yi == pytest.approx(0.004)
+
+
+def test_blocked_gap_does_not_create_flow_from_invalid_previous_row():
+    result = calculate_series(
+        [clean("510300.SH", "2024-01-02", 100, 4), clean("510300.SH", "2024-01-03", 120, None), clean("510300.SH", "2024-01-04", 130, 4)],
+        [], date(2024, 1, 1), date(2024, 1, 5),
+    )
+    assert result[1].net_flow_yi is None
+    assert result[2].net_flow_yi is None
