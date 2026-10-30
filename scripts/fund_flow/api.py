@@ -25,6 +25,7 @@ from .services.sync import sync_recent
 router = APIRouter(prefix="/api/fund-flow", tags=["fund-flow"])
 _sync_lock = threading.Lock()
 _previews: dict[str, ImportPreview] = {}
+HISTORY_START = date(2023, 12, 29)
 
 
 def _db() -> Path:
@@ -90,9 +91,17 @@ def _overview_for_codes(codes: list[str], start: Optional[str], end: str, preset
         latest_text = connection.execute("SELECT MAX(trade_date) FROM fund_flow_etf_daily_metrics").fetchone()[0]
     latest = date.fromisoformat(latest_text) if latest_text else date.today()
     end_date = _date_or_default(end, latest)
-    start_date = _date_or_default(start, date(2023, 12, 29))
+    start_date = _date_or_default(start, HISTORY_START)
     rows = _metric_rows(codes, start_date, end_date)
-    return {"preset": preset, "codes": codes, "latestTradeDate": latest_text, "start": start_date.isoformat(), "end": end_date.isoformat(), "rows": rows, "dataExists": bool(rows)}
+    names = {code: ETF_UNIVERSE[code]["name"] for code in codes}
+    return {"preset": preset, "codes": codes, "names": names, "latestTradeDate": latest_text, "start": start_date.isoformat(), "end": end_date.isoformat(), "rows": rows, "dataExists": bool(rows)}
+
+
+def _needs_history_backfill() -> bool:
+    init_fund_flow_schema(_db())
+    with open_fund_flow_connection(_db()) as connection:
+        earliest = connection.execute("SELECT MIN(trade_date) FROM fund_flow_etf_daily_metrics").fetchone()[0]
+    return earliest is None or date.fromisoformat(earliest) > HISTORY_START
 
 
 @router.get("/series")
@@ -135,14 +144,15 @@ def fund_flow_quality(start: Optional[str] = None, end: str = "latest"):
 
 
 @router.post("/sync")
-def fund_flow_sync(overlap_days: int = Query(5, ge=1, le=30)):
+def fund_flow_sync(overlap_days: int = Query(5, ge=1, le=30), backfill: bool = Query(False)):
     if not _sync_lock.acquire(blocking=False):
         raise HTTPException(409, "资金流数据正在刷新，请稍候。")
     try:
         end = date.today()
-        start = end - timedelta(days=overlap_days * 3)
+        should_backfill = backfill or _needs_history_backfill()
+        start = HISTORY_START if should_backfill else end - timedelta(days=overlap_days * 3)
         report = sync_recent(_db(), share_providers=[AkshareSSEProvider(), AkshareSZSEProvider()], nav_provider=AkshareNavProvider(), start=start, end=end)
-        return {"inserted": report.inserted, "updated": report.updated, "latestTradeDate": report.latest_trade_date.isoformat() if report.latest_trade_date else None, "providerStatus": report.provider_status, "warnings": report.warnings}
+        return {"mode": "backfill" if should_backfill else "incremental", "start": start.isoformat(), "inserted": report.inserted, "updated": report.updated, "latestTradeDate": report.latest_trade_date.isoformat() if report.latest_trade_date else None, "providerStatus": report.provider_status, "warnings": report.warnings}
     finally:
         _sync_lock.release()
 

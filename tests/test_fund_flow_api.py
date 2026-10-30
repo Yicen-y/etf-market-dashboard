@@ -21,6 +21,14 @@ def test_fund_flow_health_is_available(client):
     assert {"latestTradeDate", "qualityState", "dataExists"}.issubset(response.json())
 
 
+def test_overview_returns_etf_names_for_selected_preset(client):
+    response = client.get("/api/fund-flow/overview", params={"preset": "core_four"})
+    assert response.status_code == 200
+    payload = response.json()
+    assert payload["names"]["510300.SH"] == "华泰柏瑞沪深300ETF"
+    assert payload["names"]["159919.SZ"] == "嘉实沪深300ETF"
+
+
 def test_import_preview_does_not_write(client):
     content = b"trade_date,ts_code,total_share_wan,nav,share_scope,share_date_basis\n2099-01-04,510300.SH,100000,4,on_exchange,post_close\n"
     response = client.post("/api/fund-flow/import/preview", files={"file": ("demo.csv", content, "text/csv")})

@@ -11,6 +11,9 @@ def test_fund_flow_page_has_three_p0_chart_containers():
     assert "cumulative-flow-chart" in html
     assert "daily-flow-chart" in html
     assert "估算净申赎" in html
+    assert "dashboard-sidebar" in html
+    assert "universe" in html
+    assert "刷新全部数据" in html
 
 
 def test_workflow_uses_explicitly_simulated_sample():
