@@ -2,14 +2,22 @@
 * { box-sizing:border-box; }
 body { margin:0; background:var(--bg); color:var(--ink); font-family:Arial,"Microsoft YaHei",sans-serif; }
 .shell { max-width:1440px; margin:0 auto; padding:28px; }
-.app-layout { display:grid; grid-template-columns:220px minmax(0,1fr); gap:22px; }
+.app-layout { display:grid; grid-template-columns:240px minmax(0,1fr); gap:22px; }
 .content-column { min-width:0; }
-.strategy-sidebar { background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:18px 12px; height:max-content; position:sticky; top:20px; box-shadow:0 8px 30px rgba(26,50,90,.05); }
-.sidebar-title { font-size:16px; font-weight:700; padding:4px 10px 14px; }
-.strategy-item,.strategy-add { display:block; width:100%; border:0; background:transparent; text-align:left; border-radius:8px; padding:11px 10px; color:var(--muted); cursor:pointer; font:inherit; }
+.strategy-sidebar { background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:18px 14px; height:max-content; position:sticky; top:20px; box-shadow:0 8px 30px rgba(26,50,90,.05); }
+.sidebar-brand { display:flex; align-items:center; gap:8px; padding:2px 10px 12px; font-size:18px; font-weight:700; color:var(--ink); }
+.sidebar-brand-icon,.sidebar-nav-icon { color:var(--muted); font-size:20px; line-height:1; }
+.sidebar-section-toggle { display:flex; align-items:center; gap:8px; width:100%; border:0; background:transparent; padding:10px; color:var(--ink); text-align:left; cursor:pointer; font:inherit; font-weight:700; font-size:16px; }
+.sidebar-section-toggle:hover { color:var(--blue); }
+.sidebar-chevron { width:12px; color:var(--ink); font-size:20px; line-height:12px; text-align:center; }
+.sidebar-section-items { display:grid; gap:2px; padding:2px 0 4px; }
+.sidebar-section-items[hidden] { display:none; }
+.strategy-item { display:block; width:100%; border:0; background:transparent; text-align:left; border-radius:8px; padding:10px 10px 10px 22px; color:var(--muted); cursor:pointer; font:inherit; line-height:1.35; }
 .strategy-item:hover,.strategy-item.active { background:#edf3ff; color:var(--blue); font-weight:600; }
 .sidebar-divider { height:1px; background:var(--line); margin:12px 10px; }
-.strategy-add { color:var(--blue); }
+.sidebar-standalone { display:flex; align-items:center; gap:8px; border-radius:8px; padding:10px; color:var(--ink); font-weight:700; text-decoration:none; line-height:1.35; }
+.sidebar-standalone:hover { background:#edf3ff; color:var(--blue); }
+.sidebar-placeholder { display:block; padding:8px 10px 8px 30px; color:var(--muted); line-height:1.35; }
 .sidebar-note { color:var(--muted); font-size:12px; line-height:1.5; padding:8px 10px 0; }
 .hero { display:flex; justify-content:space-between; gap:28px; align-items:flex-start; margin-bottom:22px; }
 .eyebrow { margin:0 0 8px; color:var(--blue); font-size:12px; font-weight:700; letter-spacing:.14em; }
@@ -79,4 +87,27 @@ tr:nth-child(even) td { background:#f8fbff; }
 .guide-dynamic-pair { font-size:16px; font-weight:600; padding:12px 14px; background:#edf3ff; border-radius:10px; color:var(--blue); }
 .guide-dialog mjx-container { max-width:100%; overflow-x:auto; overflow-y:hidden; }
 @media (max-width:850px) { .guide-modal{padding:10px}.guide-dialog{max-height:92vh;border-radius:14px}.guide-content{padding:18px}.guide-dialog-header{padding:14px 18px}.guide-table{font-size:13px} }
+
+.prism-time-toolbar { display:flex; justify-content:space-between; align-items:center; gap:16px; margin:0 0 10px; padding:10px 12px; background:var(--surface); border:1px solid var(--line); border-radius:10px; }
+.prism-range-group { display:flex; gap:6px; }
+.prism-range-button { border:1px solid #c9d3e2; background:#fff; border-radius:7px; padding:6px 11px; color:var(--muted); cursor:pointer; font:inherit; font-size:13px; }
+.prism-range-button:hover,.prism-range-button.active { border-color:var(--blue); background:#edf3ff; color:var(--blue); font-weight:600; }
+.prism-time-state { display:flex; align-items:center; justify-content:flex-end; gap:14px; color:var(--muted); font-size:13px; white-space:nowrap; }
+.prism-unlock { border:1px solid #bcd0f2; border-radius:7px; background:#edf3ff; color:var(--blue); padding:6px 10px; cursor:pointer; font:inherit; font-size:13px; }
+.prism-unlock.hidden { display:none; }
+.prism-snapshot { display:grid; grid-template-columns:repeat(7,minmax(0,1fr)); gap:10px; align-items:center; margin:0 0 16px; padding:12px 14px; background:var(--surface); border:1px solid var(--line); border-radius:10px; color:var(--muted); font-size:13px; }
+.prism-snapshot-item { min-width:0; }
+.prism-snapshot-item strong { display:block; margin-top:4px; color:var(--ink); font-size:15px; white-space:nowrap; }
+.prism-snapshot-date strong { color:var(--blue); }
+#prism-content .chart-panel,#prism-content>.panel { margin-bottom:14px; }
+#prism-content .chart { height:420px; }
+@media (max-width:1000px) { .prism-time-toolbar { align-items:flex-start; flex-direction:column; } .prism-time-state { width:100%; justify-content:flex-start; flex-wrap:wrap; white-space:normal; } .prism-snapshot { grid-template-columns:repeat(4,minmax(0,1fr)); } }
+@media (max-width:600px) { .prism-range-group { width:100%; } .prism-range-button { flex:1; padding-left:6px; padding-right:6px; } .prism-snapshot { grid-template-columns:repeat(2,minmax(0,1fr)); } #prism-content .chart { height:340px; } }
+
+.prism-active .hero { align-items:center; }
+.prism-active .control-panel { min-width:0; flex:0 1 620px; display:grid; grid-template-columns:max-content minmax(145px,1fr) minmax(170px,1.35fr) auto auto; align-items:center; gap:8px 10px; padding:10px 12px; }
+.prism-active .control-panel label { margin:0; }
+.prism-active .control-panel .hint { margin:0; white-space:nowrap; }
+.prism-active .control-panel .refresh-button,.prism-active .control-panel .guide-button { width:auto; margin:0; padding:8px 10px; white-space:nowrap; }
+@media (max-width:850px) { .prism-active .hero { align-items:stretch; } .prism-active .control-panel { display:block; min-width:260px; } .prism-active .control-panel label { margin-bottom:7px; } .prism-active .control-panel .hint { margin-top:8px; white-space:normal; } .prism-active .control-panel .refresh-button,.prism-active .control-panel .guide-button { width:100%; margin-top:10px; } }
 

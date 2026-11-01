@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>A股ETF看板</title>
-  <link rel="stylesheet" href="styles.css?v=20261029-6">
+  <link rel="stylesheet" href="styles.css?v=20261101-4">
   <script>
     window.MathJax = { tex: { inlineMath: [["\\(", "\\)"]], displayMath: [["\\[", "\\]"]] }, svg: { fontCache: "global" } };
   </script>
@@ -13,18 +13,41 @@
 </head>
 <body>
   <main class="shell app-layout">
-    <aside class="strategy-sidebar">
-      <div class="sidebar-title">ETF 看板</div>
-      <a class="strategy-item fund-flow-link" href="/web/fund-flow.html">沪深300 ETF资金流向</a>
-      <button class="strategy-item active" data-strategy="dividend-growth">300红利与300成长轮动</button>
-      <button class="strategy-item" data-strategy="prism">成长100R与价值100R轮动三棱镜</button>
-      <button class="strategy-item" data-strategy="dividend-hs300">沪深300红利与沪深300轮动</button>
-      <button class="strategy-item" data-strategy="growth-value-300">沪深300成长与沪深300价值轮动</button>
-      <button class="strategy-item" data-strategy="csi2000-hs300">中证2000与沪深300轮动</button>
-      <button class="strategy-item" data-strategy="nonferrous-chemical">中证细分有色与中证细分化工轮动</button>
-      <button class="strategy-item" data-strategy="banks-exbank-financial">中证银行与沪深300非银金融轮动</button>
-      <button class="strategy-item" data-strategy="dividend-growth-300">沪深300红利与沪深300成长轮动</button>
-      <button class="strategy-item" data-strategy="dividend-a-share">中证红利与中证A股轮动</button>
+    <aside class="strategy-sidebar" aria-label="ETF看板导航">
+      <div class="sidebar-brand"><span class="sidebar-brand-icon" aria-hidden="true">⌁</span><span>投资分析看板</span></div>
+      <div class="sidebar-divider"></div>
+
+      <section class="sidebar-section">
+        <button class="sidebar-section-toggle" type="button" data-sidebar-toggle="rotation-items" aria-expanded="true">
+          <span class="sidebar-chevron" aria-hidden="true">⌄</span><span>轮动看板</span>
+        </button>
+        <div id="rotation-items" class="sidebar-section-items">
+          <button class="strategy-item active" data-strategy="dividend-growth">300红利 / 300成长（ETF）</button>
+          <button class="strategy-item" data-strategy="prism">成长100R / 价值100R</button>
+          <button class="strategy-item" data-strategy="dividend-hs300">300红利 / 沪深300</button>
+          <button class="strategy-item" data-strategy="growth-value-300">300成长 / 300价值</button>
+          <button class="strategy-item" data-strategy="csi2000-hs300">中证2000 / 沪深300</button>
+          <button class="strategy-item" data-strategy="nonferrous-chemical">中证有色 / 中证化工</button>
+          <button class="strategy-item" data-strategy="banks-exbank-financial">中证银行 / 非银金融</button>
+          <button class="strategy-item" data-strategy="dividend-growth-300">300红利 / 300成长（指数）</button>
+          <button class="strategy-item" data-strategy="dividend-a-share">中证红利 / 中证A股</button>
+        </div>
+      </section>
+
+      <div class="sidebar-divider"></div>
+
+      <section class="sidebar-section">
+        <button class="sidebar-section-toggle" type="button" data-sidebar-toggle="dividend-items" aria-expanded="false">
+          <span class="sidebar-chevron" aria-hidden="true">›</span><span>红利看板</span>
+        </button>
+        <div id="dividend-items" class="sidebar-section-items" hidden>
+          <a class="sidebar-placeholder dividend-entry" href="/web/dividend.html?type=ETF">ETF股息率</a>
+          <a class="sidebar-placeholder dividend-entry" href="/web/dividend.html?type=STOCK">股票股息率</a>
+        </div>
+      </section>
+
+      <div class="sidebar-divider"></div>
+      <a class="sidebar-standalone fund-flow-link" href="/web/fund-flow.html"><span class="sidebar-nav-icon" aria-hidden="true">♜</span><span>沪深300 ETF资金流向</span></a>
       <p class="sidebar-note">选择看板后，基准日期和图表会随之切换。</p>
     </aside>
     <div class="content-column">
@@ -63,6 +86,17 @@
       <div class="table-wrap"><table id="data-table"><thead></thead><tbody></tbody></table></div>
     </section>
     <section id="prism-content" class="hidden">
+      <div id="prism-time-toolbar" class="prism-time-toolbar" aria-label="三棱镜时间范围与历史截面控制">
+        <div class="prism-range-group" role="group" aria-label="时间范围">
+          <button type="button" class="prism-range-button" data-prism-range="6m">6M</button>
+          <button type="button" class="prism-range-button" data-prism-range="1y">1Y</button>
+          <button type="button" class="prism-range-button" data-prism-range="3y">3Y</button>
+          <button type="button" class="prism-range-button" data-prism-range="5y">5Y</button>
+          <button type="button" class="prism-range-button active" data-prism-range="all">全部</button>
+        </div>
+        <div class="prism-time-state"><span id="prism-view-range">显示区间：全部</span><span id="prism-selected-date">日期：最新交易日</span><button id="prism-unlock" type="button" class="prism-unlock hidden">已锁定 · 点击解锁</button></div>
+      </div>
+      <div id="prism-snapshot" class="prism-snapshot" aria-live="polite"></div>
       <section class="panel chart-panel"><div class="panel-heading"><div><h2 id="prism-main-title">同一基准下的成长100R与价值100R累计收益</h2><p id="prism-freshness">数据加载中</p></div><button id="download-prism-csv" class="button">下载 CSV</button></div><div id="prism-main-chart" class="chart"></div></section>
       <section class="panel"><h2 id="prism-ratio-title">成长100R / 价值100R 比值及242日布林线</h2><div id="prism-ratio-chart" class="chart"></div></section>
       <section class="panel"><h2 id="prism-spread-title">40日收益差及242日均线</h2><div id="prism-spread-chart" class="chart"></div></section>
@@ -81,7 +115,7 @@
       <div id="strategy-guide-content" class="guide-content"></div>
     </div>
   </section>
-  <script src="app.js?v=20261029-8"></script>
+  <script src="app.js?v=20261101-8"></script>
 </body>
 </html>
 
