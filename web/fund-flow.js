@@ -1,15 +1,13 @@
 const $ = id => document.getElementById(id);
 const fmt = x => x == null ? "—" : Number(x).toFixed(3);
+const chartTheme = window.DashboardChartTheme;
+const securityColor = code => chartTheme.securityColor(code);
 let charts = {};
 
 function setStatus(text, kind = "") {
   const node = $("status");
   node.textContent = text;
   node.className = `status ${kind}`;
-}
-
-function colors(i) {
-  return ["#d83b32", "#16834a", "#2c6bed", "#9a63c8", "#e67e32", "#7a65c2"][i % 6];
 }
 
 function renderChart(key, rows, valueKey, unit, names, chartType = "line") {
@@ -19,25 +17,21 @@ function renderChart(key, rows, valueKey, unit, names, chartType = "line") {
   }
   const dates = [...new Set(rows.map(x => x.trade_date))];
   const isBar = chartType === "bar";
+  const valueFormatter = valueKey === "shares_adj_wan" ? chartTheme.formatSharesWan : chartTheme.formatMoneyYi;
   charts[key].setOption({
-    animation: false,
-    tooltip: {
-      trigger: "axis",
-      valueFormatter: value => value == null ? "—" : `${Number(value).toFixed(3)}${unit}`,
-    },
-    legend: { bottom: 0 },
-    grid: { left: 68, right: 24, top: 22, bottom: 72 },
-    xAxis: { type: "category", data: dates, axisLabel: { rotate: 40 } },
+    ...chartTheme.createBaseChartOption({ dates, bottom: 72 }),
+    tooltip: chartTheme.axisTooltip(() => valueFormatter),
+    xAxis: { type: "category", data: dates, axisLabel: { rotate: 40, hideOverlap: true } },
     yAxis: { type: "value", axisLine: { onZero: true } },
-    series: Object.entries(grouped).map(([code, data], i) => ({
+    series: Object.entries(grouped).map(([code, data]) => ({
       name: `${names[code] || code}（${code}）`,
       type: chartType,
       showSymbol: !isBar,
       ...(isBar ? { barMaxWidth: 12, barGap: "12%" } : {}),
       connectNulls: false,
       data: dates.map(date => data.find(x => x[0] === date)?.[1] ?? null),
-      lineStyle: { color: colors(i), width: 2 },
-      itemStyle: { color: colors(i) },
+      lineStyle: { color: securityColor(code), width: 2 },
+      itemStyle: { color: securityColor(code) },
     })),
   });
 }
@@ -110,9 +104,9 @@ async function refresh({ backfill = true, silent = false } = {}) {
 }
 
 function init() {
-  charts.shares = echarts.init($("shares-chart"));
-  charts.cumulative = echarts.init($("cumulative-flow-chart"));
-  charts.daily = echarts.init($("daily-flow-chart"));
+  charts.shares = chartTheme.init($("shares-chart"));
+  charts.cumulative = chartTheme.init($("cumulative-flow-chart"));
+  charts.daily = chartTheme.init($("daily-flow-chart"));
   $("preset").addEventListener("change", load);
   $("start").addEventListener("change", load);
   $("refresh").addEventListener("click", () => refresh({ backfill: true }));

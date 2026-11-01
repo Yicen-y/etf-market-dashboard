@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="ui-components.css?v=20261101">
   <link rel="stylesheet" href="fund-flow.css?v=20261101-2">
   <script src="echarts.min.js"></script>
+  <script src="chart-theme.js?v=20261101"></script>
 </head>
 <body>
   <main class="dashboard-layout fund-flow-layout">
@@ -22,7 +23,7 @@
     </header>
     <section id="status" class="status">正在读取资金流数据…</section>
     <section class="summary" id="summary"></section>
-    <section class="panel"><div class="panel-heading"><h2>ETF份额变化（万份）</h2><span>来源：交易所公开份额口径</span></div><div id="shares-chart" class="chart"></div></section>
+    <section class="panel"><div class="panel-heading"><h2>调整后ETF份额（万份）</h2><span>来源：交易所公开份额口径；该字段为调整后份额存量</span></div><div id="shares-chart" class="chart"></div></section>
     <section class="panel"><div class="panel-heading"><h2>累计估算净申赎（亿元）</h2><span>F = ΔS × NAV ÷ 10000</span></div><div id="cumulative-flow-chart" class="chart"></div></section>
     <section class="panel"><div class="panel-heading"><h2>每日估算净申赎（亿元）</h2><span>正值为申购/净流入，负值为赎回/净流出；缺少前一交易日或NAV时显示为空</span></div><div id="daily-flow-chart" class="chart"></div></section>
     </div>
