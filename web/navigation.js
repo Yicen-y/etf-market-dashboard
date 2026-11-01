@@ -41,6 +41,8 @@
     root.classList.add("strategy-sidebar");
     root.setAttribute("aria-label", "ETF看板导航");
     root.innerHTML = `
+      <button class="mobile-nav-toggle" type="button" aria-expanded="false" aria-controls="dashboard-nav-content"><span>投资分析看板</span><span aria-hidden="true">菜单</span></button>
+      <div id="dashboard-nav-content" class="dashboard-nav-content">
       <div class="sidebar-brand"><span class="sidebar-brand-icon" aria-hidden="true">⌁</span><span>投资分析看板</span></div>
       <div class="sidebar-divider"></div>
       <section class="sidebar-section">
@@ -61,7 +63,8 @@
       </section>
       <div class="sidebar-divider"></div>
       <a class="sidebar-standalone fund-flow-link${activeSection === "fund-flow" ? " active" : ""}" href="./fund-flow.html"><span class="sidebar-nav-icon" aria-hidden="true">♜</span><span>沪深300 ETF资金流向</span></a>
-      <p class="sidebar-note">选择看板后，基准日期、状态和图表会随模块切换。</p>`;
+      <p class="sidebar-note">选择看板后，基准日期、状态和图表会随模块切换。</p>
+      </div>`;
   }
 
   document.querySelectorAll("[data-dashboard-navigation]").forEach(renderNavigation);
@@ -73,6 +76,22 @@
       toggle.querySelector(".sidebar-chevron").textContent = expanded ? "›" : "⌄";
       target.hidden = expanded;
       saveState(toggle.dataset.sidebarToggle === "rotation-items" ? "rotationItems" : "dividendItems", !expanded);
+    });
+  });
+  document.querySelectorAll(".mobile-nav-toggle").forEach(toggle => {
+    toggle.addEventListener("click", () => {
+      const root = toggle.closest("[data-dashboard-navigation]");
+      const expanded = toggle.getAttribute("aria-expanded") === "true";
+      toggle.setAttribute("aria-expanded", String(!expanded));
+      root.classList.toggle("mobile-nav-open", !expanded);
+    });
+  });
+  document.querySelectorAll("[data-dashboard-navigation] .strategy-item").forEach(item => {
+    item.addEventListener("click", () => {
+      const root = item.closest("[data-dashboard-navigation]");
+      const toggle = root.querySelector(".mobile-nav-toggle");
+      toggle?.setAttribute("aria-expanded", "false");
+      root.classList.remove("mobile-nav-open");
     });
   });
 })();

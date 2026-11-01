@@ -104,10 +104,20 @@ async function refresh({ backfill = true, silent = false } = {}) {
   }
 }
 
+function observeChartContainers() {
+  if (!window.ResizeObserver) return;
+  const observer = new ResizeObserver(entries => {
+    entries.forEach(entry => Object.values(charts).find(chart => chart?.getDom() === entry.target)?.resize());
+  });
+  Object.values(charts).forEach(chart => observer.observe(chart.getDom()));
+  window.fundFlowChartResizeObserver = observer;
+}
+
 function init() {
   charts.shares = chartTheme.init($("shares-chart"));
   charts.cumulative = chartTheme.init($("cumulative-flow-chart"));
   charts.daily = chartTheme.init($("daily-flow-chart"));
+  observeChartContainers();
   $("preset").addEventListener("change", load);
   $("start").addEventListener("change", load);
   $("refresh").addEventListener("click", () => refresh({ backfill: true }));

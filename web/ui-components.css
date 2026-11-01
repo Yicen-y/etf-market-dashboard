@@ -9,6 +9,7 @@
 }
 
 .dashboard-content { min-width: 0; }
+.mobile-nav-toggle { display: none; }
 
 .strategy-sidebar {
   position: sticky;
@@ -197,6 +198,27 @@ button:disabled, input:disabled, select:disabled { opacity: .55; cursor: not-all
   :root { --page-padding: 16px; }
   .dashboard-layout { grid-template-columns: 1fr; }
   .strategy-sidebar { position: static; max-height: none; }
+  .mobile-nav-toggle {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 44px;
+    border: 0;
+    background: transparent;
+    color: var(--text-primary);
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .dashboard-nav-content { display: none; margin-top: 8px; }
+  .strategy-sidebar.mobile-nav-open .dashboard-nav-content { display: block; }
   .page-hero, .hero, .fund-flow-hero { flex-direction: column; }
   .ui-toolbar, .control-panel, .fund-flow-controls { width: 100%; min-width: 0; }
+}
+
+@media (max-width: 480px) {
+  :root { --page-padding: 10px; --card-padding: 14px; }
+  .page-hero h1, .hero h1, .fund-flow-hero h1 { font-size: 24px; }
+  .ui-panel-heading, .panel-heading { align-items: stretch; flex-direction: column; }
+  .ui-button, .button { min-height: 42px; }
 }
