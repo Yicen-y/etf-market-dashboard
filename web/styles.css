@@ -43,8 +43,8 @@
 @media (max-width:850px) { .guide-modal{padding:10px}.guide-dialog{max-height:92vh;border-radius:14px}.guide-content{padding:18px}.guide-dialog-header{padding:14px 18px}.guide-table{font-size:13px} }
 
 .prism-time-toolbar { display:flex; justify-content:space-between; align-items:center; gap:16px; margin:0 0 10px; padding:10px 12px; background:var(--surface); border:1px solid var(--line); border-radius:10px; }
-.prism-range-group { display:flex; gap:6px; }
-.prism-range-button { border:1px solid #c9d3e2; background:#fff; border-radius:7px; padding:6px 11px; color:var(--muted); cursor:pointer; font:inherit; font-size:13px; }
+.prism-range-group { display:flex; gap:2px; padding:2px; border:1px solid var(--border); border-radius:9px; background:#f8fafc; }
+.prism-range-button { border:0; background:transparent; border-radius:6px; padding:6px 11px; color:var(--muted); cursor:pointer; font:inherit; font-size:13px; }
 .prism-range-button:hover,.prism-range-button.active { border-color:var(--blue); background:#edf3ff; color:var(--blue); font-weight:600; }
 .prism-time-state { display:flex; align-items:center; justify-content:flex-end; gap:14px; color:var(--muted); font-size:13px; white-space:nowrap; }
 .prism-unlock { border:1px solid #bcd0f2; border-radius:7px; background:#edf3ff; color:var(--blue); padding:6px 10px; cursor:pointer; font:inherit; font-size:13px; }

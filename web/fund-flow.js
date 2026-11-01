@@ -21,6 +21,7 @@ function renderChart(key, rows, valueKey, unit, names, chartType = "line") {
   charts[key].setOption({
     ...chartTheme.createBaseChartOption({ dates, bottom: 72 }),
     tooltip: chartTheme.axisTooltip(() => valueFormatter),
+    dataZoom: [{ type: "inside", filterMode: "none", start: 0, end: 100 }],
     xAxis: { type: "category", data: dates, axisLabel: { rotate: 40, hideOverlap: true } },
     yAxis: { type: "value", axisLine: { onZero: true } },
     series: Object.entries(grouped).map(([code, data]) => ({
