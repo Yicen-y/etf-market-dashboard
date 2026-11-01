@@ -1,0 +1,16 @@
+.dividend-main { min-width: 0; }
+.dividend-shell { min-width: 0; }
+.dividend-search { width: 100%; min-height: 48px; padding: 11px 14px; font-size: 16px; }
+.dividend-results { margin-top: 12px; }
+.dividend-table, .dividend-detail { margin-top: var(--card-gap); }
+.dividend-muted { color: var(--text-secondary); }
+.dividend-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.dividend-card { padding: 14px; border: 1px solid var(--border); border-radius: 10px; }
+.dividend-card strong { display: block; margin-top: 8px; font-size: 24px; }
+.dividend-watch-table td:not(:first-child) { white-space: nowrap; }
+.dividend-results button, .dividend-table button { margin-left: 6px; }
+
+@media (max-width: 760px) {
+  .dividend-grid { grid-template-columns: 1fr; }
+  .dividend-watch-table { min-width: 760px; }
+}

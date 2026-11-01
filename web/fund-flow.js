@@ -113,15 +113,6 @@ function init() {
   charts.shares = echarts.init($("shares-chart"));
   charts.cumulative = echarts.init($("cumulative-flow-chart"));
   charts.daily = echarts.init($("daily-flow-chart"));
-  document.querySelectorAll("[data-sidebar-toggle]").forEach(toggle => {
-    toggle.addEventListener("click", () => {
-      const target = document.getElementById(toggle.dataset.sidebarToggle);
-      const expanded = toggle.getAttribute("aria-expanded") === "true";
-      toggle.setAttribute("aria-expanded", String(!expanded));
-      toggle.querySelector(".sidebar-chevron").textContent = expanded ? "›" : "⌄";
-      target.hidden = expanded;
-    });
-  });
   $("preset").addEventListener("change", load);
   $("start").addEventListener("change", load);
   $("refresh").addEventListener("click", () => refresh({ backfill: true }));

@@ -3,54 +3,21 @@
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
   <title>沪深300 ETF资金流向监测</title>
-  <link rel="stylesheet" href="fund-flow.css?v=20261101-1">
+  <link rel="stylesheet" href="theme.css?v=20261101">
+  <link rel="stylesheet" href="ui-components.css?v=20261101">
+  <link rel="stylesheet" href="fund-flow.css?v=20261101-2">
   <script src="echarts.min.js"></script>
 </head>
 <body>
-  <main class="fund-flow-layout">
-    <aside class="strategy-sidebar dashboard-sidebar" aria-label="ETF看板导航">
-      <div class="sidebar-brand"><span class="sidebar-brand-icon" aria-hidden="true">⌁</span><span>投资分析看板</span></div>
-      <div class="sidebar-divider"></div>
-
-      <section class="sidebar-section">
-        <button class="sidebar-section-toggle" type="button" data-sidebar-toggle="rotation-items" aria-expanded="true">
-          <span class="sidebar-chevron" aria-hidden="true">⌄</span><span>轮动看板</span>
-        </button>
-        <div id="rotation-items" class="sidebar-section-items">
-          <a class="strategy-item" href="/web/?strategy=dividend-growth">300红利 / 300成长（ETF）</a>
-          <a class="strategy-item" href="/web/?strategy=prism">成长100R / 价值100R</a>
-          <a class="strategy-item" href="/web/?strategy=dividend-hs300">300红利 / 沪深300</a>
-          <a class="strategy-item" href="/web/?strategy=growth-value-300">300成长 / 300价值</a>
-          <a class="strategy-item" href="/web/?strategy=csi2000-hs300">中证2000 / 沪深300</a>
-          <a class="strategy-item" href="/web/?strategy=nonferrous-chemical">中证有色 / 中证化工</a>
-          <a class="strategy-item" href="/web/?strategy=banks-exbank-financial">中证银行 / 非银金融</a>
-          <a class="strategy-item" href="/web/?strategy=dividend-growth-300">300红利 / 300成长（指数）</a>
-          <a class="strategy-item" href="/web/?strategy=dividend-a-share">中证红利 / 中证A股</a>
-        </div>
-      </section>
-
-      <div class="sidebar-divider"></div>
-      <section class="sidebar-section">
-        <button class="sidebar-section-toggle" type="button" data-sidebar-toggle="dividend-items" aria-expanded="false">
-          <span class="sidebar-chevron" aria-hidden="true">›</span><span>红利看板</span>
-        </button>
-        <div id="dividend-items" class="sidebar-section-items" hidden>
-          <a class="strategy-item" href="/web/dividend.html?type=ETF">ETF股息率</a>
-          <a class="strategy-item" href="/web/dividend.html?type=STOCK">股票股息率</a>
-        </div>
-      </section>
-
-      <div class="sidebar-divider"></div>
-      <a class="sidebar-standalone fund-flow-link active" href="/web/fund-flow.html"><span class="sidebar-nav-icon" aria-hidden="true">♜</span><span>沪深300 ETF资金流向</span></a>
-      <p class="sidebar-note">资金流数据按交易所份额和独立单位净值计算，支持历史回填与增量更新。</p>
-    </aside>
-    <div class="fund-flow-shell">
-    <header class="fund-flow-hero">
-      <div><p class="eyebrow">A股ETF看板</p><h1>沪深300 ETF资金流向监测</h1><p>以公开份额与独立单位净值估算净申赎，不以资产规模变化替代资金流。</p><div id="universe" class="universe"></div></div>
+  <main class="dashboard-layout fund-flow-layout">
+    <aside data-dashboard-navigation data-active-section="fund-flow"></aside>
+    <div class="dashboard-content fund-flow-shell">
+    <header class="page-hero fund-flow-hero">
+      <div class="page-heading"><p class="eyebrow">A股ETF看板</p><h1>沪深300 ETF资金流向监测</h1><p class="page-subline">以公开份额与独立单位净值估算净申赎，不以资产规模变化替代资金流。</p><div id="universe" class="universe"></div></div>
       <div class="fund-flow-controls">
         <label>ETF组合<select id="preset"><option value="core_four">核心四只</option><option value="original_shanghai_five">原上海五只</option><option value="all_six">全部六只</option></select></label>
         <label>开始日期<input id="start" type="date" value="2023-12-29"></label>
-        <button id="refresh" type="button">刷新全部数据</button>
+        <button id="refresh" class="ui-button ui-button--primary" type="button">刷新全部数据</button>
       </div>
     </header>
     <section id="status" class="status">正在读取资金流数据…</section>
@@ -60,6 +27,7 @@
     <section class="panel"><div class="panel-heading"><h2>每日估算净申赎（亿元）</h2><span>正值为申购/净流入，负值为赎回/净流出；缺少前一交易日或NAV时显示为空</span></div><div id="daily-flow-chart" class="chart"></div></section>
     </div>
   </main>
-  <script src="fund-flow.js?v=20261101-2"></script>
+  <script src="navigation.js?v=20261101"></script>
+  <script src="fund-flow.js?v=20261101-3"></script>
 </body>
 </html>

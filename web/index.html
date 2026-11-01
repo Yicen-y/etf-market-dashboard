@@ -4,7 +4,9 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>A股ETF看板</title>
-  <link rel="stylesheet" href="styles.css?v=20261101-4">
+  <link rel="stylesheet" href="theme.css?v=20261101">
+  <link rel="stylesheet" href="ui-components.css?v=20261101">
+  <link rel="stylesheet" href="styles.css?v=20261101-5">
   <script>
     window.MathJax = { tex: { inlineMath: [["\\(", "\\)"]], displayMath: [["\\[", "\\]"]] }, svg: { fontCache: "global" } };
   </script>
@@ -12,58 +14,22 @@
   <script src="echarts.min.js"></script>
 </head>
 <body>
-  <main class="shell app-layout">
-    <aside class="strategy-sidebar" aria-label="ETF看板导航">
-      <div class="sidebar-brand"><span class="sidebar-brand-icon" aria-hidden="true">⌁</span><span>投资分析看板</span></div>
-      <div class="sidebar-divider"></div>
-
-      <section class="sidebar-section">
-        <button class="sidebar-section-toggle" type="button" data-sidebar-toggle="rotation-items" aria-expanded="true">
-          <span class="sidebar-chevron" aria-hidden="true">⌄</span><span>轮动看板</span>
-        </button>
-        <div id="rotation-items" class="sidebar-section-items">
-          <button class="strategy-item active" data-strategy="dividend-growth">300红利 / 300成长（ETF）</button>
-          <button class="strategy-item" data-strategy="prism">成长100R / 价值100R</button>
-          <button class="strategy-item" data-strategy="dividend-hs300">300红利 / 沪深300</button>
-          <button class="strategy-item" data-strategy="growth-value-300">300成长 / 300价值</button>
-          <button class="strategy-item" data-strategy="csi2000-hs300">中证2000 / 沪深300</button>
-          <button class="strategy-item" data-strategy="nonferrous-chemical">中证有色 / 中证化工</button>
-          <button class="strategy-item" data-strategy="banks-exbank-financial">中证银行 / 非银金融</button>
-          <button class="strategy-item" data-strategy="dividend-growth-300">300红利 / 300成长（指数）</button>
-          <button class="strategy-item" data-strategy="dividend-a-share">中证红利 / 中证A股</button>
-        </div>
-      </section>
-
-      <div class="sidebar-divider"></div>
-
-      <section class="sidebar-section">
-        <button class="sidebar-section-toggle" type="button" data-sidebar-toggle="dividend-items" aria-expanded="false">
-          <span class="sidebar-chevron" aria-hidden="true">›</span><span>红利看板</span>
-        </button>
-        <div id="dividend-items" class="sidebar-section-items" hidden>
-          <a class="sidebar-placeholder dividend-entry" href="/web/dividend.html?type=ETF">ETF股息率</a>
-          <a class="sidebar-placeholder dividend-entry" href="/web/dividend.html?type=STOCK">股票股息率</a>
-        </div>
-      </section>
-
-      <div class="sidebar-divider"></div>
-      <a class="sidebar-standalone fund-flow-link" href="/web/fund-flow.html"><span class="sidebar-nav-icon" aria-hidden="true">♜</span><span>沪深300 ETF资金流向</span></a>
-      <p class="sidebar-note">选择看板后，基准日期和图表会随之切换。</p>
-    </aside>
-    <div class="content-column">
-    <header class="hero">
-      <div>
+  <main class="dashboard-layout shell app-layout">
+    <aside data-dashboard-navigation data-active-section="rotation"></aside>
+    <div class="dashboard-content content-column">
+    <header class="page-hero hero">
+      <div class="page-heading">
         <p class="eyebrow">ETFirst · ETF MARKET DASHBOARD</p>
       <h1 id="page-title">300红利与300成长轮动</h1>
         <p id="page-subline" class="subline">以选定交易日收盘价为基准，比较红利、成长与沪深300 ETF 的表现。</p>
         <p id="strategy-universe" class="strategy-universe"></p>
       </div>
-      <div class="control-panel">
+      <div class="control-panel ui-toolbar">
         <label for="benchmark-date">基准日期</label>
         <input id="benchmark-date" type="date" value="2025-12-31">
         <span id="benchmark-status" class="hint">实际基准交易日：加载中</span>
-        <button id="refresh-data" class="button refresh-button">刷新全部数据</button>
-        <button id="strategy-guide-button" class="button guide-button">策略说明</button>
+        <button id="refresh-data" class="button ui-button ui-button--primary refresh-button">刷新全部数据</button>
+        <button id="strategy-guide-button" class="button ui-button guide-button">策略说明</button>
       </div>
     </header>
 
@@ -115,7 +81,8 @@
       <div id="strategy-guide-content" class="guide-content"></div>
     </div>
   </section>
-  <script src="app.js?v=20261101-8"></script>
+  <script src="navigation.js?v=20261101"></script>
+  <script src="app.js?v=20261101-9"></script>
 </body>
 </html>
 
