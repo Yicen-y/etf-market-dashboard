@@ -43,8 +43,8 @@ def validate_corporate_action(action: CorporateAction) -> list[QualityIssue]:
         issues.append(QualityIssue(action.etf_code, event_date, "corporate_action_ratio_missing", "公司行为缺少有效折算比例", "BLOCKED"))
     if action.status not in {"basis_verified", "applied"} or action.first_post_record_date is None:
         issues.append(QualityIssue(action.etf_code, event_date, "corporate_action_unverified", "公司行为尚未核验首个调整后记录日，暂不复权", "BLOCKED"))
-    if action.first_post_record_date is not None and _as_date(action.first_post_record_date) <= event_date:
-        issues.append(QualityIssue(action.etf_code, event_date, "corporate_action_date_order", "首个调整后记录日必须晚于事件日", "BLOCKED"))
+    if action.first_post_record_date is not None and _as_date(action.first_post_record_date) < event_date:
+        issues.append(QualityIssue(action.etf_code, event_date, "corporate_action_date_order", "首个调整后记录日不得早于事件日", "BLOCKED"))
     return issues
 
 

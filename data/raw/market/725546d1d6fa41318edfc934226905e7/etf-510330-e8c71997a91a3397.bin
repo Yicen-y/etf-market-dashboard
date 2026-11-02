@@ -1,0 +1,536 @@
+{
+  "productCode": "510330",
+  "indexCode": "000300",
+  "params": {
+    "productCode": "510330",
+    "indexCode": "000300",
+    "startDate": "20261031",
+    "endDate": "20261102",
+    "netInflowType": "3"
+  },
+  "results": {
+    "getRealTimeData": {
+      "time": "162949882",
+      "tradingDay": "20261102",
+      "percentageChange": "0.50",
+      "closePrice": "42590",
+      "preClosePrice": "42380",
+      "nowPrice": "42590",
+      "openPrice": "42580",
+      "highPrice": "42960",
+      "lowPrice": "42380",
+      "turnover": "1321587494",
+      "volume": "309571900",
+      "iopv": "42706",
+      "premDisRto": "-0.2716",
+      "indexCode": "510330",
+      "indexWindCode": "510330.SH",
+      "indexName": "华夏沪深300交易型开放式指数证券投资基金",
+      "indexAbbr": "沪深300ETF华夏",
+      "indexType": 2,
+      "ibm": "100100010002",
+      "type": "大盘",
+      "typeLv1": "1001",
+      "typeLv2": "10010001",
+      "typeLv3": "100100010002",
+      "typeNameLv1": "宽基",
+      "typeNameLv2": "市值",
+      "typeNameLv3": "大盘",
+      "isLinkRelation": false
+    },
+    "getMarketIndicatorData": {
+      "dataDate": "20261030",
+      "prodCd": "510330",
+      "prodName": "沪深300ETF华夏",
+      "prodFullName": "华夏沪深300交易型开放式指数证券投资基金",
+      "prodClasCd": "1",
+      "establishDate": "20121225",
+      "indexCd": "000300",
+      "indexName": "沪深300",
+      "clasCd": "1001",
+      "clasName": "宽基",
+      "level3ClasCd": "100100010002",
+      "level3ClasName": "大盘",
+      "astDate": "20261030",
+      "ast": 577.6678783802,
+      "astChgRto": -0.011592033664089847,
+      "netInflow": 1.2958794,
+      "l1wNetInflow": 135.2802717,
+      "l1mNetInflow": 223.5375225,
+      "l3mNetInflow": 216.162414,
+      "l1yNetInflow": -1723.607487,
+      "ytdNetInflow": -1720.513368,
+      "traval": 1321587494,
+      "premDisRto": -0.27,
+      "peDate": "20261030",
+      "pe": 12.91,
+      "pePercent": 55.37,
+      "pb": 1.34,
+      "pbPercent": 20.47,
+      "valuation": "适中",
+      "dp": 2.84,
+      "roeDate": "20260630",
+      "roe": 5.49,
+      "nav": 4.2349,
+      "price": "4.2590",
+      "yield": 0.5,
+      "yieldDate": "20261030",
+      "l1wYield": -2.88,
+      "l1mYield": -8.07,
+      "l3mYield": -11.82,
+      "l1yYield": -13.44,
+      "ytdYield": -12.16,
+      "trackError": 0.33,
+      "mgrFee": 0.15,
+      "trustFee": 0.05,
+      "compositeFee": 0.2,
+      "managementCompany": "华夏基金",
+      "isSouthETF": 0,
+      "fundManager": "赵宗庭",
+      "isLinkRelation": false,
+      "turnOver": 0.83,
+      "type": "2",
+      "smartSelect": 1,
+      "scaleBig": 1,
+      "trackErrorSmall": 1,
+      "premDisRtoLow": 1
+    },
+    "queryTrackIndex": {
+      "time": "162942514",
+      "tradingDay": "20261102",
+      "percentageChange": "0.79",
+      "closePrice": "40169179",
+      "preClosePrice": "39855010",
+      "nowPrice": "4016.92",
+      "openPrice": "40059395",
+      "highPrice": "40388150",
+      "lowPrice": "39881681",
+      "turnover": "528847292234",
+      "volume": "244401128",
+      "iopv": "",
+      "indexCode": "000300",
+      "infoIndexCode": "3145",
+      "indexWindCode": "000300.SH",
+      "indexName": "沪深300指数",
+      "indexAbbr": "沪深300",
+      "trackIndexType": "股票指数",
+      "indexType": 1,
+      "ibm": "100100010002",
+      "type": "大盘",
+      "typeLv1": "1001",
+      "typeLv2": "10010001",
+      "typeLv3": "100100010002",
+      "typeNameLv1": "宽基",
+      "typeNameLv2": "市值",
+      "typeNameLv3": "大盘",
+      "setUpDate": "20050408",
+      "isLinkRelation": false,
+      "isRecommend": 1
+    },
+    "getEtfLinkInfo": [
+      {
+        "etfLinkFundCode": "000051",
+        "etfLinkFundName": "华夏沪深300ETF联接A",
+        "etfFundCode": "510330",
+        "etfFundName": "华夏沪深300ETF",
+        "yieldSinceLaunch": "54.07",
+        "productScale": "114.3434019252",
+        "scaleDate": "20260930"
+      },
+      {
+        "etfLinkFundCode": "005658",
+        "etfLinkFundName": "华夏沪深300ETF联接C",
+        "etfFundCode": "510330",
+        "etfFundName": "华夏沪深300ETF",
+        "yieldSinceLaunch": "9.16",
+        "productScale": "24.1389730992",
+        "scaleDate": "20260930"
+      },
+      {
+        "etfLinkFundCode": "022983",
+        "etfLinkFundName": "华夏沪深300ETF联接Y",
+        "etfFundCode": "510330",
+        "etfFundName": "华夏沪深300ETF",
+        "yieldSinceLaunch": "6.84",
+        "productScale": "1.047917637",
+        "scaleDate": "20260930"
+      }
+    ],
+    "getNetInflow": [],
+    "getProductWindRank": [
+      {
+        "YIELD": "-2.88",
+        "END_DATE": "20261030",
+        "TIME": "近一周",
+        "RANK": "2012/5649",
+        "CPFL": "指数股票型"
+      },
+      {
+        "YIELD": "-8.35",
+        "END_DATE": "20261030",
+        "TIME": "近一月",
+        "RANK": "2115/5588",
+        "CPFL": "指数股票型"
+      },
+      {
+        "YIELD": "-11.82",
+        "END_DATE": "20261030",
+        "TIME": "近三月",
+        "RANK": "2705/5371",
+        "CPFL": "指数股票型"
+      },
+      {
+        "YIELD": "-15.64",
+        "END_DATE": "20261030",
+        "TIME": "近六月",
+        "RANK": "1984/5054",
+        "CPFL": "指数股票型"
+      },
+      {
+        "YIELD": "-13.44",
+        "END_DATE": "20261030",
+        "TIME": "近一年",
+        "RANK": "2458/4511",
+        "CPFL": "指数股票型"
+      },
+      {
+        "YIELD": "7.50",
+        "END_DATE": "20261030",
+        "TIME": "近二年",
+        "RANK": "1855/3029",
+        "CPFL": "指数股票型"
+      },
+      {
+        "YIELD": "19.46",
+        "END_DATE": "20261030",
+        "TIME": "近三年",
+        "RANK": "1147/2311",
+        "CPFL": "指数股票型"
+      },
+      {
+        "YIELD": "-9.58",
+        "END_DATE": "20261030",
+        "TIME": "近五年",
+        "RANK": "784/1504",
+        "CPFL": "指数股票型"
+      },
+      {
+        "YIELD": "-12.16",
+        "END_DATE": "20261030",
+        "TIME": "今年以来",
+        "RANK": "2780/5667",
+        "CPFL": "指数股票型"
+      },
+      {
+        "YIELD": "117.65",
+        "END_DATE": "20261030",
+        "TIME": "成立以来",
+        "RANK": "48/114",
+        "CPFL": "指数股票型"
+      }
+    ],
+    "getManagerInfo": [
+      {
+        "managerName": "赵宗庭",
+        "workYears": "9.6",
+        "managerId": 101005031
+      }
+    ],
+    "getRiskReturnCharacter": [
+      {
+        "dateRange": "12",
+        "standardDeviation": 17.63,
+        "sharpeRatio": -0.89,
+        "maximumBack": 20.11,
+        "endDate": "20261030",
+        "rankStandardDeviation": 19.47,
+        "rankSharpeRatio": 57.79,
+        "rankMaximumBack": 19.16
+      },
+      {
+        "dateRange": "36",
+        "standardDeviation": 18.13,
+        "sharpeRatio": 0.35,
+        "maximumBack": 20.11,
+        "endDate": "20261030",
+        "rankStandardDeviation": 9.88,
+        "rankSharpeRatio": 22.68,
+        "rankMaximumBack": 10.25
+      },
+      {
+        "dateRange": "60",
+        "standardDeviation": 17.76,
+        "sharpeRatio": -0.1,
+        "maximumBack": 35.05,
+        "endDate": "20261030",
+        "rankStandardDeviation": 6.12,
+        "rankSharpeRatio": 20.38,
+        "rankMaximumBack": 9.4
+      }
+    ],
+    "getHoldStock": [
+      {
+        "holdName": "中际旭创",
+        "holdWeight": "3.52",
+        "marketValue": "1,382,774,370.12",
+        "holdAmount": "1,710,423",
+        "endDate": "20260930",
+        "industryName": "通信",
+        "changeRatio": "-1.43"
+      },
+      {
+        "holdName": "贵州茅台",
+        "holdWeight": "3.07",
+        "marketValue": "1,206,378,459.66",
+        "holdAmount": "958,493",
+        "endDate": "20260930",
+        "industryName": "食品饮料",
+        "changeRatio": "0.48"
+      },
+      {
+        "holdName": "宁德时代",
+        "holdWeight": "3.00",
+        "marketValue": "1,180,357,157.19",
+        "holdAmount": "4,056,529",
+        "endDate": "20260930",
+        "industryName": "电力设备及新能源",
+        "changeRatio": "-0.63"
+      },
+      {
+        "holdName": "中国平安",
+        "holdWeight": "2.22",
+        "marketValue": "871,171,917.24",
+        "holdAmount": "16,347,756",
+        "endDate": "20260930",
+        "industryName": "非银行金融",
+        "changeRatio": "0.44"
+      },
+      {
+        "holdName": "新易盛",
+        "holdWeight": "2.12",
+        "marketValue": "831,804,535.00",
+        "holdAmount": "2,138,315",
+        "endDate": "20260930",
+        "industryName": "通信",
+        "changeRatio": "-0.84"
+      },
+      {
+        "holdName": "招商银行",
+        "holdWeight": "1.99",
+        "marketValue": "783,170,005.88",
+        "holdAmount": "18,981,338",
+        "endDate": "20260930",
+        "industryName": "银行",
+        "changeRatio": "0.45"
+      },
+      {
+        "holdName": "紫金矿业",
+        "holdWeight": "1.92",
+        "marketValue": "752,944,067.19",
+        "holdAmount": "25,275,061",
+        "endDate": "20260930",
+        "industryName": "有色金属",
+        "changeRatio": "0.47"
+      },
+      {
+        "holdName": "药明康德",
+        "holdWeight": "1.61",
+        "marketValue": "634,701,877.92",
+        "holdAmount": "3,792,888",
+        "endDate": "20260930",
+        "industryName": "医药",
+        "changeRatio": "0.53"
+      },
+      {
+        "holdName": "美的集团",
+        "holdWeight": "1.52",
+        "marketValue": "597,347,512.20",
+        "holdAmount": "7,457,522",
+        "endDate": "20260930",
+        "industryName": "家电",
+        "changeRatio": "0.24"
+      },
+      {
+        "holdName": "长江电力",
+        "holdWeight": "1.36",
+        "marketValue": "535,516,483.18",
+        "holdAmount": "18,763,717",
+        "endDate": "20260930",
+        "industryName": "电力及公用事业",
+        "changeRatio": "0.23"
+      }
+    ],
+    "getIndustryDistribution": {
+      "一级行业": [
+        {
+          "industryName": "通信",
+          "industryRatio": "25.23",
+          "endDate": "20260930"
+        },
+        {
+          "industryName": "食品饮料",
+          "industryRatio": "13.75",
+          "endDate": "20260930"
+        },
+        {
+          "industryName": "电力设备及新能源",
+          "industryRatio": "13.45",
+          "endDate": "20260930"
+        },
+        {
+          "industryName": "非银行金融",
+          "industryRatio": "9.93",
+          "endDate": "20260930"
+        },
+        {
+          "industryName": "银行",
+          "industryRatio": "8.92",
+          "endDate": "20260930"
+        },
+        {
+          "industryName": "有色金属",
+          "industryRatio": "8.58",
+          "endDate": "20260930"
+        },
+        {
+          "industryName": "医药",
+          "industryRatio": "7.23",
+          "endDate": "20260930"
+        },
+        {
+          "industryName": "家电",
+          "industryRatio": "6.81",
+          "endDate": "20260930"
+        },
+        {
+          "industryName": "电力及公用事业",
+          "industryRatio": "6.1",
+          "endDate": "20260930"
+        }
+      ],
+      "二级行业": [
+        {
+          "industryName": "通信设备",
+          "industryRatio": "25.23",
+          "endDate": "20260930"
+        },
+        {
+          "industryName": "酒类",
+          "industryRatio": "13.75",
+          "endDate": "20260930"
+        },
+        {
+          "industryName": "新能源动力系统",
+          "industryRatio": "13.45",
+          "endDate": "20260930"
+        },
+        {
+          "industryName": "保险Ⅱ",
+          "industryRatio": "9.93",
+          "endDate": "20260930"
+        },
+        {
+          "industryName": "全国性股份制银行Ⅱ",
+          "industryRatio": "8.92",
+          "endDate": "20260930"
+        },
+        {
+          "industryName": "工业金属",
+          "industryRatio": "8.58",
+          "endDate": "20260930"
+        },
+        {
+          "industryName": "其他医药医疗",
+          "industryRatio": "7.23",
+          "endDate": "20260930"
+        },
+        {
+          "industryName": "白色家电Ⅱ",
+          "industryRatio": "6.81",
+          "endDate": "20260930"
+        },
+        {
+          "industryName": "发电及电网",
+          "industryRatio": "6.1",
+          "endDate": "20260930"
+        }
+      ],
+      "三级行业": [
+        {
+          "industryName": "网络接配及塔设",
+          "industryRatio": "25.23",
+          "endDate": "20260930"
+        },
+        {
+          "industryName": "白酒",
+          "industryRatio": "13.75",
+          "endDate": "20260930"
+        },
+        {
+          "industryName": "锂电池",
+          "industryRatio": "13.45",
+          "endDate": "20260930"
+        },
+        {
+          "industryName": "保险Ⅲ",
+          "industryRatio": "9.93",
+          "endDate": "20260930"
+        },
+        {
+          "industryName": "全国性股份制银行Ⅲ",
+          "industryRatio": "8.92",
+          "endDate": "20260930"
+        },
+        {
+          "industryName": "铜",
+          "industryRatio": "8.58",
+          "endDate": "20260930"
+        },
+        {
+          "industryName": "医疗服务",
+          "industryRatio": "7.23",
+          "endDate": "20260930"
+        },
+        {
+          "industryName": "白色家电Ⅲ",
+          "industryRatio": "6.81",
+          "endDate": "20260930"
+        },
+        {
+          "industryName": "水电",
+          "industryRatio": "6.1",
+          "endDate": "20260930"
+        }
+      ]
+    },
+    "getReturnTrendList": {
+      "000300": [
+        {
+          "tradeDate": "20261030",
+          "closePrice": "3985.501",
+          "dailyReturn": "0.00",
+          "yield": "0.00",
+          "maxRetreat": "0.00"
+        },
+        {
+          "tradeDate": "20261102",
+          "closePrice": "4016.9179",
+          "dailyReturn": "0.79",
+          "yield": "0.79",
+          "maxRetreat": "0.00"
+        }
+      ],
+      "510330": [
+        {
+          "tradeDate": "20261030",
+          "closePrice": "2.1765",
+          "dailyReturn": "0.00",
+          "yield": "0.00",
+          "maxRetreat": "0.00",
+          "turnover": "4.81"
+        }
+      ]
+    }
+  },
+  "_errors": {}
+}

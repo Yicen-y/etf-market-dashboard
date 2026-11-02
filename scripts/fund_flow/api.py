@@ -74,9 +74,11 @@ def fund_flow_health():
     init_fund_flow_schema(_db())
     with open_fund_flow_connection(_db()) as connection:
         count = connection.execute("SELECT COUNT(*) FROM fund_flow_etf_daily_metrics").fetchone()[0]
+        earliest = connection.execute("SELECT MIN(trade_date) FROM fund_flow_etf_daily_metrics").fetchone()[0]
         latest = connection.execute("SELECT MAX(trade_date) FROM fund_flow_etf_daily_metrics").fetchone()[0]
         blocked = connection.execute("SELECT COUNT(*) FROM fund_flow_etf_daily_metrics WHERE status IN ('BLOCKED','INCOMPLETE')").fetchone()[0]
-    return {"dataExists": bool(count), "latestTradeDate": latest, "qualityState": "BLOCKED" if blocked else "PASS", "blockedCount": blocked, "metricCount": count}
+    history_complete = bool(earliest and date.fromisoformat(earliest) <= HISTORY_START)
+    return {"dataExists": bool(count), "earliestTradeDate": earliest, "latestTradeDate": latest, "historyComplete": history_complete, "qualityState": "BLOCKED" if blocked else "PASS", "blockedCount": blocked, "metricCount": count}
 
 
 @router.get("/overview")
@@ -89,12 +91,14 @@ def _overview_for_codes(codes: list[str], start: Optional[str], end: str, preset
     init_fund_flow_schema(_db())
     with open_fund_flow_connection(_db()) as connection:
         latest_text = connection.execute("SELECT MAX(trade_date) FROM fund_flow_etf_daily_metrics").fetchone()[0]
+        earliest_text = connection.execute("SELECT MIN(trade_date) FROM fund_flow_etf_daily_metrics").fetchone()[0]
     latest = date.fromisoformat(latest_text) if latest_text else date.today()
     end_date = _date_or_default(end, latest)
     start_date = _date_or_default(start, HISTORY_START)
     rows = _metric_rows(codes, start_date, end_date)
     names = {code: ETF_UNIVERSE[code]["name"] for code in codes}
-    return {"preset": preset, "codes": codes, "names": names, "latestTradeDate": latest_text, "start": start_date.isoformat(), "end": end_date.isoformat(), "rows": rows, "dataExists": bool(rows)}
+    history_complete = bool(earliest_text and date.fromisoformat(earliest_text) <= HISTORY_START)
+    return {"preset": preset, "codes": codes, "names": names, "earliestTradeDate": earliest_text, "latestTradeDate": latest_text, "historyComplete": history_complete, "start": start_date.isoformat(), "end": end_date.isoformat(), "rows": rows, "dataExists": bool(rows)}
 
 
 def _needs_history_backfill() -> bool:

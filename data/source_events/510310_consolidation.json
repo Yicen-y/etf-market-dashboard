@@ -4,8 +4,8 @@
   "event_date": "2024-09-20",
   "ex_date": "2024-09-20",
   "ratio": 0.49977589,
-  "first_post_record_date": null,
-  "status": "source_verified",
+  "first_post_record_date": "2024-09-20",
+  "status": "basis_verified",
   "value": null,
-  "evidence_note": "份额合并事件元数据；首个调整后记录日需依据官方份额记录核验后才可应用。此文件不包含行情数据。"
+  "evidence_note": "依据官方上交所份额序列与独立单位净值序列核验：2024-09-20 为首个合并后记录日，比例为 0.49977589。此文件只保存公司行为元数据，不包含行情数据。"
 }

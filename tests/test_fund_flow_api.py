@@ -18,7 +18,7 @@ def client(tmp_path, monkeypatch):
 def test_fund_flow_health_is_available(client):
     response = client.get("/api/fund-flow/health")
     assert response.status_code == 200
-    assert {"latestTradeDate", "qualityState", "dataExists"}.issubset(response.json())
+    assert {"earliestTradeDate", "historyComplete", "latestTradeDate", "qualityState", "dataExists"}.issubset(response.json())
 
 
 def test_overview_returns_etf_names_for_selected_preset(client):

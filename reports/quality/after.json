@@ -1,0 +1,38 @@
+{
+  "generated_at": "2026-11-01T16:40:00+08:00",
+  "mode": "post_fix_audit",
+  "test_result": {"command": "python -m pytest -q", "passed": 131, "failed": 0, "warnings": 2},
+  "javascript_checks": {"node_check_app": "PASS", "node_check_dividend": "PASS", "python_compileall": "PASS"},
+  "current_snapshot": {
+    "snapshot_id": "quality-repair-20261101",
+    "status": "published",
+    "etf_rows": 6108,
+    "index_rows": 43400,
+    "excluded_from_canonical": [{"symbol": "H20180", "trade_date": "20130628", "value_raw": 0.0, "issue_code": "NON_POSITIVE_INDEX_VALUE"}],
+    "files": {"etf": "releases\\quality-repair-20261101\\etf_prices.json", "index": "releases\\quality-repair-20261101\\index_prices.json"},
+    "sha256": {"etf": "292ab5d9597175cd7228acd7b2149d460dcbf21dcf575865384cfe6c42818bc6", "index": "18fa763937d298779e82f0bb8b45a1949c777980eb140dc6f9663ea5c2dbdeba"}
+  },
+  "provenance": {
+    "raw_observations": 49509,
+    "canonical_observations": 49508,
+    "providers": {"PROVENANCE_UNKNOWN": 49509},
+    "note": "历史数据来源无法从旧表恢复，已完整标记未知；以后通过FetchResult保存真实ETFirst/AkShare provider、上游、批次和原始哈希。"
+  },
+  "quality_comparison": {
+    "non_positive_or_non_finite_in_published_canonical": {"before": "not gated; H20180/20130628 participated in legacy index data", "after": 0},
+    "H20180_20130628": {"raw_legacy_value": 0.0, "raw_retained": true, "canonical_published": false, "audit_issue": "BLOCKED"},
+    "source_truthfulness": {"before": "all legacy rows source=akshare", "after": "legacy rows marked PROVENANCE_UNKNOWN in raw audit; new FetchResult carries provider"},
+    "snapshot_consistency": {"before": "ETF committed before index", "after": "release directory plus one current_manifest pointer"},
+    "static_data_exposure": {"before": "whole /data directory mounted", "after": "SQLite/raw/backup HTTP checks return 404"}
+  },
+  "offline_verification": {
+    "official_510880": "PASS: frozen SSE PDF SHA-256, PER_10 conversion and 2026-01-21 ex-date match evidence_manifest.json",
+    "600519": "LIMITED: mirror-only evidence remains mirror_only_official_url_unavailable; precise TTM now returns null",
+    "independent_calculation": "PASS: dividend reference calculator and reliability tests are separate from production implementations"
+  },
+  "remaining_limitations": [
+    "线上ETFirst/AkShare本次未重新抓取：当前环境外部接口可被代理断开，不能把未知历史来源伪装成已核验来源。",
+    "官方H20180同代码同日期修订点位尚未取得，因此坏点只阻断并保留，没有插值或前值填充。",
+    "资金流历史来源仍以已有fund_flow source_id/batch记录为准，510310份额折算官方公告仍需人工核验。"
+  ]
+}

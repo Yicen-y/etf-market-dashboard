@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field, replace
 from datetime import date, datetime, timedelta
+from contextlib import closing
 from pathlib import Path
 import json
 from typing import Iterable
@@ -117,7 +118,7 @@ def sync_recent(
     seed_default_fund_master(db_path)
     report = SyncReport()
     share_rows: list[RawETFRecord] = []
-    with open_fund_flow_connection(db_path) as connection:
+    with closing(open_fund_flow_connection(db_path)) as connection:
         with connection:
             for provider in share_providers:
                 provider_name = provider.__class__.__name__

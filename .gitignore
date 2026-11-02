@@ -6,4 +6,6 @@ __pycache__/
 *.session.json
 *.key
 data/*.tmp
+reports/wind/*
+!reports/wind/.gitkeep
 

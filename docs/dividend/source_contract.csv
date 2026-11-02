@@ -1,0 +1,5 @@
+field,unit,publisher,validation
+security.code,text,exchange_or_fund_manager,type_and_market_match
+raw_amount,元/10份或元/10股,official_notice,preserve_original_unit
+ex_date,YYYY-MM-DD,official_notice,economic_date_not_fiscal_date
+price,元/份或元/股,market_quote,unadjusted_trade_date

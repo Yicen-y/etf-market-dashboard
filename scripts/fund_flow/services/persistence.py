@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from datetime import date
 from pathlib import Path
+from contextlib import closing
 import json
 
 from ..config import DATABASE_PATH, ETF_UNIVERSE
@@ -36,6 +37,15 @@ def _ensure_seed_actions(connection):
                VALUES (?,?,?,?,?,?,?,?,?)""",
             (payload["etf_code"], payload["ex_date"], payload["action_type"], payload.get("event_date"), payload.get("ratio"), payload.get("first_post_record_date"), payload.get("status", "source_verified"), payload.get("value"), source_id),
         )
+        # Upgrade the original seed once official records have established the
+        # first post-action date; do not overwrite a later manual review.
+        if payload.get("first_post_record_date"):
+            connection.execute(
+                """UPDATE fund_flow_corporate_actions
+                   SET first_post_record_date=?, status=?, ratio=COALESCE(?, ratio)
+                   WHERE source_id=? AND first_post_record_date IS NULL""",
+                (payload["first_post_record_date"], payload.get("status", "source_verified"), payload.get("ratio"), source_id),
+            )
 
 
 def _load_actions(connection, code: str):
@@ -50,7 +60,7 @@ def rebuild_materialized(db_path: Path = DATABASE_PATH, codes: list[str] | None 
     codes = codes or list(ETF_UNIVERSE)
     init_fund_flow_schema(db_path)
     seed_default_fund_master(db_path)
-    with open_fund_flow_connection(db_path) as connection:
+    with closing(open_fund_flow_connection(db_path)) as connection:
         _ensure_seed_actions(connection)
         raw_rows = connection.execute(
             """SELECT r.etf_code,r.record_date,r.effective_trade_date,r.published_at,

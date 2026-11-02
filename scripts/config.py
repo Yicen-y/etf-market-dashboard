@@ -6,9 +6,9 @@ INDEX_DATA_PATH = ROOT / "data" / "index_prices.json"
 DATABASE_PATH = ROOT / "data" / "etf_market.db"
 
 PRODUCTS = {
-    "512530": {"name": "沪深300红利ETF建信", "role": "dividend"},
-    "562310": {"name": "沪深300成长ETF银华", "role": "growth"},
-    "510330": {"name": "沪深300ETF华夏", "role": "benchmark"},
+    "512530": {"name": "建信沪深300红利ETF", "role": "dividend"},
+    "562310": {"name": "银华沪深300成长ETF", "role": "growth"},
+    "510330": {"name": "华夏沪深300ETF", "role": "benchmark"},
 }
 
 # AkShare returns data from the ETF's inception when the requested start date
@@ -38,6 +38,13 @@ INDEXES = {
     "H20903": {"name": "中证A股", "role": "a_share_total_return", "sourceCode": "H20903"},
 }
 INDEX_START_DATE = "20121231"
+
+# Official base/inception dates used to distinguish "not yet available" from
+# a genuine missing observation.  The CSI 2000 methodology defines
+# 2013-12-31 as its base date; earlier 1000-point rows are source placeholders.
+INDEX_INCEPTION_DATES = {
+    "932000CNY010": "20131231",
+}
 
 STRATEGIES = [
     {"id": "dividend-hs300", "name": "沪深300红利与沪深300轮动", "a": "H00821", "b": "H00300"},

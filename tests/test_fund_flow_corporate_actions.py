@@ -31,11 +31,12 @@ def test_two_for_one_consolidation_preserves_economic_value():
     assert cleaned[1].nav == 4
 
 
-def test_510310_seed_without_first_post_record_is_blocked():
+def test_510310_seed_uses_first_post_record_from_official_series():
     action = load_seed_action("510310_consolidation")
     assert action.ratio == 0.49977589
-    assert action.status == "source_verified"
-    assert "corporate_action_unverified" in validate_corporate_action(action)[0].code
+    assert action.first_post_record_date == "2024-09-20"
+    assert action.status == "basis_verified"
+    assert validate_corporate_action(action) == []
 
 
 def test_large_jump_is_review_candidate_only():

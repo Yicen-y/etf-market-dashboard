@@ -13,22 +13,17 @@ etfirst auth login --api-key <YOUR_KEY>
 python -m scripts.update_data
 ```
 
-Start the local site from the repository root:
+Start the local FastAPI site from the repository root:
 
 ```powershell
-python -m http.server 8000
+python -m uvicorn server:app --host 127.0.0.1 --port 8000
 ```
 
 Open `http://localhost:8000/web/`.
 
-## GitHub setup
+## Update workflow
 
-1. Create a private repository named `etf-market-dashboard`.
-2. Add the repository secret `ETFIRST_API_KEY`.
-3. Enable GitHub Pages with the GitHub Actions source.
-4. Run the `Update ETF dashboard` workflow manually once.
-
-The scheduled workflow runs at 16:30 China Standard Time on weekdays. GitHub schedule timing can be delayed; the page always displays the latest actual trading date and update time.
+The GitHub workflow is retained only as a scheduled/test reference. GitHub Pages publication is disabled; the supported deployment target is the local FastAPI process above.
 
 ## Benchmark behavior
 
@@ -36,5 +31,24 @@ The default benchmark is 2025-12-31. The date picker accepts any date. If the se
 
 ## Data and security
 
-The frontend reads committed `data/etf_prices.json`. The API Key is used only by GitHub Actions and is never sent to the browser. Missing prices remain missing and are not converted to zero.
+The frontend reads a pinned snapshot through the local API. SQLite, raw evidence and backups are not statically exposed. Missing prices remain missing and are not converted to zero.
+
+## Wind MCP history validation
+
+Wind Alice can be used as an independent source to compare historical index points. Routine incremental updates continue to use the existing ETFirst/AkShare workflow. The validator is read-only and writes discrepancy reports under `reports/wind/`; it does not repair SQLite or published JSON.
+
+In PowerShell, set the Authorization value copied from Wind Alice's Codex one-click configuration (keep it out of source files and chat logs):
+
+```powershell
+$env:WIND_MCP_AUTH = "<Authorization header value from Wind Alice>"
+python -m scripts.validate_wind --list-tools
+```
+
+After checking the account's actual tool schema, call a tool by explicitly supplying its name, JSON arguments, date/close output fields and a reviewed local-to-Wind code mapping. `arguments-json` supports `${wind_code}`, `${local_code}`, `${start}`, and `${end}` substitutions:
+
+```powershell
+python -m scripts.validate_wind --tool "<discovered tool name>" --arguments-json '{"<actual code parameter>":"${wind_code}","<actual start parameter>":"${start}","<actual end parameter>":"${end}"}' --codes H00300 --wind-codes-json '{"H00300":"<verified Wind index code>"}' --start 20260101 --end 20261030 --date-field "<actual date field>" --close-field "<actual close field>"
+```
+
+The placeholders in the example must be replaced with names/values from `--list-tools` and a verified code/return-index definition. The tool response must contain a JSON object with a row list (default field `rows`); set `--rows-field` if the actual result uses another field. Do not assume price-return and total-return indices are interchangeable.
 

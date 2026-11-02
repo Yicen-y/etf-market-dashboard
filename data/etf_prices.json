@@ -1,19 +1,19 @@
 {
   "schemaVersion": 1,
   "source": "AkShare",
-  "updatedAt": "2026-10-29T21:41:47+08:00",
-  "latestTradeDate": "20261029",
+  "updatedAt": "2026-10-30T23:04:05+08:00",
+  "latestTradeDate": "20261030",
   "products": {
     "512530": {
-      "name": "沪深300红利ETF建信",
+      "name": "建信沪深300红利ETF",
       "role": "dividend"
     },
     "562310": {
-      "name": "沪深300成长ETF银华",
+      "name": "银华沪深300成长ETF",
       "role": "growth"
     },
     "510330": {
-      "name": "沪深300ETF华夏",
+      "name": "华夏沪深300ETF",
       "role": "benchmark"
     }
   },
@@ -22956,6 +22956,14 @@
         "510330": 2.207,
         "512530": 1.7106,
         "562310": 0.8554
+      }
+    },
+    {
+      "tradeDate": "20261030",
+      "prices": {
+        "510330": 2.1765,
+        "512530": 1.7276,
+        "562310": 0.8326
       }
     }
   ],
@@ -53484,6 +53492,21 @@
       "tradeDate": "20261029",
       "productCode": "562310",
       "closePrice": 0.8554
+    },
+    {
+      "tradeDate": "20261030",
+      "productCode": "510330",
+      "closePrice": 2.1765
+    },
+    {
+      "tradeDate": "20261030",
+      "productCode": "512530",
+      "closePrice": 1.7276
+    },
+    {
+      "tradeDate": "20261030",
+      "productCode": "562310",
+      "closePrice": 0.8326
     }
   ]
 }
