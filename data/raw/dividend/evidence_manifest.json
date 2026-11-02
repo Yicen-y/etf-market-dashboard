@@ -1,0 +1,26 @@
+{
+  "generated_at": "2026-11-01T00:00:00+08:00",
+  "records": [
+    {
+      "security_id": "ETF:510880",
+      "source_id": "sse:510880:2026-01-16",
+      "publisher": "上海证券交易所",
+      "url": "https://www.sse.com.cn/disclosure/fund/announcement/c/new/2026-01-16/510880_20260116_DSHH.pdf",
+      "local_file": "510880_20260116_DSHH.pdf",
+      "sha256": "c2bcd8d0f97355fa8b1545e59b3dca724473388f55cdf65ff37c5ba8a787aade",
+      "fields": {"published_at": "2026-01-16", "raw_amount": "1.4300", "raw_unit": "PER_10", "record_date": "2026-01-20", "ex_date": "2026-01-21", "payment_date": "2026-01-26"},
+      "verification_status": "official_source_downloaded"
+    },
+    {
+      "security_id": "STOCK:600519",
+      "source_id": "sse:600519:2026-06-22:027",
+      "publisher": "贵州茅台 / 上海证券交易所",
+      "url": "https://static.sse.com.cn/disclosure/listedinfo/announcement/c/new/2026-06-22/600519_20260622_ZTRO.pdf",
+      "mirror_url": "http://file.finance.sina.com.cn/211.154.219.97:9494/MRGG/CNSESH_STOCK/2026/2026-6/2026-06-22/12402962.PDF",
+      "local_file": "600519_20260622_12402962.pdf",
+      "sha256": "6b082b6a00db748f23b6dea166b0296cd69d8c10542d352e23d2e2c344ea516e",
+      "fields": {"published_at": "2026-06-22", "announcement_no": "临2026-027", "amount_per_share": "28.02423", "record_date": "2026-06-25", "ex_date": "2026-06-26", "total_amount": "35032574305.19"},
+      "verification_status": "mirror_only_official_url_unavailable"
+    }
+  ]
+}

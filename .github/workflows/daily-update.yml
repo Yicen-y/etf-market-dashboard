@@ -7,15 +7,10 @@ on:
 
 permissions:
   contents: write
-  pages: write
-  id-token: write
 
 jobs:
   update-and-deploy:
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -35,14 +30,6 @@ jobs:
         run: python -m scripts.update_data
       - name: Run tests
         run: python -m pytest -q
-      - name: Prepare Pages artifact
-        run: |
-          rm -rf _site
-          cp -R web _site
-          cp -R data _site/data
-      - uses: actions/upload-pages-artifact@v3
-        with:
-          path: _site
-      - id: deployment
-        uses: actions/deploy-pages@v4
+      - name: Preserve generated data for the local artifact only
+        run: git status --short
 

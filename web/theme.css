@@ -1,0 +1,52 @@
+:root {
+  color-scheme: light;
+  --bg: #f5f7fb;
+  --surface: #ffffff;
+  --text-primary: #172033;
+  --text-secondary: #64748b;
+  --border: #e2e8f0;
+  --primary: #2c6bed;
+  --primary-bg: #edf3ff;
+  --positive: #c9362b;
+  --negative: #16834a;
+  --warning: #b7791f;
+  --error: #b42318;
+  --page-max-width: 1600px;
+  --sidebar-width: 232px;
+  --radius-card: 12px;
+  --control-height: 36px;
+  --page-padding: 24px;
+  --layout-gap: 20px;
+  --card-gap: 16px;
+  --card-padding: 20px;
+  --shadow-card: 0 8px 28px rgba(23, 32, 51, 0.055);
+
+  /* Compatibility aliases retained while page-specific CSS is migrated. */
+  --ink: var(--text-primary);
+  --muted: var(--text-secondary);
+  --line: var(--border);
+  --blue: var(--primary);
+  --green: var(--negative);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { background: var(--bg); }
+
+body {
+  margin: 0;
+  min-width: 0;
+  overflow-x: clip;
+  background: var(--bg);
+  color: var(--text-primary);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  font-variant-numeric: tabular-nums;
+}
+
+button, input, select, textarea { font: inherit; }
+
+a { color: inherit; }
+
+h1, h2, h3, p { overflow-wrap: anywhere; }

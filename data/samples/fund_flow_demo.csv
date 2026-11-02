@@ -1,0 +1,4 @@
+# SIMULATED ONLY: this file is not real market data and must not be used as a quote source.
+trade_date,ts_code,total_share_wan,nav,share_scope,share_date_basis,source_url
+2099-01-04,510300.SH,100000,4.0,on_exchange,post_close,SIMULATED
+2099-01-05,510300.SH,100100,4.1,on_exchange,post_close,SIMULATED

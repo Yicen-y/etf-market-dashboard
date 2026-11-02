@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>红利看板</title>
+  <link rel="stylesheet" href="theme.css?v=20261101-2">
+  <link rel="stylesheet" href="ui-components.css?v=20261101-2">
+  <link rel="stylesheet" href="dividend.css?v=20261101-2">
+</head>
+<body>
+  <main class="dashboard-layout">
+    <aside data-dashboard-navigation data-active-section="dividend"></aside>
+    <div class="dashboard-content dividend-main">
+      <div class="dividend-shell">
+        <header class="page-hero">
+          <div class="page-heading">
+            <p class="eyebrow">投资分析看板 · 红利看板</p>
+            <h1 id="title">红利看板</h1>
+            <p class="subline">现金分派收益率；缺少完整证据时显示不可用，不以零替代。</p>
+          </div>
+        </header>
+        <label class="ui-field" for="search">
+          <span>搜索证券</span>
+          <input id="search" class="ui-input dividend-search" placeholder="输入代码、名称或简称搜索……">
+        </label>
+        <div id="results" class="dividend-results hidden"></div>
+        <section class="dividend-table">
+          <div class="ui-panel-heading">
+            <h2 id="watch-title">我的自选</h2>
+            <div>
+              <button id="sort-ttm" class="ui-button" type="button">按代码降序</button>
+              <button id="refresh" class="ui-button ui-button--primary" type="button">刷新自选</button>
+            </div>
+          </div>
+          <div id="watchlist" class="dividend-muted">加载中……</div>
+        </section>
+        <section class="dividend-table">
+          <h2>未来90天除息时间线</h2>
+          <div id="calendar" class="dividend-muted">只显示已确认日期；预案日期不虚构。</div>
+        </section>
+        <section id="detail" class="dividend-detail hidden"></section>
+      </div>
+    </div>
+  </main>
+  <script src="navigation.js?v=20261101-2"></script>
+  <script src="dividend.js?v=20261101-4"></script>
+</body>
+</html>

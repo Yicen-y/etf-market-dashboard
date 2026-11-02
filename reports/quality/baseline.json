@@ -1,0 +1,85 @@
+{
+  "generated_at": "2026-11-01T00:00:00+08:00",
+  "mode": "read_only_audit",
+  "repository": "etf-market-dashboard",
+  "source_document": "etf_data_reliability_p0_fix.md",
+  "test_baseline": {
+    "command": "python -m pytest -q",
+    "result": "PASS_WITH_LIMITATIONS",
+    "passed": 109,
+    "failed": 0,
+    "warnings": 2,
+    "warning_summary": ["pandas/numexpr version mismatch", "pandas/bottleneck version mismatch"]
+  },
+  "database": {
+    "path": "data/etf_market.db",
+    "size_bytes": 9445376,
+    "etf_price_rows": 6108,
+    "index_price_rows": 43401,
+    "tables": ["dividend_corporate_actions", "dividend_events", "dividend_quotes", "dividend_revisions", "dividend_securities", "dividend_verification_runs", "dividend_watchlist", "etf_prices", "fund_flow_corporate_actions", "fund_flow_data_sources", "fund_flow_etf_daily_clean", "fund_flow_etf_daily_metrics", "fund_flow_etf_daily_raw", "fund_flow_import_jobs", "fund_flow_index_daily_raw", "fund_flow_nav_daily_raw", "fund_master", "index_prices", "raw_source_records", "source_documents"]
+  },
+  "quality_findings": [
+    {
+      "issue_code": "NON_POSITIVE_INDEX_VALUE",
+      "severity": "BLOCKED",
+      "symbol": "H20180",
+      "kind": "index",
+      "trade_date": "20130628",
+      "raw_value": 0.0,
+      "source": "akshare",
+      "location": "data/etf_market.db:index_prices",
+      "impact": "坏点可进入三棱镜和轮动指标窗口"
+    },
+    {
+      "issue_code": "PROVENANCE_NOT_TRUTHFUL",
+      "severity": "HIGH",
+      "affected_symbols": "all ETF and index rows",
+      "source": "akshare",
+      "location": "scripts/storage.py",
+      "impact": "ETFirst来源也会被固定标记为akshare，历史来源无法区分"
+    },
+    {
+      "issue_code": "INCREMENTAL_START_IGNORED",
+      "severity": "HIGH",
+      "affected_symbols": "ETF products",
+      "location": "scripts/fetch_data.py:fetch_product_history",
+      "impact": "增量回退会重新从发现的最早日期抓取"
+    },
+    {
+      "issue_code": "POSITIONAL_SCHEMA_MAPPING",
+      "severity": "HIGH",
+      "affected_symbols": "index histories",
+      "location": "scripts/fetch_data.py:fetch_index_history/fetch_csi_total_return_history",
+      "impact": "上游列顺序变化可能读错收盘值"
+    },
+    {
+      "issue_code": "NON_ATOMIC_MULTI_FILE_PUBLISH",
+      "severity": "HIGH",
+      "affected_symbols": "ETF, index, derived metrics",
+      "location": "scripts/update_data.py:update_dataset",
+      "impact": "指数更新失败时ETF数据库/JSON可能已经切换到新版本"
+    },
+    {
+      "issue_code": "STATIC_DATA_EXPOSURE",
+      "severity": "HIGH",
+      "affected_symbols": "data directory",
+      "location": "server.py",
+      "impact": "SQLite、原始公告和备份文件可被HTTP静态访问"
+    },
+    {
+      "issue_code": "RSI_MISSING_AS_ZERO",
+      "severity": "HIGH",
+      "affected_symbols": "all prism strategies",
+      "location": "scripts/prism_metrics.py and web/app.js",
+      "impact": "缺失比值变化被映射成零变化，污染RSI初始化和后续链"
+    }
+  ],
+  "json_baseline": {
+    "data/etf_prices.json": {"sha256": "acecf62590d9d528fc82b8a31b1e8ec15b702b3a807c302a417840bf6aaf3861", "latest_trade_date": "20261030", "flat_records": 6108, "source": "AkShare"},
+    "data/index_prices.json": {"sha256": "09ec2962ae42aef8deed3f1b135f1449343644d6a42f9a0cf1ac51ffc12622c2", "latest_trade_date": "20261030", "flat_records": 43401, "source": "ETFirst/AkShare"}
+  },
+  "limitations": [
+    "官方线上数据源未在基线阶段重新抓取；本报告仅依据仓库内真实数据库/JSON和现有测试。",
+    "历史来源无法从旧表恢复，后续迁移必须标记PROVENANCE_UNKNOWN。"
+  ]
+}
