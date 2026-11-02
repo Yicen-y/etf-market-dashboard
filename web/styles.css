@@ -58,10 +58,10 @@
 @media (max-width:1000px) { .prism-time-toolbar { align-items:flex-start; flex-direction:column; } .prism-time-state { width:100%; justify-content:flex-start; flex-wrap:wrap; white-space:normal; } .prism-snapshot { grid-template-columns:repeat(4,minmax(0,1fr)); } }
 @media (max-width:600px) { .prism-range-group { width:100%; } .prism-range-button { flex:1; padding-left:6px; padding-right:6px; } .prism-snapshot { grid-template-columns:repeat(2,minmax(0,1fr)); } #prism-content .chart { height:280px; } }
 
-.prism-active .hero { align-items:center; }
-.prism-active .control-panel { min-width:0; flex:0 1 620px; display:grid; grid-template-columns:max-content minmax(145px,1fr) minmax(170px,1.35fr) auto auto; align-items:center; gap:8px 10px; padding:10px 12px; }
-.prism-active .control-panel label { margin:0; }
-.prism-active .control-panel .hint { margin:0; white-space:nowrap; }
-.prism-active .control-panel .refresh-button,.prism-active .control-panel .guide-button { width:auto; margin:0; padding:8px 10px; white-space:nowrap; }
-@media (max-width:850px) { .prism-active .hero { align-items:stretch; } .prism-active .control-panel { display:block; min-width:260px; } .prism-active .control-panel label { margin-bottom:7px; } .prism-active .control-panel .hint { margin-top:8px; white-space:normal; } .prism-active .control-panel .refresh-button,.prism-active .control-panel .guide-button { width:100%; margin-top:10px; } }
+.hero { align-items:center; }
+.control-panel { min-width:0; flex:0 1 620px; display:grid; grid-template-columns:max-content minmax(145px,1fr) minmax(170px,1.35fr) auto auto; align-items:center; gap:8px 10px; padding:10px 12px; }
+.control-panel label { margin:0; }
+.control-panel .hint { margin:0; white-space:nowrap; }
+.control-panel .refresh-button,.control-panel .guide-button { width:auto; margin:0; padding:8px 10px; white-space:nowrap; }
+@media (max-width:850px) { .hero { align-items:stretch; } .control-panel { display:block; min-width:260px; } .control-panel label { margin-bottom:7px; } .control-panel .hint { margin-top:8px; white-space:normal; } .control-panel .refresh-button,.control-panel .guide-button { width:100%; margin-top:10px; } }
 
