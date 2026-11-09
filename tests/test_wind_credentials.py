@@ -1,4 +1,4 @@
-from scripts import wind_credentials
+from scripts import credential_settings, wind_credentials
 
 
 class FakeKeyring:
@@ -19,7 +19,7 @@ class FakeKeyring:
 def test_credentials_prefer_environment_then_windows_vault(monkeypatch):
     fake = FakeKeyring()
     fake.saved = "vault-key"
-    monkeypatch.setattr(wind_credentials, "_keyring", lambda: fake)
+    monkeypatch.setattr(wind_credentials, "_keyring", lambda: credential_settings._test_keyring(fake))
     assert wind_credentials.get_authorization({}) == "Bearer vault-key"
     assert wind_credentials.get_authorization({"WIND_MCP_AUTH": "Bearer env-key"}) == "Bearer env-key"
     assert wind_credentials.get_authorization({"WIND_MCP_TOKEN": "token-key"}) == "Bearer token-key"
@@ -32,7 +32,8 @@ def test_auth_header_value_is_not_modified():
 
 def test_set_action_saves_secret_without_printing_it(monkeypatch, capsys):
     fake = FakeKeyring()
-    monkeypatch.setattr(wind_credentials, "_keyring", lambda: fake)
+    validated = credential_settings._test_keyring(fake)
+    monkeypatch.setattr(wind_credentials, "_keyring", lambda: validated)
     monkeypatch.setattr(wind_credentials.getpass, "getpass", lambda _prompt: "secret-value")
     assert wind_credentials.main(["set"]) == 0
     assert fake.saved == "secret-value"

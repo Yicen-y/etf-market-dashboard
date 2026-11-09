@@ -9,7 +9,7 @@ from __future__ import annotations
 import os
 from dataclasses import dataclass
 from enum import Enum
-from typing import Any, Mapping
+from typing import Any, Mapping, TypedDict
 
 SERVICE = "etf-market-dashboard"
 
@@ -18,6 +18,14 @@ class CredentialProvider(str, Enum):
     WIND_MCP = "wind_mcp"
     HTBR_ETF = "htbr_etf"
     ETFIRST = "etfirst"
+
+
+class CredentialStatus(TypedDict):
+    """Non-secret status shape exposed to settings/API callers."""
+
+    provider: str
+    configured: bool
+    masked: str
 
 
 @dataclass(frozen=True)
@@ -90,9 +98,11 @@ def _test_keyring(keyring_module) -> ValidatedKeyring:
 
 def _adapter_keyring(keyring_module) -> ValidatedKeyring:
     """Adapt an already-validated CLI keyring to the service boundary."""
-    if isinstance(keyring_module, ValidatedKeyring):
-        return keyring_module
-    return ValidatedKeyring(keyring_module)
+    if not isinstance(keyring_module, ValidatedKeyring):
+        raise RuntimeError(
+            "Unvalidated keyring adapter is refused; use the Windows Credential Vault backend"
+        )
+    return keyring_module
 
 
 def _backend(keyring_module=None):
@@ -159,7 +169,7 @@ def list_credential_status(
     environ: Mapping[str, str] | None = None,
     *,
     keyring_module=None,
-) -> list[dict[str, Any]]:
+) -> list[CredentialStatus]:
     statuses = []
     for provider in CredentialProvider:
         value = get_credential(provider, environ, keyring_module=keyring_module)

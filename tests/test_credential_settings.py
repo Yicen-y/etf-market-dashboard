@@ -94,6 +94,16 @@ def test_plaintext_backend_is_rejected(monkeypatch):
 def test_raw_injected_keyring_cannot_bypass_backend_validation():
     with pytest.raises(RuntimeError, match="Unvalidated keyring injection"):
         credential_settings.set_credential("wind_mcp", "secret", keyring_module=FakeKeyring())
+    with pytest.raises(RuntimeError, match="Unvalidated keyring adapter"):
+        credential_settings._adapter_keyring(FakeKeyring())
+
+
+def test_credential_status_type_contains_no_secret_field():
+    assert set(credential_settings.CredentialStatus.__annotations__) == {
+        "provider",
+        "configured",
+        "masked",
+    }
 
 
 def test_test_credential_does_not_return_secret():

@@ -120,3 +120,29 @@ python -m pytest tests/test_credential_settings.py tests/test_wind_credentials.p
 ```
 
 本次修复未输出任何真实凭证。
+
+## 复审 I-2 与类型契约修复
+
+针对复审指出的 `_adapter_keyring()` 绕过问题再次修复：
+
+- `_adapter_keyring()` 现在只接受已经通过统一校验的 `ValidatedKeyring`，传入任意未验证对象会立即拒绝。
+- `_backend()` 继续拒绝原始 `keyring_module`，生产公共存取路径不能通过包装器绕过 Windows Credential Manager 校验。
+- 新增导出的 `CredentialStatus` `TypedDict`，只包含 `provider`、`configured`、`masked` 三个不含明文的字段；`list_credential_status()` 使用该类型标注。
+- 补充回归测试，验证未验证 fake backend 不能通过直接注入或适配器入口进入服务，并验证状态类型不包含凭证明文字段。
+- 旧 Wind CLI 测试改为显式使用测试包装器，生产适配器不再自动包装任意对象。
+
+### 本次复审修复测试
+
+命令：
+
+```text
+python -m pytest tests/test_credential_settings.py tests/test_wind_credentials.py tests/test_validate_wind_cli.py tests/test_wind_mcp_client.py -q
+```
+
+输出：
+
+```text
+21 passed in 2.66s
+```
+
+本次修复未输出任何真实凭证。
