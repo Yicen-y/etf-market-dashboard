@@ -18,7 +18,8 @@ def test_normalize_stock_dividend_converts_per_ten_cash_to_per_share():
     rows = normalize_stock_dividends(frame, 'STOCK:600519')
     assert rows[0]['amount_per_unit'] == Decimal('28.02420')
     assert rows[0]['ex_date'] == date(2026, 6, 26)
-    assert rows[0]['status'] == 'PAID'
+    assert rows[0]['status'] == 'CANDIDATE'
+    assert rows[0]['fiscal_year'] is None
 
 
 def test_quotes_fallback_records_secondary_provider(monkeypatch):
@@ -38,4 +39,20 @@ def test_normalize_etf_dividends_turns_cumulative_distribution_into_events():
     frame = pd.DataFrame([["2025-01-10", 0.10], ["2026-01-21", 0.243]], columns=['日期', '累计分红'])
     rows = normalize_etf_dividends(frame, 'ETF:510880')
     assert rows[-1]['amount_per_unit'] == Decimal('0.14300')
-    assert rows[-1]['status'] == 'PAID'
+    assert rows[-1]['status'] == 'CANDIDATE'
+    assert rows[-1]['ex_date'] is None
+
+
+def test_quotes_support_any_catalog_stock_and_etf_without_code_substitution(monkeypatch):
+    class FakeAk:
+        def stock_zh_a_hist(self, symbol, *args):
+            assert symbol == '000001'
+            return pd.DataFrame([['2026-11-06', 11.23]], columns=['日期', '收盘'])
+        def fund_etf_hist_em(self, symbol, *args):
+            assert symbol == '520610'
+            return pd.DataFrame([['2026-11-06', 1.23]], columns=['日期', '收盘'])
+    monkeypatch.setitem(__import__('sys').modules, 'akshare', FakeAk())
+    stock, provider, _ = fetch_quotes_with_fallback('STOCK:000001', '20261101', '20261106')
+    etf, _, _ = fetch_quotes_with_fallback('ETF:520610', '20261101', '20261106')
+    assert stock[0][0] == 'STOCK:000001' and stock[0][2] == Decimal('11.23000')
+    assert etf[0][0] == 'ETF:520610' and provider == 'akshare:eastmoney'

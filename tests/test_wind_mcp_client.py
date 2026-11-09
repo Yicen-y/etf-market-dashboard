@@ -1,5 +1,6 @@
 import json
 import threading
+from types import SimpleNamespace
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
 import pytest
@@ -97,3 +98,13 @@ def test_errors_do_not_leak_authorization_or_session(mcp_server):
         client.call_tool("bad", {})
     assert "do-not-leak" not in str(exc.value)
     assert "secret-session" not in str(exc.value)
+
+
+def test_sse_response_is_decoded_as_utf8_even_if_requests_guesses_latin1():
+    response = SimpleNamespace(
+        headers={"Content-Type": "text/event-stream"},
+        encoding="ISO-8859-1",
+        content='event: message\ndata: {"jsonrpc":"2.0","id":1,"result":{"说明":"成功"}}\n\n'.encode("utf-8"),
+    )
+
+    assert WindMcpClient._parse_response(response)["result"]["说明"] == "成功"

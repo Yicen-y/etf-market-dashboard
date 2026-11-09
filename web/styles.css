@@ -55,13 +55,17 @@
 .prism-snapshot-date strong { color:var(--blue); }
 #prism-content .chart-panel,#prism-content>.panel { margin-bottom:14px; }
 #prism-content .chart { height:320px; }
+#prism-content .panel > h2 { margin-bottom: 10px; }
+#prism-content .panel > h2 + .chart { margin-top: 0; }
 @media (max-width:1000px) { .prism-time-toolbar { align-items:flex-start; flex-direction:column; } .prism-time-state { width:100%; justify-content:flex-start; flex-wrap:wrap; white-space:normal; } .prism-snapshot { grid-template-columns:repeat(4,minmax(0,1fr)); } }
 @media (max-width:600px) { .prism-range-group { width:100%; } .prism-range-button { flex:1; padding-left:6px; padding-right:6px; } .prism-snapshot { grid-template-columns:repeat(2,minmax(0,1fr)); } #prism-content .chart { height:280px; } }
 
 .hero { align-items:center; }
-.control-panel { min-width:0; flex:0 1 620px; display:grid; grid-template-columns:max-content minmax(145px,1fr) minmax(170px,1.35fr) auto auto; align-items:center; gap:8px 10px; padding:10px 12px; }
+.control-panel { box-sizing:border-box; min-width:0; flex:0 1 680px; display:grid; grid-template-columns:max-content minmax(0,1fr) max-content minmax(0,1fr); align-items:center; gap:8px 10px; padding:12px; }
 .control-panel label { margin:0; }
-.control-panel .hint { margin:0; white-space:nowrap; }
-.control-panel .refresh-button,.control-panel .guide-button { width:auto; margin:0; padding:8px 10px; white-space:nowrap; }
-@media (max-width:850px) { .hero { align-items:stretch; } .control-panel { display:block; min-width:260px; } .control-panel label { margin-bottom:7px; } .control-panel .hint { margin-top:8px; white-space:normal; } .control-panel .refresh-button,.control-panel .guide-button { width:100%; margin-top:10px; } }
+.control-panel input { box-sizing:border-box; min-width:0; width:100%; }
+.control-panel .refresh-button,.control-panel .guide-button { width:100%; margin:0; padding:8px 10px; white-space:nowrap; }
+.control-panel .refresh-button { grid-column:1 / 3; }
+.control-panel .guide-button { grid-column:3 / 5; }
+@media (max-width:850px) { .hero { align-items:stretch; } .control-panel { display:block; flex:0 0 auto; width:100%; min-width:0; } .control-panel label { margin-bottom:7px; } .control-panel .hint { margin-top:8px; white-space:normal; } .control-panel .refresh-button,.control-panel .guide-button { width:100%; margin-top:10px; } }
 

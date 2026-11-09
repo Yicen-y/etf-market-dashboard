@@ -13,6 +13,7 @@ def test_server_exposes_health_endpoint():
 def test_static_data_not_exposed():
     routes = {route.path for route in app.routes}
     assert "/data/{path:path}" not in routes
+    assert "/api/wind/status" in routes
 
 
 def test_static_database_and_raw_files_are_not_http_resources():

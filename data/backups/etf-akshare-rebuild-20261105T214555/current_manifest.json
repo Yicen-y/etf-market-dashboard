@@ -1,0 +1,13 @@
+{
+  "snapshot_id": "20261105T202024-51949b82",
+  "created_at": "2026-11-05T12:20:31.847767+00:00",
+  "status": "published",
+  "files": {
+    "etf": "releases\\20261105T202024-51949b82\\etf_prices.json",
+    "index": "releases\\20261105T202024-51949b82\\index_prices.json"
+  },
+  "sha256": {
+    "etf": "607a301ae2ed8f1b1f86b7db9f1b7f591e809cfb66f408c2c1610987fd77798b",
+    "index": "fb5fc58d87a7ed38c7ccfc931b30d7cf48a22f0da7861f8fb56d0d008f7ceac9"
+  }
+}

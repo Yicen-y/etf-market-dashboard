@@ -1,0 +1,61 @@
+{
+  "observed_at": "2026-11-04T22:20:45+08:00",
+  "samples": [
+    {
+      "request": {
+        "product_code": "513100",
+        "start_date": "20261102",
+        "end_date": "20261103"
+      },
+      "realtime": {
+        "tradingDay": "20261104",
+        "time": "162951257",
+        "premDisRto": "18.9390",
+        "closePrice": "22420",
+        "iopv": "18850",
+        "indexWindCode": "513100.SH"
+      },
+      "tracking_index": {
+        "indexCode": "NDX",
+        "indexName": "纳斯达克100指数"
+      },
+      "trend_first_fund_row": {
+        "tradeDate": "20261102",
+        "closePrice": "9.3600",
+        "dailyReturn": "0.00",
+        "yield": "0.00",
+        "maxRetreat": "0.00",
+        "turnover": "4.75"
+      },
+      "errors": {}
+    },
+    {
+      "request": {
+        "product_code": "513100",
+        "start_date": "20261020",
+        "end_date": "20261023"
+      },
+      "realtime": {
+        "tradingDay": "20261104",
+        "time": "162951257",
+        "premDisRto": "18.9390",
+        "closePrice": "22420",
+        "iopv": "18850",
+        "indexWindCode": "513100.SH"
+      },
+      "tracking_index": {
+        "indexCode": "NDX",
+        "indexName": "纳斯达克100指数"
+      },
+      "trend_first_fund_row": {
+        "tradeDate": "20261020",
+        "closePrice": "9.8705",
+        "dailyReturn": "0.00",
+        "yield": "0.00",
+        "maxRetreat": "2.92",
+        "turnover": "4.06"
+      },
+      "errors": {}
+    }
+  ]
+}

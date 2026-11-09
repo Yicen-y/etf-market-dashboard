@@ -128,7 +128,10 @@ class WindMcpClient:
         if "text/event-stream" not in content_type:
             return response.json()
         events = []
-        for block in re.split(r"\r?\n\r?\n", response.text):
+        # SSE from Wind is UTF-8, but requests may infer ISO-8859-1 when the
+        # event-stream response omits a charset. Decode the wire bytes directly.
+        text = response.content.decode("utf-8-sig")
+        for block in re.split(r"\r?\n\r?\n", text):
             data_lines = [line[5:].lstrip() for line in block.splitlines() if line.startswith("data:")]
             if data_lines:
                 events.append(json.loads("\n".join(data_lines)))

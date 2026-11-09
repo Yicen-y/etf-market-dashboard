@@ -14,6 +14,7 @@ from urllib.parse import urlparse
 from scripts.config import DATABASE_PATH, INDEXES
 from scripts.wind_config import load_wind_config
 from scripts.wind_mcp_client import WindMcpClient, WindMcpError
+from scripts.wind_credentials import get_authorization
 from scripts.wind_validator import compare_index_rows, load_local_index_rows, normalize_wind_rows
 
 
@@ -67,8 +68,9 @@ def _payload_from_tool_result(result: dict) -> dict:
 def main(argv: list[str] | None = None) -> int:
     args = _parser().parse_args(argv)
     config = load_wind_config(os.environ)
-    if not config.authorization:
-        print("Wind MCP 需要授权。请在 PowerShell 设置 WIND_MCP_AUTH，再运行本命令。", file=sys.stdout)
+    authorization = config.authorization or get_authorization()
+    if not authorization:
+        print("Wind MCP 需要授权（WIND_MCP_AUTH）。请运行 python -m scripts.wind_credentials set。", file=sys.stdout)
         return 2
     if not args.list_tools:
         missing = [name for name, value in (("--tool", args.tool), ("--arguments-json", args.arguments_json), ("--codes", args.codes), ("--start", args.start), ("--end", args.end), ("--date-field", args.date_field), ("--close-field", args.close_field), ("--wind-codes-json", args.wind_codes_json)) if not value]
@@ -76,7 +78,7 @@ def main(argv: list[str] | None = None) -> int:
             print("查询配置不完整；需显式指定 " + ", ".join(missing) + "。先运行 --list-tools 获取账户实际 schema。")
             return 2
     try:
-        with WindMcpClient(config.endpoint, config.authorization) as client:
+        with WindMcpClient(config.endpoint, authorization) as client:
             client.initialize()
             tools = client.list_tools()
             if args.list_tools:

@@ -1,6 +1,6 @@
 # ETF Market Dashboard
 
-Python + ETFirst + ECharts dashboard for comparing the 300 dividend ETF, 300 growth ETF, and HS300 ETF.
+Python + AkShare + ECharts dashboard for comparing the 300 dividend ETF, 300 growth ETF, and HS300 ETF.
 
 ## Local use
 
@@ -35,14 +35,16 @@ The frontend reads a pinned snapshot through the local API. SQLite, raw evidence
 
 ## Wind MCP history validation
 
-Wind Alice can be used as an independent source to compare historical index points. Routine incremental updates continue to use the existing ETFirst/AkShare workflow. The validator is read-only and writes discrepancy reports under `reports/wind/`; it does not repair SQLite or published JSON.
+The three ETF price histories (512530, 562310, 510330) are sourced exclusively from AkShare. Incremental ETF updates re-fetch the trailing seven calendar days so provider corrections replace recent stored values; daily close changes above 20% block publication for review. Index histories retain their existing ETFirst-first/AkShare-fallback process. Wind Alice can be used as an independent source to compare historical index points. The validator is read-only and writes discrepancy reports under `reports/wind/`; it does not repair SQLite or published JSON.
 
-In PowerShell, set the Authorization value copied from Wind Alice's Codex one-click configuration (keep it out of source files and chat logs):
+Store the Wind credential in Windows Credential Vault (the prompt does not echo input):
 
 ```powershell
-$env:WIND_MCP_AUTH = "<Authorization header value from Wind Alice>"
-python -m scripts.validate_wind --list-tools
+python -m scripts.wind_credentials set
+python -m scripts.wind_credentials check
 ```
+
+The local API reads this credential from Windows Credential Vault. It is never written to the repository, SQLite, logs or API responses. `GET /api/wind/status` reports whether a credential is configured without returning its value. For one-session overrides, `WIND_MCP_AUTH` or `WIND_MCP_TOKEN` can still be set in the server process environment.
 
 After checking the account's actual tool schema, call a tool by explicitly supplying its name, JSON arguments, date/close output fields and a reviewed local-to-Wind code mapping. `arguments-json` supports `${wind_code}`, `${local_code}`, `${start}`, and `${end}` substitutions:
 
@@ -52,3 +54,9 @@ python -m scripts.validate_wind --tool "<discovered tool name>" --arguments-json
 
 The placeholders in the example must be replaced with names/values from `--list-tools` and a verified code/return-index definition. The tool response must contain a JSON object with a row list (default field `rows`); set `--rows-field` if the actual result uses another field. Do not assume price-return and total-return indices are interchangeable.
 
+
+## Nikkei 225 five-year anchor
+
+The temporary Nikkei series is stored separately in `data/etf_market.db` in the `nikkei225_anchor_prices` table because Tokyo trading dates must not be merged into the mainland-China index calendar. The baseline CSV is imported idempotently the first time the normal data refresh runs. Later refreshes query an overlapping tail from Wind MCP and upsert by trade date; raw MCP responses are retained under `data/raw/market/`.
+
+Configure `WIND_MCP_TOKEN` (bearer token) or `WIND_MCP_AUTH` (full Authorization header) for the server process, then use the dashboard's “刷新全部数据” action or run `python -m scripts.update_data`. A Wind failure does not block the existing ETF/CSI snapshot. The Chinese-name source mapping and total-return status remain marked as unverified.

@@ -1,0 +1,35 @@
+{
+  "startedAt": "2026-11-06T15:51:46.962369+00:00",
+  "range": {
+    "start": "20261101",
+    "end": "20261106"
+  },
+  "sources": {
+    "CSI_DIV_YIELD2_000922": {
+      "status": "READY",
+      "rowCount": 5,
+      "sourceHash": "0d60f10c25add1202049755908d89e7ec25dbec07e7517148bc90d19ba67e410",
+      "rawPayloadRef": "raw/research/csi_div_yield2_000922/0d60f10c25add1202049755908d89e7ec25dbec07e7517148bc90d19ba67e410.json",
+      "provider": "AkShare",
+      "upstream": "CSI",
+      "sourceUrl": "https://www.csindex.com.cn/zh-CN/indices/index-detail/000922",
+      "unit": "%"
+    },
+    "CCDC_CN10Y": {
+      "status": "READY",
+      "rowCount": 5,
+      "sourceHash": "17a88f5b77054e9fea3169f1f8f93a41f3aa49d7437585b3e7157eace7fc55ca",
+      "rawPayloadRef": "raw/research/ccdc_cn10y/17a88f5b77054e9fea3169f1f8f93a41f3aa49d7437585b3e7157eace7fc55ca.json",
+      "provider": "AkShare",
+      "upstream": "ChinaBond/CCDC",
+      "sourceUrl": "https://yield.chinabond.com.cn/cbweb-pbc-web/pbc/historyQuery",
+      "unit": "%"
+    }
+  },
+  "inserted": {
+    "CSI_DIV_YIELD2_000922": 0,
+    "CCDC_CN10Y": 5
+  },
+  "completedAt": "2026-11-06T15:51:57.013944+00:00",
+  "status": "READY"
+}

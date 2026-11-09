@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>股债性价比 - 投资分析看板</title>
+  <link rel="stylesheet" href="theme.css"><link rel="stylesheet" href="ui-components.css?v=20261109-ui3">
+  <link rel="stylesheet" href="fund-flow.css"><link rel="stylesheet" href="bond-value.css">
+  <script>window.MathJax={tex:{inlineMath:[["\\(","\\)"]],displayMath:[["\\[","\\]"]]},svg:{fontCache:"global"}};</script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+  <script src="echarts.min.js"></script>
+</head>
+<body>
+<main class="dashboard-layout fund-flow-layout">
+  <aside data-dashboard-navigation data-active-section="bond-value"></aside>
+  <div class="dashboard-content fund-flow-shell">
+    <header class="page-hero bond-value-hero">
+      <div class="page-heading"><p class="eyebrow">投资分析看板 · 估值观察</p><h1>股债性价比</h1>
+        <p class="page-subline">沪深300估值与中债10年期收益率的日频对照。用于观察相对估值，不构成交易信号。</p>
+        <div class="bond-value-actions"><button id="bond-guide-button" class="ui-button" type="button">策略说明</button><button id="bond-refresh" class="ui-button ui-button--primary" type="button">刷新数据</button></div>
+      </div>
+      <div class="bond-value-controls"><span class="bond-value-range-label">历史范围</span><div id="bond-range-group" class="bond-value-range-group" role="group" aria-label="历史范围"><button type="button" class="bond-value-range-button" data-range="6m" aria-pressed="false">6M</button><button type="button" class="bond-value-range-button" data-range="1y" aria-pressed="false">1Y</button><button type="button" class="bond-value-range-button" data-range="3y" aria-pressed="false">3Y</button><button type="button" class="bond-value-range-button" data-range="5y" aria-pressed="false">5Y</button><button type="button" class="bond-value-range-button active" data-range="all" aria-pressed="true">全部</button></div></div>
+    </header>
+    <section id="bond-status" class="status" role="status" aria-live="polite">正在读取本地数据……</section>
+    <section class="bond-value-coverage" aria-label="数据覆盖摘要">
+      <div><span>指数</span><strong>沪深300（000300.SH）</strong></div><div><span>数据区间</span><strong id="bond-coverage">—</strong></div>
+      <div><span>最近估值日</span><strong id="bond-latest">—</strong></div><div><span>ROE口径</span><strong id="bond-roe-source">—</strong></div>
+    </section>
+    <section class="panel bond-value-panel"><div class="panel-heading"><div><h2>沪深300指数走势</h2><p>每日收盘点位</p></div></div><div id="bond-chart-price" class="bond-value-chart" role="img" aria-label="沪深300指数走势，详细数据可在下方交易日数据表查看"></div></section>
+    <section class="panel bond-value-panel"><div class="panel-heading"><div><h2>沪深300 PE</h2><p>Wind指数估值指标，倍数</p></div></div><div id="bond-chart-pe" class="bond-value-chart" role="img" aria-label="沪深300市盈率走势，详细数据可在下方交易日数据表查看"></div></section>
+    <section class="panel bond-value-panel"><div class="panel-heading"><div><h2>沪深300市赚率</h2><p>PE ÷ ROE百分数数值；ROE来源可在悬停提示中查看</p></div></div><div id="bond-chart-city" class="bond-value-chart" role="img" aria-label="沪深300市赚率走势，详细数据可在下方交易日数据表查看"></div></section>
+    <section class="panel bond-value-panel"><div class="panel-heading"><div><h2>沪深300股债性价比</h2><p>盈利收益率减中国10年期国债收益率，单位：%；纵轴倒置，数值越大位置越靠下</p></div></div><div id="bond-chart-spread" class="bond-value-chart" role="img" aria-label="沪深300股债性价比走势，详细数据可在下方交易日数据表查看"></div><p id="bond-sources" class="bond-value-sources"></p></section>
+    <section class="panel bond-value-panel"><div class="panel-heading"><h2>交易日数据</h2><button id="bond-table-toggle" class="ui-button" type="button" aria-expanded="false" aria-controls="bond-table-region">展开交易日数据</button></div><div id="bond-table-region" class="table-wrap" hidden><table id="bond-table"><caption>沪深300估值与国债收益率明细，缺失值显示为破折号</caption><thead><tr><th scope="col">交易日</th><th scope="col">指数点位</th><th scope="col">PE</th><th scope="col">ROE（%）</th><th scope="col">市赚率</th><th scope="col">盈利收益率（%）</th><th scope="col">国债10Y（%）</th><th scope="col">股债性价比（pp）</th></tr></thead><tbody></tbody></table></div></section>
+  </div>
+</main>
+<dialog id="bond-guide" class="bond-guide-dialog"><form method="dialog"><button class="bond-guide-close" aria-label="关闭说明">×</button></form>
+  <h2>沪深300股债性价比策略说明</h2>
+  <p>该视图将沪深300盈利收益率与中国10年期国债收益率比较，并展示基于估值数据推导的隐含ROE和市赚率。它描述相对估值状态，不预测短期拐点。</p>
+  <section><h3>隐含ROE</h3><div class="bond-formula">\[ROE^{*}_{t}(\%)=\frac{PB_{t}}{PE_{t}}\times100\]</div><p>这是由同日PE与PB推导的估值隐含值，并非财务报表直接披露的ROE。若Wind在对应日期返回有效ROE，则优先使用Wind值；否则使用上述推导值。</p></section>
+  <section><h3>市赚率</h3><div class="bond-formula">\[市赚率^{*}_{t}=\frac{PE_{t}}{ROE^{*}_{t}(\%)}\]</div><p>ROE以百分数数值参与计算，例如10代表10%。历史曲线主要使用隐含ROE，因此市赚率不提供独立于PE/PB之外的盈利质量信息。</p></section>
+  <section><h3>股债性价比</h3><div class="bond-formula">\[盈利收益率_{t}(\%)=\frac{100}{PE_{t}}\]</div><div class="bond-formula">\[股债性价比_{t}(pp)=盈利收益率_{t}(\%)-中国10年期国债收益率_{t}(\%)\]</div><p>正值表示指数盈利收益率高于国债收益率；差值不是预期收益，也未扣除股票风险溢价、税费或盈利变化。</p></section>
+  <section><h3>如何使用与读图</h3><ol><li>先看沪深300走势作为市场背景，再对照PE和市赚率观察估值相对历史的位置。历史ROE多数由PE/PB推导，因此这些曲线并非相互独立的信号。</li><li>再看股债性价比：差值扩大，表示股票盈利收益率相对中债10年期收益率的优势扩大；差值收窄则表示优势减弱。其他条件相同时，数值较高代表股票相对债券更有吸引力。</li><li>股债性价比图的纵轴倒置，数值越大，曲线位置越靠下；请以刻度和悬停数值判断，不要按常规坐标方向解读。图中用“%”符号显示差值，公式中的准确单位为百分点（pp）。</li><li>用6M、1Y、3Y、5Y和全部范围查看不同阶段，结合指数走势、PE与市赚率对照观察。历史高低点仅供回看，不是固定阈值。</li></ol><p>该指标适合作为股票与债券相对估值的参考，不能单独判断市场底部、预测短期拐点或生成买卖与仓位指令。差值较高不保证股票未来跑赢债券；还需考虑盈利变化、国债利率、波动、投资期限和个人风险承受能力。</p></section>
+  <section><h3>数据与限制</h3><ul><li>沪深300收盘点位、PE与PB来自Wind MCP；中债10年期收益率通过AkShare获取。</li><li>国债收益率按不晚于A股交易日的最近可用观测匹配，页面保留其实际日期。</li><li>PE或PB缺失、无效时不推导ROE；缺少PE或债券收益率时股债性价比留空，不填零、不插值。</li></ul></section>
+</dialog>
+<script src="navigation.js?v=20261109-ui3"></script><script src="bond-value.js?v=20261109-ui3"></script>
+</body></html>

@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>A股ETF看板</title>
   <link rel="stylesheet" href="theme.css?v=20261101-2">
-  <link rel="stylesheet" href="ui-components.css?v=20261101-2">
-  <link rel="stylesheet" href="styles.css?v=20261102-1">
+  <link rel="stylesheet" href="ui-components.css?v=20261109-ui3">
+  <link rel="stylesheet" href="styles.css?v=20261109-ui3">
   <script>
     window.MathJax = { tex: { inlineMath: [["\\(", "\\)"]], displayMath: [["\\[", "\\]"]] }, svg: { fontCache: "global" } };
   </script>
@@ -28,13 +28,14 @@
       <div class="control-panel ui-toolbar">
         <label for="benchmark-date">基准日期</label>
         <input id="benchmark-date" type="date" value="2025-12-31">
-        <span id="benchmark-status" class="hint">实际基准交易日：加载中</span>
+        <label for="end-date">结束日期</label>
+        <input id="end-date" type="date">
         <button id="refresh-data" class="button ui-button ui-button--primary refresh-button">刷新全部数据</button>
         <button id="strategy-guide-button" class="button ui-button guide-button">策略说明</button>
       </div>
     </header>
 
-    <section id="message" class="message hidden"></section>
+    <section id="message" class="message" role="status" aria-live="polite" data-state="loading">正在读取看板数据…</section>
     <section id="kpis" class="kpis"></section>
 
     <section class="panel chart-panel">
@@ -59,15 +60,15 @@
           <button type="button" class="prism-range-button" data-prism-range="1y">1Y</button>
           <button type="button" class="prism-range-button" data-prism-range="3y">3Y</button>
           <button type="button" class="prism-range-button" data-prism-range="5y">5Y</button>
-          <button type="button" class="prism-range-button active" data-prism-range="all">全部</button>
+          <button type="button" class="prism-range-button active" data-prism-range="all" title="显示截至结束日期的全部可用历史，基准日期只用于计算累计收益">全部</button>
         </div>
         <div class="prism-time-state"><span id="prism-view-range">显示区间：全部</span><span id="prism-selected-date">当前观察日：最新交易日 · 未锁定</span><button id="prism-unlock" type="button" class="prism-unlock hidden">已锁定 · 点击解锁</button></div>
       </div>
       <div id="prism-snapshot" class="prism-snapshot" aria-live="polite"></div>
       <section class="panel chart-panel"><div class="panel-heading"><div><h2 id="prism-main-title">同一基准下的成长100R与价值100R累计收益</h2><p id="prism-freshness">数据加载中</p></div><button id="download-prism-csv" class="button">下载 CSV</button></div><div id="prism-main-chart" class="chart"></div></section>
-      <section class="panel"><h2 id="prism-ratio-title">成长100R / 价值100R 比值及242日布林线</h2><div id="prism-ratio-chart" class="chart"></div></section>
-      <section class="panel"><h2 id="prism-spread-title">40日收益差及242日均线</h2><div id="prism-spread-chart" class="chart"></div></section>
-      <section class="panel"><h2 id="prism-rsi-title">比值14日 RSI 及242日均线</h2><div id="prism-rsi-chart" class="chart"></div></section>
+      <section class="panel"><h2 id="prism-ratio-title">成长100R / 价值100R 比值及242日布林线</h2><div id="prism-ratio-chart" class="chart" role="img" aria-label="相对比值与布林带，详细数值可在下方交易日数据表查看"></div></section>
+      <section class="panel"><h2 id="prism-spread-title">40日收益差及242日均线</h2><div id="prism-spread-chart" class="chart" role="img" aria-label="40日收益差与242日均线，详细数值可在下方交易日数据表查看"></div></section>
+      <section class="panel"><h2 id="prism-rsi-title">比值14日 RSI 及242日均线</h2><div id="prism-rsi-chart" class="chart" role="img" aria-label="相对比值RSI与长期均线，详细数值可在下方交易日数据表查看"></div></section>
       <section id="prism-data-panel" class="panel data-table-panel"><div class="panel-heading"><div><h2>三棱镜交易日数据</h2><p>原始指数点位计算，不对指数分别归一化。</p></div><button id="toggle-prism-table" class="button" type="button" aria-expanded="false" aria-controls="prism-table-region">展开交易日数据</button></div><div id="prism-table-region" class="table-wrap" hidden><table id="prism-table"><thead></thead><tbody></tbody></table></div></section>
     </section>
     </div>
@@ -82,8 +83,8 @@
       <div id="strategy-guide-content" class="guide-content"></div>
     </div>
   </section>
-  <script src="navigation.js?v=20261101-2"></script>
-  <script src="app.js?v=20261101-11"></script>
+  <script src="navigation.js?v=20261109-ui3"></script>
+  <script src="app.js?v=20261109-ui4"></script>
 </body>
 </html>
 

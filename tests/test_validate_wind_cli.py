@@ -5,6 +5,7 @@ from scripts.validate_wind import main
 
 def test_list_tools_requires_auth_without_printing_secret(capsys, monkeypatch):
     monkeypatch.delenv("WIND_MCP_AUTH", raising=False)
+    monkeypatch.setattr("scripts.validate_wind.get_authorization", lambda: None)
     assert main(["--list-tools"]) == 2
     output = capsys.readouterr().out
     assert "WIND_MCP_AUTH" in output

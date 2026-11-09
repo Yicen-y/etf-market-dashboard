@@ -36,6 +36,7 @@ INDEXES = {
     "H20035": {"name": "沪深300非银金融", "role": "exbank_financial_total_return", "sourceCode": "H20035"},
     "H00922": {"name": "中证红利", "role": "dividend_total_return_2", "sourceCode": "H00922"},
     "H20903": {"name": "中证A股", "role": "a_share_total_return", "sourceCode": "H20903"},
+    "H20915": {"name": "港股通高股息投资人民币全收益", "role": "hk_dividend_total_return_cny", "sourceCode": "H20915", "currency": "CNY", "returnType": "total_return"},
 }
 INDEX_START_DATE = "20121231"
 
@@ -44,6 +45,7 @@ INDEX_START_DATE = "20121231"
 # 2013-12-31 as its base date; earlier 1000-point rows are source placeholders.
 INDEX_INCEPTION_DATES = {
     "932000CNY010": "20131231",
+    "H20915": "20141114",
 }
 
 STRATEGIES = [
@@ -54,6 +56,7 @@ STRATEGIES = [
     {"id": "banks-exbank-financial", "name": "中证银行与沪深300非银金融轮动", "a": "H20180", "b": "H20035"},
     {"id": "dividend-growth-300", "name": "沪深300红利与沪深300成长轮动", "a": "H00821", "b": "H00918"},
     {"id": "dividend-a-share", "name": "中证红利与中证A股轮动", "a": "H00922", "b": "H20903"},
+    {"id": "dividend-a-hk", "name": "中证红利 / 港股通高股息（人民币全收益）", "a": "H00922", "b": "H20915"},
 ]
 
 

@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>红利看板</title>
   <link rel="stylesheet" href="theme.css?v=20261101-2">
-  <link rel="stylesheet" href="ui-components.css?v=20261101-2">
-  <link rel="stylesheet" href="dividend.css?v=20261101-2">
+  <link rel="stylesheet" href="ui-components.css?v=20261109-ui3">
+  <link rel="stylesheet" href="dividend.css?v=20261109-ui4">
 </head>
 <body>
   <main class="dashboard-layout">
@@ -17,14 +17,15 @@
           <div class="page-heading">
             <p class="eyebrow">投资分析看板 · 红利看板</p>
             <h1 id="title">红利看板</h1>
-            <p class="subline">现金分派收益率；缺少完整证据时显示不可用，不以零替代。</p>
+            <p class="subline">提供方股息率与实际现金派息 TTM 分列展示；缺失数据说明原因。</p>
           </div>
         </header>
         <label class="ui-field" for="search">
           <span>搜索证券</span>
-          <input id="search" class="ui-input dividend-search" placeholder="输入代码、名称或简称搜索……">
+          <input id="search" class="ui-input dividend-search" placeholder="输入代码、名称或简称搜索……" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="results" autocomplete="off">
         </label>
-        <div id="results" class="dividend-results hidden"></div>
+        <div id="results" class="dividend-results hidden" role="listbox" aria-label="证券搜索结果"></div>
+        <p id="dividend-action-status" class="dividend-action-status hidden" role="status" aria-live="polite"></p>
         <section class="dividend-table">
           <div class="ui-panel-heading">
             <h2 id="watch-title">我的自选</h2>
@@ -34,6 +35,20 @@
             </div>
           </div>
           <div id="watchlist" class="dividend-muted">加载中……</div>
+          <p id="refresh-status" class="dividend-muted" role="status"></p>
+        </section>
+        <section id="etfirst-yield-section" class="dividend-table hidden">
+          <div class="ui-panel-heading">
+            <h2>南方 ETFirst · ETF 跟踪指数股息率</h2>
+            <button id="etfirst-reload" class="ui-button" type="button">重新获取</button>
+          </div>
+          <p class="dividend-muted">此处是跟踪指数的股息率，不是 ETF 实际现金派息率，也不是持仓加权股息率。</p>
+          <div id="etfirst-yield-list" class="dividend-muted">加载中……</div>
+          <div class="dividend-list-pager">
+            <button id="etfirst-prev" class="ui-button" type="button">上一页</button>
+            <span id="etfirst-page-status" class="dividend-muted"></span>
+            <button id="etfirst-next" class="ui-button" type="button">下一页</button>
+          </div>
         </section>
         <section class="dividend-table">
           <h2>未来90天除息时间线</h2>
@@ -43,7 +58,8 @@
       </div>
     </div>
   </main>
-  <script src="navigation.js?v=20261101-2"></script>
-  <script src="dividend.js?v=20261101-4"></script>
+  <script src="navigation.js?v=20261109-ui3"></script>
+  <script src="dividend.js?v=20261109-ui4"></script>
+  <script src="dividend-history.js?v=20261109-history1"></script>
 </body>
 </html>

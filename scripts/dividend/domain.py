@@ -51,6 +51,8 @@ class ForwardResult:
 
 
 def normalize_cash_amount(amount: Decimal, unit: str) -> Decimal:
+    if not amount.is_finite() or amount < 0:
+        raise ValueError('cash amount must be finite and nonnegative')
     if unit == "PER_10":
         amount = amount / Decimal("10")
     elif unit != "PER_UNIT":
@@ -67,11 +69,23 @@ def adjust_for_actions(amount: Decimal, ratios: Sequence[Decimal]) -> Decimal:
     return result.quantize(MONEY, rounding=ROUND_HALF_UP)
 
 
+def select_as_known_revision(revisions: Iterable[dict], observed: date) -> dict | None:
+    """Use only official event versions publicly known by the observation date."""
+    eligible = [row for row in revisions if row.get('known_at')
+                and date.fromisoformat(row['known_at']) < observed
+                and row.get('document_level') == 'OFFICIAL_VERIFIED'
+                and row.get('ex_date') and row.get('raw_amount') is not None
+                and row.get('raw_unit') in {'PER_UNIT', 'PER_10'}]
+    return max(eligible, key=lambda row: (row['known_at'], row.get('disclosed_at') or '', row['revision_id'])) if eligible else None
+
+
 def _metric(price: Decimal, events: Iterable[CashEvent], coverage: Coverage) -> MetricResult:
     selected = tuple(events)
+    if len({e.event_id for e in selected}) != len(selected):
+        return MetricResult(None, None, price, tuple(e.event_id for e in selected), "同一分红事件存在多个版本，需先核对有效版本")
     if coverage.status != "COMPLETE":
         return MetricResult(None, None, price, tuple(e.event_id for e in selected), coverage.reason or "incomplete coverage")
-    if price <= 0:
+    if not price.is_finite() or price <= 0:
         return MetricResult(None, None, price, tuple(e.event_id for e in selected), "missing or invalid price")
     numerator = sum((e.amount_per_unit for e in selected), Decimal("0")).quantize(MONEY, rounding=ROUND_HALF_UP)
     value = (numerator / price * Decimal("100")).quantize(PERCENT, rounding=ROUND_HALF_UP)

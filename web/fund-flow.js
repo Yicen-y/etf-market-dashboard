@@ -3,11 +3,32 @@ const fmt = x => x == null ? "—" : Number(x).toFixed(3);
 const chartTheme = window.DashboardChartTheme;
 const securityColor = code => chartTheme.securityColor(code);
 let charts = {};
+let tableRows = [], tableNames = {};
+
+function renderDataTable() {
+  const tbody = $("fund-flow-table").tBodies[0];
+  tbody.replaceChildren();
+  const fragment = document.createDocumentFragment();
+  const number = value => value == null ? "—" : Number(value).toFixed(3);
+  for (const row of tableRows) {
+    const tr = document.createElement("tr");
+    for (const value of [row.trade_date, `${tableNames[row.etf_code] || row.etf_code}（${row.etf_code}）`, number(row.shares_adj_wan), number(row.nav_adj), number(row.net_flow_yi), number(row.cum_flow_yi), row.status || "—"]) {
+      const cell = document.createElement("td");
+      cell.textContent = value;
+      tr.append(cell);
+    }
+    fragment.append(tr);
+  }
+  tbody.append(fragment);
+}
 
 function setStatus(text, kind = "") {
   const node = $("status");
   node.textContent = text;
   node.className = `status ${kind}`;
+  node.dataset.state = kind || "loading";
+  node.setAttribute("aria-busy", String(!kind || kind === "loading"));
+  node.setAttribute("role", kind === "error" ? "alert" : "status");
 }
 
 function renderChart(key, rows, valueKey, unit, names, chartType = "line") {
@@ -19,10 +40,12 @@ function renderChart(key, rows, valueKey, unit, names, chartType = "line") {
   const isBar = chartType === "bar";
   const valueFormatter = valueKey === "shares_adj_wan" ? chartTheme.formatSharesWan : chartTheme.formatMoneyYi;
   charts[key].setOption({
-    ...chartTheme.createBaseChartOption({ dates, bottom: 72 }),
+    ...chartTheme.createBaseChartOption({ dates, bottom: 48 }),
+    legend: { top: 0, left: 64, right: 24, type: "scroll" },
+    grid: { left: 64, right: 24, top: 48, bottom: 48 },
     tooltip: chartTheme.axisTooltip(() => valueFormatter),
     dataZoom: [{ type: "inside", filterMode: "none", start: 0, end: 100 }],
-    xAxis: { type: "category", data: dates, axisLabel: { rotate: 40, hideOverlap: true } },
+    xAxis: { type: "category", data: dates, axisLabel: { rotate: 0, hideOverlap: true, interval: Math.max(0, Math.ceil(dates.length / 8) - 1), formatter: value => String(value).slice(0, 7) } },
     yAxis: { type: "value", axisLine: { onZero: true } },
     series: Object.entries(grouped).map(([code, data]) => ({
       name: `${names[code] || code}（${code}）`,
@@ -32,7 +55,7 @@ function renderChart(key, rows, valueKey, unit, names, chartType = "line") {
       connectNulls: false,
       data: dates.map(date => data.find(x => x[0] === date)?.[1] ?? null),
       lineStyle: { color: securityColor(code), width: 2 },
-      itemStyle: { color: securityColor(code) },
+      itemStyle: { color: isBar ? params => Number(params.value) >= 0 ? "#c9362b" : "#16834a" : securityColor(code) },
     })),
   });
 }
@@ -48,12 +71,15 @@ async function load() {
     const members = payload.codes.map(code => `${names[code] || code}（${code}）`);
     $("universe").innerHTML = members.map(item => `<span>${item}</span>`).join("");
     if (!payload.dataExists) {
-      setStatus("暂无已入库数据。点击“刷新全部数据”将自动补齐 2023-12-29 至今的历史数据。", "error");
+      tableRows = []; tableNames = {}; renderDataTable();
+      setStatus("暂无已入库数据。点击“刷新全部数据”将自动补齐 2023-12-29 至今的历史数据。", "warning");
       $("summary").innerHTML = "";
       Object.values(charts).forEach(chart => chart.clear());
       return;
     }
     const rows = payload.rows;
+    tableRows = rows; tableNames = names;
+    if (!$('fund-flow-table-region').hidden) renderDataTable();
     const actualStart = rows.map(row => row.trade_date).filter(Boolean).sort()[0];
     const historyComplete = Boolean(payload.historyComplete) || Boolean(actualStart && payload.start && actualStart <= payload.start);
     const quality = rows.some(row => row.status !== "PASS");
@@ -71,10 +97,19 @@ async function load() {
     renderChart("daily", rows, "net_flow_yi", " 亿元", names, "bar");
     setStatus(
       `数据截至 ${payload.latestTradeDate}，当前组合为 ${members.join("、")}；显示区间 ${actualStart || payload.start} 至 ${payload.latestTradeDate}。${!historyComplete ? " 请点击“刷新全部数据”完成历史回填。" : ""}`,
-      historyComplete && !quality ? "success" : "error",
+      historyComplete && !quality ? "success" : "warning",
     );
   } catch (error) {
+    tableRows = []; tableNames = {}; renderDataTable();
+    $("summary").replaceChildren();
+    Object.values(charts).forEach(chart => chart.clear());
     setStatus(`读取失败：${error.message}`, "error");
+    const retry = document.createElement("button");
+    retry.type = "button";
+    retry.className = "ui-button";
+    retry.textContent = "重试读取";
+    retry.addEventListener("click", load, { once: true });
+    $("status").append(" ", retry);
   }
 }
 
@@ -121,6 +156,13 @@ function init() {
   $("preset").addEventListener("change", load);
   $("start").addEventListener("change", load);
   $("refresh").addEventListener("click", () => refresh({ backfill: true }));
+  $("fund-flow-table-toggle").addEventListener("click", event => {
+    const region = $("fund-flow-table-region");
+    region.hidden = !region.hidden;
+    event.currentTarget.setAttribute("aria-expanded", String(!region.hidden));
+    event.currentTarget.textContent = region.hidden ? "展开交易日数据" : "收起交易日数据";
+    if (!region.hidden) renderDataTable();
+  });
   window.addEventListener("resize", () => Object.values(charts).forEach(chart => chart.resize()));
   load().then(() => refresh({ backfill: false, silent: true }));
 }

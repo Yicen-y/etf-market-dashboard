@@ -29,6 +29,17 @@ CREATE TABLE IF NOT EXISTS index_prices (
 );
 CREATE INDEX IF NOT EXISTS idx_index_prices_code_date
 ON index_prices(index_code, trade_date);
+CREATE TABLE IF NOT EXISTS nikkei225_anchor_prices (
+    trade_date TEXT PRIMARY KEY,
+    open_value REAL,
+    close_value REAL NOT NULL,
+    high_value REAL,
+    low_value REAL,
+    source TEXT NOT NULL,
+    updated_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_nikkei225_anchor_date
+ON nikkei225_anchor_prices(trade_date);
 """
 
 
@@ -226,8 +237,10 @@ def publish_snapshot(data_root: Path, snapshot_id: str, etf_payload: dict, index
         raise RuntimeError("simulated JSON write failure")
     etf_path = release_dir / "etf_prices.json"
     index_path = release_dir / "index_prices.json"
-    etf_path.write_text(json.dumps(etf_payload, ensure_ascii=False, indent=2), encoding="utf-8")
-    index_path.write_text(json.dumps(index_payload, ensure_ascii=False, indent=2), encoding="utf-8")
+    etf_json = json.dumps(etf_payload, ensure_ascii=False, indent=2)
+    index_json = json.dumps(index_payload, ensure_ascii=False, indent=2)
+    etf_path.write_text(etf_json, encoding="utf-8")
+    index_path.write_text(index_json, encoding="utf-8")
     manifest = {
         "snapshot_id": snapshot_id,
         "created_at": datetime.now(timezone.utc).isoformat(),
@@ -240,6 +253,13 @@ def publish_snapshot(data_root: Path, snapshot_id: str, etf_payload: dict, index
     manifest_tmp = data_root / "current_manifest.json.tmp"
     manifest_tmp.write_text(json.dumps(manifest, ensure_ascii=False, indent=2), encoding="utf-8")
     os.replace(manifest_tmp, data_root / "current_manifest.json")
+    # Keep legacy direct-file readers aligned with the snapshot API.
+    etf_tmp = data_root / "etf_prices.json.tmp"
+    index_tmp = data_root / "index_prices.json.tmp"
+    etf_tmp.write_text(etf_json, encoding="utf-8")
+    index_tmp.write_text(index_json, encoding="utf-8")
+    os.replace(etf_tmp, data_root / "etf_prices.json")
+    os.replace(index_tmp, data_root / "index_prices.json")
     return manifest
 
 
@@ -250,7 +270,7 @@ def _upsert_etf_rows(connection, records: list[dict], updated_at: str, source_by
            VALUES (?, ?, ?, ?, ?)
            ON CONFLICT(trade_date, product_code) DO UPDATE SET
              close_price=excluded.close_price,
-             source=excluded.source,
+             source=CASE WHEN excluded.source='PROVENANCE_UNKNOWN' THEN etf_prices.source ELSE excluded.source END,
              updated_at=excluded.updated_at""",
         [(r["tradeDate"], r["productCode"], r["closePrice"], source_by_key.get((r["tradeDate"], r["productCode"]), "PROVENANCE_UNKNOWN"), updated_at) for r in records],
     )
@@ -314,3 +334,37 @@ def read_index_records(path: Path) -> list[dict]:
     with sqlite3.connect(path) as connection:
         rows = connection.execute("SELECT trade_date, index_code, close_value FROM index_prices ORDER BY trade_date, index_code").fetchall()
     return [{"tradeDate": d, "indexCode": c, "closeValue": float(v)} for d, c, v in rows]
+
+
+def upsert_nikkei_anchor_records(path: Path, records: list[dict], updated_at: str, source: str) -> dict:
+    """Persist the separate Tokyo-calendar series without mixing it into CSI data."""
+    if not records:
+        return {"inserted": 0, "replaced": 0}
+    init_database(path)
+    with sqlite3.connect(path) as connection:
+        existing = {row[0] for row in connection.execute(
+            "SELECT trade_date FROM nikkei225_anchor_prices WHERE trade_date IN (%s)" %
+            ",".join("?" for _ in records), [row["tradeDate"] for row in records]
+        )} if len(records) <= 900 else {row[0] for row in connection.execute("SELECT trade_date FROM nikkei225_anchor_prices")}
+        connection.executemany(
+            """INSERT INTO nikkei225_anchor_prices
+               (trade_date,open_value,close_value,high_value,low_value,source,updated_at)
+               VALUES (?,?,?,?,?,?,?) ON CONFLICT(trade_date) DO UPDATE SET
+               open_value=excluded.open_value,close_value=excluded.close_value,
+               high_value=excluded.high_value,low_value=excluded.low_value,
+               source=excluded.source,updated_at=excluded.updated_at""",
+            [(row["tradeDate"], row.get("open"), row["close"], row.get("high"), row.get("low"), source, updated_at) for row in records],
+        )
+    return {"inserted": sum(row["tradeDate"] not in existing for row in records),
+            "replaced": sum(row["tradeDate"] in existing for row in records)}
+
+
+def read_nikkei_anchor_records(path: Path) -> list[dict]:
+    init_database(path)
+    with sqlite3.connect(path) as connection:
+        rows = connection.execute(
+            "SELECT trade_date,open_value,close_value,high_value,low_value,source,updated_at "
+            "FROM nikkei225_anchor_prices ORDER BY trade_date"
+        ).fetchall()
+    return [{"tradeDate": d, "open": o, "close": c, "high": h, "low": l, "source": s, "updatedAt": u}
+            for d, o, c, h, l, s, u in rows]

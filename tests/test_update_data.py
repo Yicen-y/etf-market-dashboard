@@ -1,7 +1,7 @@
 from pathlib import Path
 
 from scripts.fetch_data import FetchResult
-from scripts.update_data import index_fetch_ranges, is_empty_trailing_fetch, merge_records, next_fetch_start, normalize_exchange_trading_dates, records_to_calendar, reference_trading_dates, should_fetch_range
+from scripts.update_data import align_index_records_to_reference_calendar, index_fetch_ranges, is_empty_trailing_fetch, is_index_date_valid_for_calendar, merge_index_records, merge_records, next_fetch_start, normalize_exchange_trading_dates, records_to_calendar, reference_trading_dates, should_fetch_range
 from scripts.validate_data import validate_records
 
 
@@ -78,9 +78,24 @@ def test_reference_calendar_uses_wind_verified_dates_without_filling_pair_values
 
 
 def test_normalize_exchange_calendar_removes_officially_closed_day():
-    assert normalize_exchange_trading_dates(["20180615", "20180618", "20180619"]) == [
-        "20180615", "20180619"
+    assert normalize_exchange_trading_dates(["20180615", "20180618", "20180619", "20261007", "20261008"]) == [
+        "20180615", "20180619", "20261008"
     ]
+
+
+def test_h00922_can_replace_unverified_history_without_weakening_other_indexes():
+    import pytest
+    old = [{"tradeDate": "20261008", "indexCode": "H00922", "closeValue": 100.0}]
+    new = [{"tradeDate": "20261008", "indexCode": "H00922", "closeValue": 101.0}]
+    assert merge_index_records(old, new, replace_codes={"H00922"}) == new
+    with pytest.raises(ValueError, match="conflicting index observation"):
+        merge_index_records(old, new)
+
+
+def test_hk_cny_total_return_index_keeps_its_native_observation_dates():
+    mainland_dates = {"20260105", "20260106"}
+    assert is_index_date_valid_for_calendar("H20915", "20260104", mainland_dates)
+    assert not is_index_date_valid_for_calendar("H00922", "20260104", mainland_dates)
 
 
 def test_reference_calendar_uses_exchange_dates_and_drops_spurious_holiday():
@@ -103,6 +118,27 @@ def test_reference_calendar_rejects_missing_exchange_trading_day():
 
     with pytest.raises(ValueError, match="missing exchange trading dates"):
         reference_trading_dates(rows, ["20260105", "20260106", "20260107"])
+
+
+def test_reference_calendar_ignores_unpublished_trailing_exchange_day():
+    rows = [
+        {"tradeDate": "20261106", "values": {"480080": 5000}},
+        # Another series may already have a row for the calendar's current day.
+        {"tradeDate": "20261109", "values": {"H00821": 101}},
+    ]
+
+    assert reference_trading_dates(rows, ["20261106", "20261109"]) == ["20261106"]
+
+
+def test_unpublished_series_tail_is_deferred_from_canonical_snapshot():
+    rows = [
+        {"tradeDate": "20261106", "indexCode": "480080", "closeValue": 5000},
+        {"tradeDate": "20261109", "indexCode": "H20903", "closeValue": 4935.12},
+    ]
+
+    kept, deferred = align_index_records_to_reference_calendar(rows, ["20261106"])
+    assert [row["tradeDate"] for row in kept] == ["20261106"]
+    assert deferred[0]["tradeDate"] == "20261109"
 
 
 def test_index_fetch_ranges_backfills_internal_gap_with_next_trade_day_context():

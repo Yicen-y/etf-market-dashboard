@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>轮动总览 · 投资分析看板</title>
+  <link rel="stylesheet" href="theme.css?v=20261101-2">
+  <link rel="stylesheet" href="ui-components.css?v=20261109-ui3">
+  <link rel="stylesheet" href="overview.css?v=1">
+</head>
+<body>
+  <main class="dashboard-layout">
+    <aside data-dashboard-navigation data-active-section="overview"></aside>
+    <div class="dashboard-content">
+      <header class="page-hero"><div class="page-heading">
+        <p class="eyebrow">投资分析看板</p><h1>轮动总览</h1>
+        <p id="overview-meta" class="subline" role="status">正在读取已发布快照…</p>
+        <button id="overview-retry" class="ui-button hidden" type="button">重试</button>
+      </div></header>
+      <div id="overview-content" class="hidden">
+        <section class="panel">
+          <div class="panel-heading"><h2>近期触发</h2>
+            <label for="event-period">事件范围 <select id="event-period"><option value="5">近5个交易日</option><option value="1" selected>最新交易日</option></select></label>
+          </div>
+          <ul id="overview-events" class="overview-events"></ul>
+          <p class="subline">RSI 30、70 为观察阈值。所有事件基于已发布收盘数据。</p>
+        </section>
+        <section class="panel">
+          <div class="panel-heading"><h2>指数轮动</h2>
+            <label for="overview-filter">组合筛选 <select id="overview-filter">
+              <option value="all">全部</option><option value="latest">最新交易日触发</option>
+              <option value="recent">近5日触发</option><option value="quality">数据异常</option>
+            </select></label>
+          </div>
+          <div class="table-wrap" tabindex="0" aria-label="指数轮动总览表">
+            <table><thead><tr><th>组合</th><th>当前偏向</th><th>40日收益差</th><th>比值距MA242</th><th>RSI14</th><th>最近事件</th><th>触发日期</th><th>数据状态</th></tr></thead>
+            <tbody id="overview-rows"></tbody></table>
+          </div>
+        </section>
+        <section class="panel">
+          <div class="panel-heading"><h2>ETF收益对比</h2><a href="./index.html?strategy=dividend-growth">查看ETF详情</a></div>
+          <p id="etf-dates" class="subline"></p><dl id="overview-etf" class="overview-etf"></dl>
+        </section>
+      </div>
+    </div>
+  </main>
+  <script src="navigation.js?v=20261109-ui3"></script>
+  <script src="overview.js?v=3"></script>
+</body>
+</html>

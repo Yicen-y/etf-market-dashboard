@@ -1,0 +1,8 @@
+.overview-events { padding-left: 1.3rem; }
+.overview-events li { margin: .45rem 0; }
+.overview-etf { display: flex; flex-wrap: wrap; gap: .75rem 1.5rem; }
+.overview-etf div { padding: .5rem 0; }
+.overview-etf dd { margin: .3rem 0 0; font-weight: 700; }
+#overview-rows details { text-align: left; }
+#overview-rows td:last-child { white-space: normal; min-width: 9rem; }
+.overview-state { display: block; color: var(--text-secondary); font-size: .85em; }

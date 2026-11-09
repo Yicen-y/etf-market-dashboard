@@ -1,13 +1,13 @@
 {
-  "snapshot_id": "20261102T215316-d0812f91",
-  "created_at": "2026-11-02T13:53:26.465933+00:00",
+  "snapshot_id": "20261109T203818-0b47bc97",
+  "created_at": "2026-11-09T12:38:32.864861+00:00",
   "status": "published",
   "files": {
-    "etf": "releases\\20261102T215316-d0812f91\\etf_prices.json",
-    "index": "releases\\20261102T215316-d0812f91\\index_prices.json"
+    "etf": "releases\\20261109T203818-0b47bc97\\etf_prices.json",
+    "index": "releases\\20261109T203818-0b47bc97\\index_prices.json"
   },
   "sha256": {
-    "etf": "ffd2c725450ec268a198bdddf03528e73f60d77193e7e5bb05060971bd9a1e02",
-    "index": "8908a0e832dd7a45e638766db7b2f873b953e708b5c249142a595e52a46be57a"
+    "etf": "6063118835d0e42f59633a79ce7527ba667fec20eaf43fe81ff667b0269d7565",
+    "index": "41330a9adcff3149e1ed45da4e6fc12b0b663b06b8c099673f1dd564e9567e32"
   }
 }

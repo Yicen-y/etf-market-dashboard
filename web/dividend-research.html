@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>红利研究 - A股ETF看板</title>
+  <link rel="stylesheet" href="theme.css"><link rel="stylesheet" href="ui-components.css?v=20261109-ui3">
+  <link rel="stylesheet" href="fund-flow.css"><link rel="stylesheet" href="dividend-research.css">
+  <script src="echarts.min.js"></script>
+</head>
+<body>
+<main class="dashboard-layout fund-flow-layout">
+  <aside data-dashboard-navigation data-active-section="research"></aside>
+  <div class="dashboard-content fund-flow-shell">
+    <header class="page-hero research-hero">
+      <div class="page-heading"><p class="eyebrow">投资分析看板 · 红利研究</p><h1>红利研究</h1>
+        <p class="page-subline">官方估值、长期趋势与 A/H 相对表现；研究指标不构成交易建议。</p></div>
+      <div class="research-controls research-global-controls">
+        <label for="research-start">开始日期<input id="research-start" type="date"></label>
+        <label for="research-end">结束日期<input id="research-end" type="date"></label>
+        <button id="yield-refresh" class="ui-button ui-button--primary" type="button">刷新来源数据</button>
+        <span id="research-refresh-state" role="status"></span>
+      </div>
+    </header>
+    <section id="research-status" class="status" role="status">正在载入本地研究数据……</section>
+
+    <section class="panel research-panel">
+      <div class="panel-heading"><div><h2>中证红利官方股息率2与股债利差</h2><p class="research-subtitle">股息率2 − 中债国债收益率曲线10年到期收益率，单位百分点（pp）</p></div>
+        <div class="research-panel-actions"><label for="yield-range">历史窗口<select id="yield-range"><option value="1m">1个月</option><option value="3m">3个月</option><option value="6m">6个月</option><option value="1y">1年</option><option value="5y" selected>5年</option><option value="all">全部</option><option value="custom">自定义</option></select></label><button id="yield-export" class="ui-button" type="button">导出CSV</button></div>
+      </div>
+      <div class="research-kpis">
+        <article><span>区间平均股息率2</span><strong id="yield-kpi-avg">—</strong></article>
+        <article><span>区间最高股息率2</span><strong id="yield-kpi-max">—</strong></article>
+        <article><span>区间最低股息率2</span><strong id="yield-kpi-min">—</strong></article>
+        <article><span>最新股息率分位</span><strong id="yield-kpi-pct">—</strong></article>
+      </div>
+      <p id="yield-coverage" class="research-meta"></p>
+      <div id="yield-chart" class="research-chart research-chart--large"></div>
+      <div class="table-scroll"><table id="yield-table"><thead><tr><th>日期</th><th>股息率2（%）</th><th>中债10Y（%）</th><th>利差（pp）</th><th>历史分位</th><th>状态</th></tr></thead><tbody></tbody></table></div>
+      <p id="yield-source" class="research-footnote"></p>
+    </section>
+
+    <section class="panel research-panel">
+      <div class="panel-heading"><div><h2>中证红利全收益指数长期回归趋势</h2><p class="research-subtitle">对数线性 OLS · ±σ为残差标准差通道，不是置信区间或公允价值。</p></div>
+        <div class="research-panel-actions"><label for="mode">拟合模式<select id="mode"><option value="fixed_asof">当前观察日全样本（事后）</option><option value="expanding_point_in_time">扩展窗口（点时）</option></select></label><label for="fit-start">拟合起点<input id="fit-start" type="date" value="2012-12-31"></label><label for="sigma">σ倍数<select id="sigma"><option value="1">1σ</option><option value="1.5" selected>1.5σ</option><option value="2">2σ</option></select></label><button id="reg-load" class="ui-button" type="button">更新回归</button></div>
+      </div>
+      <p id="reg-meta" class="research-meta"></p><div id="reg-chart" class="research-chart research-chart--large"></div><div id="reg-z-chart" class="research-chart research-chart--compact"></div>
+      <p id="reg-z-explanation" class="research-footnote">Z 值表示指数点位相对回归趋势的偏离，单位为对数残差标准差。0 表示位于趋势线上；正值在上方，负值在下方；±1.5 虚线是研究参考位置，并非涨跌幅或买卖信号。</p>
+      <p id="reg-source" class="research-footnote"></p>
+    </section>
+
+    <section class="panel research-panel">
+      <div class="panel-heading"><div><h2>A股 / 港股红利动量（共同日）</h2><p class="research-subtitle">H00922 与 H20915 均为人民币全收益指数；D40 为 A 端减 H 端，百分点（pp）。</p></div><button id="ah-export" class="ui-button" type="button">导出CSV</button></div>
+      <div class="research-kpis research-kpis--three"><article><span>最近共同有效交易日</span><strong id="ah-kpi-date">—</strong></article><article><span>A−H 40共同日收益差</span><strong id="ah-kpi-spread">—</strong></article><article><span>40共同日数据完整度</span><strong id="ah-kpi-quality">—</strong></article></div>
+      <div class="research-backtest-controls"><strong>A/H理论指数对照回测</strong><label for="ah-cost-bps">单边成本（基点）<input id="ah-cost-bps" type="number" min="0" max="1000" step="1" value="0"></label><button id="ah-backtest" class="ui-button" type="button">运行对照</button><span id="ah-backtest-state" role="status"></span></div>
+      <p class="research-footnote">规则：D40&gt;0 后续持有A端，否则持有H端；信号在收盘后确认，于下一共同观测日收盘执行。结果为人民币全收益指数理论比较，数据仍待逐日权威核验，不代表ETF可交易绩效。</p>
+      <div class="table-scroll"><table id="ah-backtest-table"><thead><tr><th>组合</th><th>期末净值（初始=1）</th><th>累计收益</th><th>最大回撤</th><th>单边换手</th><th>估算成本</th></tr></thead><tbody></tbody></table></div>
+      <p id="ah-state" class="research-meta"></p><div id="ah-chart" class="research-chart research-chart--large"></div><div id="ah-ratio-chart" class="research-chart research-chart--compact"></div>
+      <div class="table-scroll"><table id="ah-table"><thead><tr><th>共同日</th><th>A归一化（100）</th><th>H归一化（100）</th><th>A端40日收益</th><th>H端40日收益</th><th>D40（pp）</th><th>质量</th></tr></thead><tbody></tbody></table></div>
+      <p id="ah-source" class="research-footnote"></p>
+    </section>
+  </div>
+</main>
+<script src="navigation.js?v=20261109-ui3"></script><script src="dividend-research.js"></script>
+</body></html>

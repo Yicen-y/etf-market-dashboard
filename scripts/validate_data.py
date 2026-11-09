@@ -5,7 +5,8 @@ import math
 def validate_records(records: list[dict], product_codes: set[str]) -> list[str]:
     errors: list[str] = []
     seen: set[tuple[str, str]] = set()
-    for row in records:
+    previous_by_code: dict[str, tuple[str, float]] = {}
+    for row in sorted(records, key=lambda item: (item.get("productCode", ""), item.get("tradeDate", ""))):
         trade_date = row.get("tradeDate", "")
         code = row.get("productCode", "")
         try:
@@ -17,6 +18,14 @@ def validate_records(records: list[dict], product_codes: set[str]) -> list[str]:
         price = row.get("closePrice")
         if not _finite_positive(price):
             errors.append(f"invalid closePrice: {code} {trade_date}")
+        else:
+            numeric_price = float(price)
+            previous = previous_by_code.get(code)
+            if previous and abs(numeric_price / previous[1] - 1) > 0.20:
+                errors.append(
+                    f"abnormal daily close change (>20%): {code} {previous[0]}={previous[1]} -> {trade_date}={numeric_price}"
+                )
+            previous_by_code[code] = (trade_date, numeric_price)
         key = (trade_date, code)
         if key in seen:
             errors.append(f"duplicate record: {code} {trade_date}")

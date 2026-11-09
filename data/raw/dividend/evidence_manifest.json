@@ -13,14 +13,24 @@
     },
     {
       "security_id": "STOCK:600519",
-      "source_id": "sse:600519:2026-06-22:027",
-      "publisher": "贵州茅台 / 上海证券交易所",
-      "url": "https://static.sse.com.cn/disclosure/listedinfo/announcement/c/new/2026-06-22/600519_20260622_ZTRO.pdf",
+      "source_id": "cninfo:600519:2026-06-22:027",
+      "publisher": "贵州茅台 / 巨潮资讯网",
+      "url": "https://static.cninfo.com.cn/finalpage/2026-06-22/1225379934.PDF",
       "mirror_url": "http://file.finance.sina.com.cn/211.154.219.97:9494/MRGG/CNSESH_STOCK/2026/2026-6/2026-06-22/12402962.PDF",
-      "local_file": "600519_20260622_12402962.pdf",
+      "local_file": "600519_20260622_CNINFO.pdf",
       "sha256": "6b082b6a00db748f23b6dea166b0296cd69d8c10542d352e23d2e2c344ea516e",
-      "fields": {"published_at": "2026-06-22", "announcement_no": "临2026-027", "amount_per_share": "28.02423", "record_date": "2026-06-25", "ex_date": "2026-06-26", "total_amount": "35032574305.19"},
-      "verification_status": "mirror_only_official_url_unavailable"
+      "fields": {"published_at": "2026-06-22", "announcement_no": "临2026-027", "distribution_label": "2025年年度", "fiscal_year": 2025, "amount_per_share": "28.02423", "record_date": "2026-06-25", "ex_date": "2026-06-26", "total_amount": "35032574305.19"},
+      "verification_status": "official_source_downloaded"
+    },
+    {
+      "security_id": "STOCK:600519",
+      "source_id": "cninfo:600519:2025-12-11:053",
+      "publisher": "贵州茅台 / 巨潮资讯网",
+      "url": "https://static.cninfo.com.cn/finalpage/2025-12-11/1224867074.PDF",
+      "local_file": "600519_20251211_CNINFO.pdf",
+      "sha256": "ad2f4548490a203bbcada1181341d9dc90b19a64a0ecf14ff1c8e6b9d4b71673",
+      "fields": {"published_at": "2025-12-11", "announcement_no": "临2025-053", "distribution_label": "2025年中期", "fiscal_year": 2025, "amount_per_share": "23.957", "record_date": "2025-12-18", "ex_date": "2025-12-19", "total_amount": "30000637540.76"},
+      "verification_status": "official_source_downloaded"
     }
   ]
 }

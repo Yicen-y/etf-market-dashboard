@@ -1,0 +1,11 @@
+{
+  "provider": "AkShare",
+  "upstream": "Eastmoney",
+  "product_code": "512530",
+  "start_date": "20180101",
+  "end_date": "20261105",
+  "period": "daily",
+  "adjust": "",
+  "sha256": "a4b845641df88a1766b51c657fca72be5e6480728133e3b6b1e763057ac7f540",
+  "record_count": 1724
+}

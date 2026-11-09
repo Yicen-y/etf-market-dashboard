@@ -1,7 +1,14 @@
 .dividend-main { min-width: 0; }
 .dividend-shell { min-width: 0; }
 .dividend-search { width: 100%; min-height: 48px; padding: 11px 14px; font-size: 16px; }
+.dividend-action-status { margin: 8px 0 0; padding: 8px 12px; border-radius: 8px; color: var(--text-secondary); background: #f8fafc; }
+.dividend-action-status[data-state="error"] { color: var(--error); background: #fff1f2; }
+.dividend-action-status[data-state="success"] { color: #18733a; background: #edf8ef; }
 .dividend-results { margin-top: 12px; }
+.dividend-search-option { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:9px 4px; border-bottom:1px solid var(--border); }
+.dividend-search-option[aria-selected="true"] { background:var(--primary-bg); }
+.dividend-search-option button { min-height:40px; }
+@media (max-width:600px) { .dividend-search-option { flex-direction:column; align-items:flex-start; } }
 .dividend-table, .dividend-detail { margin-top: var(--card-gap); }
 .dividend-muted { color: var(--text-secondary); }
 .dividend-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
@@ -9,6 +16,9 @@
 .dividend-card strong { display: block; margin-top: 8px; font-size: 24px; }
 .dividend-watch-table td:not(:first-child) { white-space: nowrap; }
 .dividend-results button, .dividend-table button { margin-left: 6px; }
+.dividend-provider-history { margin-top: var(--card-gap); padding-top: 12px; border-top: 1px solid var(--border); }
+.dividend-provider-history-chart { display: block; width: 100%; height: 220px; margin-top: 12px; border: 1px solid var(--border); border-radius: 8px; }
+.dividend-history-stats { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 
 @media (max-width: 760px) {
   .dividend-grid { grid-template-columns: 1fr; }

@@ -1,0 +1,171 @@
+{
+  "announcements": [
+    {
+      "announced_at": "2015-06-02",
+      "ex_date": "2015-06-08",
+      "raw_cash_per_10": "4.5",
+      "raw_description": "10送5股派4.5元(含税)",
+      "report_period": "2014年报",
+      "security_id": "STOCK:603558",
+      "source_document_url": null,
+      "source_id": "akshare:cninfo:stock_dividend_cninfo",
+      "verification_level": "UNVERIFIED"
+    },
+    {
+      "announced_at": "2016-06-09",
+      "ex_date": "2016-06-17",
+      "raw_cash_per_10": "1.0",
+      "raw_description": "10派1元(含税)",
+      "report_period": "2015年报",
+      "security_id": "STOCK:603558",
+      "source_document_url": null,
+      "source_id": "akshare:cninfo:stock_dividend_cninfo",
+      "verification_level": "UNVERIFIED"
+    },
+    {
+      "announced_at": "2017-04-25",
+      "ex_date": "2017-05-02",
+      "raw_cash_per_10": "1.0",
+      "raw_description": "10派1元(含税)",
+      "report_period": "2016年报",
+      "security_id": "STOCK:603558",
+      "source_document_url": null,
+      "source_id": "akshare:cninfo:stock_dividend_cninfo",
+      "verification_level": "UNVERIFIED"
+    },
+    {
+      "announced_at": "2018-05-22",
+      "ex_date": "2018-05-28",
+      "raw_cash_per_10": "1.5",
+      "raw_description": "10派1.5元(含税)",
+      "report_period": "2017年报",
+      "security_id": "STOCK:603558",
+      "source_document_url": null,
+      "source_id": "akshare:cninfo:stock_dividend_cninfo",
+      "verification_level": "UNVERIFIED"
+    },
+    {
+      "announced_at": "2019-06-06",
+      "ex_date": "2019-06-13",
+      "raw_cash_per_10": "0.5",
+      "raw_description": "10派0.5元(含税)",
+      "report_period": "2018年报",
+      "security_id": "STOCK:603558",
+      "source_document_url": null,
+      "source_id": "akshare:cninfo:stock_dividend_cninfo",
+      "verification_level": "UNVERIFIED"
+    },
+    {
+      "announced_at": "2020-04-20",
+      "ex_date": "2020-04-27",
+      "raw_cash_per_10": "3.5",
+      "raw_description": "10派3.5元(含税)",
+      "report_period": "2019年报",
+      "security_id": "STOCK:603558",
+      "source_document_url": null,
+      "source_id": "akshare:cninfo:stock_dividend_cninfo",
+      "verification_level": "UNVERIFIED"
+    },
+    {
+      "announced_at": "2022-06-15",
+      "ex_date": "2022-06-21",
+      "raw_cash_per_10": "1.5",
+      "raw_description": "10派1.5元(含税)",
+      "report_period": "2021年报",
+      "security_id": "STOCK:603558",
+      "source_document_url": null,
+      "source_id": "akshare:cninfo:stock_dividend_cninfo",
+      "verification_level": "UNVERIFIED"
+    },
+    {
+      "announced_at": "2023-04-27",
+      "ex_date": "2023-05-09",
+      "raw_cash_per_10": "4.0",
+      "raw_description": "10派4元(含税)",
+      "report_period": "2022年报",
+      "security_id": "STOCK:603558",
+      "source_document_url": null,
+      "source_id": "akshare:cninfo:stock_dividend_cninfo",
+      "verification_level": "UNVERIFIED"
+    },
+    {
+      "announced_at": "2023-11-21",
+      "ex_date": "2023-11-27",
+      "raw_cash_per_10": "2.5",
+      "raw_description": "10派2.5元(含税)",
+      "report_period": "2023三季报",
+      "security_id": "STOCK:603558",
+      "source_document_url": null,
+      "source_id": "akshare:cninfo:stock_dividend_cninfo",
+      "verification_level": "UNVERIFIED"
+    },
+    {
+      "announced_at": "2024-04-24",
+      "ex_date": "2024-05-06",
+      "raw_cash_per_10": "2.5",
+      "raw_description": "10派2.5元(含税)",
+      "report_period": "2023年报",
+      "security_id": "STOCK:603558",
+      "source_document_url": null,
+      "source_id": "akshare:cninfo:stock_dividend_cninfo",
+      "verification_level": "UNVERIFIED"
+    },
+    {
+      "announced_at": "2024-08-22",
+      "ex_date": "2024-08-29",
+      "raw_cash_per_10": "2.0",
+      "raw_description": "10派2元(含税)",
+      "report_period": "2024半年报",
+      "security_id": "STOCK:603558",
+      "source_document_url": null,
+      "source_id": "akshare:cninfo:stock_dividend_cninfo",
+      "verification_level": "UNVERIFIED"
+    },
+    {
+      "announced_at": "2025-04-30",
+      "ex_date": "2025-05-09",
+      "raw_cash_per_10": "3.0",
+      "raw_description": "10派3元(含税)",
+      "report_period": "2024年报",
+      "security_id": "STOCK:603558",
+      "source_document_url": null,
+      "source_id": "akshare:cninfo:stock_dividend_cninfo",
+      "verification_level": "UNVERIFIED"
+    },
+    {
+      "announced_at": "2025-08-26",
+      "ex_date": "2025-09-01",
+      "raw_cash_per_10": "2.5",
+      "raw_description": "10派2.5元(含税)",
+      "report_period": "2025半年报",
+      "security_id": "STOCK:603558",
+      "source_document_url": null,
+      "source_id": "akshare:cninfo:stock_dividend_cninfo",
+      "verification_level": "UNVERIFIED"
+    },
+    {
+      "announced_at": "2026-04-24",
+      "ex_date": "2026-04-30",
+      "raw_cash_per_10": "3.5",
+      "raw_description": "10派3.5元(含税)",
+      "report_period": "2025年报",
+      "security_id": "STOCK:603558",
+      "source_document_url": null,
+      "source_id": "akshare:cninfo:stock_dividend_cninfo",
+      "verification_level": "UNVERIFIED"
+    },
+    {
+      "announced_at": "2026-08-19",
+      "ex_date": "2026-08-25",
+      "raw_cash_per_10": "3.0",
+      "raw_description": "10派3元(含税)",
+      "report_period": "2026半年报",
+      "security_id": "STOCK:603558",
+      "source_document_url": null,
+      "source_id": "akshare:cninfo:stock_dividend_cninfo",
+      "verification_level": "UNVERIFIED"
+    }
+  ],
+  "errors": [],
+  "provider": "AkShare"
+}
