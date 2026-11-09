@@ -1,6 +1,6 @@
 import pytest
 
-from scripts import credential_settings
+from scripts import credential_settings, wind_credentials
 
 
 class FakeKeyring:
@@ -26,9 +26,10 @@ class FakeKeyring:
 def test_provider_whitelist_and_keyring_account_mapping():
     fake = FakeKeyring()
 
-    credential_settings.set_credential("wind_mcp", "wind-secret", keyring_module=fake)
-    credential_settings.set_credential("htbr_etf", "htbr-secret", keyring_module=fake)
-    credential_settings.set_credential("etfirst", "etfirst-secret", keyring_module=fake)
+    validated = credential_settings._test_keyring(fake)
+    credential_settings.set_credential("wind_mcp", "wind-secret", keyring_module=validated)
+    credential_settings.set_credential("htbr_etf", "htbr-secret", keyring_module=validated)
+    credential_settings.set_credential("etfirst", "etfirst-secret", keyring_module=validated)
 
     assert fake.values[(credential_settings.SERVICE, "WIND_MCP_AUTH")] == "wind-secret"
     assert fake.values[(credential_settings.SERVICE, "HTBR_ETF_API_KEY")] == "htbr-secret"
@@ -39,9 +40,10 @@ def test_provider_whitelist_and_keyring_account_mapping():
 
 def test_status_only_exposes_configuration_and_masked_value():
     fake = FakeKeyring()
-    credential_settings.set_credential("wind_mcp", "do-not-print-this", keyring_module=fake)
+    validated = credential_settings._test_keyring(fake)
+    credential_settings.set_credential("wind_mcp", "do-not-print-this", keyring_module=validated)
 
-    statuses = credential_settings.list_credential_status(keyring_module=fake)
+    statuses = credential_settings.list_credential_status(keyring_module=validated)
 
     assert statuses[0] == {"provider": "wind_mcp", "configured": True, "masked": "****"}
     assert all(set(item) == {"provider", "configured", "masked"} for item in statuses)
@@ -52,13 +54,14 @@ def test_delete_is_idempotent_and_rejects_empty_values(monkeypatch):
     monkeypatch.delenv("WIND_MCP_AUTH", raising=False)
     monkeypatch.delenv("WIND_MCP_TOKEN", raising=False)
     fake = FakeKeyring()
+    validated = credential_settings._test_keyring(fake)
 
-    credential_settings.delete_credential("wind_mcp", keyring_module=fake)
-    credential_settings.set_credential("wind_mcp", "secret", keyring_module=fake)
-    credential_settings.delete_credential("wind_mcp", keyring_module=fake)
-    credential_settings.delete_credential("wind_mcp", keyring_module=fake)
+    credential_settings.delete_credential("wind_mcp", keyring_module=validated)
+    credential_settings.set_credential("wind_mcp", "secret", keyring_module=validated)
+    credential_settings.delete_credential("wind_mcp", keyring_module=validated)
+    credential_settings.delete_credential("wind_mcp", keyring_module=validated)
 
-    assert credential_settings.get_credential("wind_mcp", keyring_module=fake) is None
+    assert credential_settings.get_credential("wind_mcp", keyring_module=validated) is None
     with pytest.raises(ValueError, match="Credential value cannot be empty"):
         credential_settings.set_credential("wind_mcp", "  ", keyring_module=fake)
 
@@ -67,8 +70,9 @@ def test_wind_credential_normalization_stays_in_wind_adapter(monkeypatch):
     monkeypatch.delenv("WIND_MCP_AUTH", raising=False)
     monkeypatch.delenv("WIND_MCP_TOKEN", raising=False)
     fake = FakeKeyring()
-    credential_settings.set_credential("wind_mcp", "raw-wind-key", keyring_module=fake)
-    monkeypatch.setattr(credential_settings, "_keyring", lambda: fake)
+    validated = credential_settings._test_keyring(fake)
+    credential_settings.set_credential("wind_mcp", "raw-wind-key", keyring_module=validated)
+    monkeypatch.setattr(credential_settings, "_keyring", lambda: validated)
 
     assert credential_settings.get_credential("wind_mcp") == "raw-wind-key"
 
@@ -87,11 +91,36 @@ def test_plaintext_backend_is_rejected(monkeypatch):
         credential_settings.set_credential("wind_mcp", "secret")
 
 
+def test_raw_injected_keyring_cannot_bypass_backend_validation():
+    with pytest.raises(RuntimeError, match="Unvalidated keyring injection"):
+        credential_settings.set_credential("wind_mcp", "secret", keyring_module=FakeKeyring())
+
+
 def test_test_credential_does_not_return_secret():
     fake = FakeKeyring()
-    credential_settings.set_credential("etfirst", "etfirst-secret", keyring_module=fake)
+    validated = credential_settings._test_keyring(fake)
+    credential_settings.set_credential("etfirst", "etfirst-secret", keyring_module=validated)
 
-    result = credential_settings.test_credential("etfirst", keyring_module=fake)
+    result = credential_settings.test_credential("etfirst", keyring_module=validated)
 
     assert result == {"provider": "etfirst", "configured": True, "ok": True}
     assert "etfirst-secret" not in str(result)
+
+
+def test_wind_environment_override_works_when_keyring_is_unavailable(monkeypatch):
+    def unavailable():
+        raise RuntimeError("keyring unavailable")
+
+    monkeypatch.setattr(wind_credentials, "_keyring", unavailable)
+
+    assert wind_credentials.get_authorization({"WIND_MCP_AUTH": "env-key"}) == "Bearer env-key"
+    assert wind_credentials.get_authorization({"WIND_MCP_TOKEN": "token-key"}) == "Bearer token-key"
+
+
+def test_wind_environment_override_has_priority_over_keyring(monkeypatch):
+    fake = FakeKeyring()
+    fake.set_password(credential_settings.SERVICE, "WIND_MCP_AUTH", "vault-key")
+    validated = credential_settings._test_keyring(fake)
+    monkeypatch.setattr(wind_credentials, "_keyring", lambda: validated)
+
+    assert wind_credentials.get_authorization({"WIND_MCP_AUTH": "env-key"}) == "Bearer env-key"

@@ -14,20 +14,19 @@ ACCOUNT = "WIND_MCP_AUTH"
 
 
 def _keyring():
-    import keyring
-    backend = keyring.get_keyring()
-    if "Windows" not in type(backend).__module__:
-        raise RuntimeError("Windows Credential Vault backend is unavailable; refusing to store a plaintext credential")
-    return keyring
+    return credential_settings._keyring()
 
 
 def get_authorization(environ=None) -> str | None:
     env = os.environ if environ is None else environ
+    environment_value = env.get("WIND_MCP_AUTH") or env.get("WIND_MCP_TOKEN")
+    if environment_value and environment_value.strip():
+        return _normalize(environment_value)
     try:
         value = credential_settings.get_credential(
             credential_settings.CredentialProvider.WIND_MCP,
             environ=env,
-            keyring_module=_keyring(),
+            keyring_module=credential_settings._adapter_keyring(_keyring()),
         )
     except Exception:
         return None
@@ -53,13 +52,13 @@ def main(argv=None) -> int:
             credential_settings.set_credential(
                 credential_settings.CredentialProvider.WIND_MCP,
                 value,
-                keyring_module=keyring,
+                keyring_module=credential_settings._adapter_keyring(keyring),
             )
             print("Wind MCP 凭证已保存到 Windows 凭证库。")
         elif args.action == "delete":
             credential_settings.delete_credential(
                 credential_settings.CredentialProvider.WIND_MCP,
-                keyring_module=keyring,
+                keyring_module=credential_settings._adapter_keyring(keyring),
             )
             print("Wind MCP 凭证已从 Windows 凭证库删除。")
         else:

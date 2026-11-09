@@ -26,6 +26,26 @@ class CredentialSpec:
     environment_names: tuple[str, ...]
 
 
+class ValidatedKeyring:
+    """A keyring module whose backend has passed the Windows-only check."""
+
+    def __init__(self, module):
+        self.module = module
+
+    def get_password(self, service, account):
+        return self.module.get_password(service, account)
+
+    def set_password(self, service, account, value):
+        return self.module.set_password(service, account, value)
+
+    def delete_password(self, service, account):
+        return self.module.delete_password(service, account)
+
+    @property
+    def errors(self):
+        return getattr(self.module, "errors", None)
+
+
 _SPECS: dict[CredentialProvider, CredentialSpec] = {
     CredentialProvider.WIND_MCP: CredentialSpec("WIND_MCP_AUTH", ("WIND_MCP_AUTH", "WIND_MCP_TOKEN")),
     CredentialProvider.HTBR_ETF: CredentialSpec("HTBR_ETF_API_KEY", ("HTBR_ETF_API_KEY",)),
@@ -48,7 +68,7 @@ def _keyring():
         raise RuntimeError(
             "Windows Credential Vault backend is unavailable; refusing to store a plaintext credential"
         )
-    return keyring
+    return ValidatedKeyring(keyring)
 
 
 def _provider(provider: CredentialProvider | str) -> CredentialProvider:
@@ -63,10 +83,26 @@ def _spec(provider: CredentialProvider | str) -> tuple[CredentialProvider, Crede
     return normalized, _SPECS[normalized]
 
 
+def _test_keyring(keyring_module) -> ValidatedKeyring:
+    """Wrap an in-memory fake for tests without widening the public seam."""
+    return ValidatedKeyring(keyring_module)
+
+
+def _adapter_keyring(keyring_module) -> ValidatedKeyring:
+    """Adapt an already-validated CLI keyring to the service boundary."""
+    if isinstance(keyring_module, ValidatedKeyring):
+        return keyring_module
+    return ValidatedKeyring(keyring_module)
+
+
 def _backend(keyring_module=None):
-    # Explicit injection is intentionally supported for deterministic tests and
-    # adapters; production callers use the validated Windows backend above.
-    return keyring_module if keyring_module is not None else _keyring()
+    if keyring_module is None:
+        return _keyring()
+    if not isinstance(keyring_module, ValidatedKeyring):
+        raise RuntimeError(
+            "Unvalidated keyring injection is refused; use the Windows Credential Vault backend"
+        )
+    return keyring_module
 
 
 def _environment_value(spec: CredentialSpec, environ: Mapping[str, str] | None) -> str | None:
@@ -124,14 +160,13 @@ def list_credential_status(
     *,
     keyring_module=None,
 ) -> list[dict[str, Any]]:
-    return [
-        {
-            "provider": provider.value,
-            "configured": bool(get_credential(provider, environ, keyring_module=keyring_module)),
-            "masked": _mask(get_credential(provider, environ, keyring_module=keyring_module)),
-        }
-        for provider in CredentialProvider
-    ]
+    statuses = []
+    for provider in CredentialProvider:
+        value = get_credential(provider, environ, keyring_module=keyring_module)
+        statuses.append(
+            {"provider": provider.value, "configured": bool(value), "masked": _mask(value)}
+        )
+    return statuses
 
 
 def test_credential(

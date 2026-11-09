@@ -88,3 +88,35 @@ python -m py_compile scripts/credential_settings.py scripts/wind_credentials.py
 - 环境变量是明确的兼容覆盖，优先级高于凭证库。使用者若设置了 `WIND_MCP_AUTH` 或 `WIND_MCP_TOKEN`，读取结果会优先采用环境变量。
 - 生产环境要求 Windows Credential Manager 后端；在非 Windows 或未安装可用后端时，服务会拒绝保存，避免回退到明文存储。
 - 测试使用内存 FakeKeyring 注入，不会读取、打印或保存真实凭证。
+
+## 任务级审查修复
+
+根据 `.superpowers/sdd/task-1-review.md` 修复了两个 Important 问题：
+
+1. 环境变量优先级：`wind_credentials.get_authorization()` 现在先读取 `WIND_MCP_AUTH` / `WIND_MCP_TOKEN`，只有环境变量为空时才初始化并访问 keyring。因此 keyring 不可用、后端异常或不支持 Windows 时，显式环境变量仍然有效；环境变量同时存在时仍优先于凭证库。
+2. keyring 注入边界：凭证服务新增 `ValidatedKeyring` 包装器，公开存取操作拒绝未经验证的原始 `keyring_module`，不能通过任意对象绕过 Windows Credential Manager 校验。测试和 Wind CLI 适配器必须经过明确的包装边界。
+
+同时修复了审查指出的重复读取问题：`list_credential_status()` 每个 provider 只读取一次凭证，再生成 `configured` 与 `masked` 字段。
+
+新增覆盖测试：
+
+- keyring 不可用时环境变量仍可读取；
+- 环境变量优先于凭证库；
+- 原始 keyring 注入不能绕过校验；
+- 已验证包装器可用于测试和 CLI 适配。
+
+### 修复后的测试命令及输出
+
+命令：
+
+```text
+python -m pytest tests/test_credential_settings.py tests/test_wind_credentials.py tests/test_validate_wind_cli.py tests/test_wind_mcp_client.py -q
+```
+
+输出：
+
+```text
+20 passed in 2.58s
+```
+
+本次修复未输出任何真实凭证。
