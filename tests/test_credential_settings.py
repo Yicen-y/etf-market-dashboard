@@ -38,6 +38,14 @@ def test_provider_whitelist_and_keyring_account_mapping():
         credential_settings.set_credential("unknown", "secret", keyring_module=fake)
 
 
+def test_htbr_short_name_maps_to_existing_credential_account():
+    fake = FakeKeyring()
+    validated = credential_settings._test_keyring(fake)
+    credential_settings.set_credential("htbr", "htbr-secret", keyring_module=validated)
+
+    assert credential_settings.get_credential("htbr", keyring_module=validated) == "htbr-secret"
+
+
 def test_status_only_exposes_configuration_and_masked_value():
     fake = FakeKeyring()
     validated = credential_settings._test_keyring(fake)
@@ -113,8 +121,65 @@ def test_test_credential_does_not_return_secret():
 
     result = credential_settings.test_credential("etfirst", keyring_module=validated)
 
-    assert result == {"provider": "etfirst", "configured": True, "ok": True}
+    assert result == {"provider": "etfirst", "configured": True, "ok": True, "message": "连接成功"}
     assert "etfirst-secret" not in str(result)
+
+
+def test_test_credential_runs_bounded_etfirst_status_check_without_returning_key(monkeypatch):
+    fake = FakeKeyring()
+    validated = credential_settings._test_keyring(fake)
+    credential_settings.set_credential("etfirst", "etfirst-secret", keyring_module=validated)
+    calls = []
+
+    def run(command, **kwargs):
+        calls.append((command, kwargs))
+        assert "etfirst-secret" in kwargs["env"]["ETFIRST_API_KEY"]
+        return type("Completed", (), {"returncode": 0, "stdout": b'{"ok": true}', "stderr": b""})()
+
+    monkeypatch.setattr(credential_settings.subprocess, "run", run)
+    result = credential_settings.test_credential("etfirst", keyring_module=validated)
+
+    assert result == {"provider": "etfirst", "configured": True, "ok": True, "message": "连接成功"}
+    assert calls and calls[0][0][:3] == ["etfirst", "--json", "config"]
+    assert "etfirst-secret" not in str(result)
+
+
+def test_test_credential_redacts_provider_failure_and_preserves_existing_credential(monkeypatch):
+    fake = FakeKeyring()
+    validated = credential_settings._test_keyring(fake)
+    credential_settings.set_credential("etfirst", "existing-secret", keyring_module=validated)
+
+    def run(command, **kwargs):
+        raise TimeoutError("request failed with existing-secret")
+
+    monkeypatch.setattr(credential_settings.subprocess, "run", run)
+    result = credential_settings.test_credential("etfirst", keyring_module=validated)
+
+    assert result["provider"] == "etfirst"
+    assert result["configured"] is True
+    assert result["ok"] is False
+    assert "existing-secret" not in str(result)
+    assert "TimeoutError" in result["message"]
+    assert credential_settings.get_credential("etfirst", keyring_module=validated) == "existing-secret"
+
+
+def test_test_credential_runs_htbr_status_with_key_in_child_environment(monkeypatch):
+    fake = FakeKeyring()
+    validated = credential_settings._test_keyring(fake)
+    credential_settings.set_credential("htbr_etf", "htbr-secret", keyring_module=validated)
+    observed = {}
+
+    def run(command, **kwargs):
+        observed["command"] = command
+        observed["env"] = kwargs["env"]
+        return type("Completed", (), {"returncode": 0, "stdout": b"ok", "stderr": b""})()
+
+    monkeypatch.setattr(credential_settings.subprocess, "run", run)
+    result = credential_settings.test_credential("htbr_etf", keyring_module=validated)
+
+    assert result["ok"] is True
+    assert observed["env"]["HTBR_ETF_API_KEY"] == "htbr-secret"
+    assert "htbr-secret" not in str(result)
 
 
 def test_wind_environment_override_works_when_keyring_is_unavailable(monkeypatch):

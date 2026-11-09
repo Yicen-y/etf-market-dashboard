@@ -5,6 +5,54 @@ from scripts.update_data import align_index_records_to_reference_calendar, index
 from scripts.validate_data import validate_records
 
 
+def test_etfirst_fetch_resolves_unified_credential_when_no_explicit_key(monkeypatch):
+    import json
+    import scripts.fetch_data as fetch_data
+
+    observed = {}
+
+    def run(command, **kwargs):
+        observed["command"] = command
+        return type("Completed", (), {
+            "returncode": 0,
+            "stdout": json.dumps({"results": {"getReturnTrendList": {
+                "512530": [{"tradeDate": "20260105", "closePrice": "1.23"}]
+            }}}).encode(),
+            "stderr": b"",
+        })()
+
+    monkeypatch.setattr(fetch_data, "get_credential", lambda provider: "configured-etfirst-key")
+    monkeypatch.setattr(fetch_data.subprocess, "run", run)
+    result = fetch_data.fetch_product_history_etfirst("512530", "20260105", "20260105")
+
+    assert result.rows[0]["closePrice"] == 1.23
+    assert observed["command"][-2:] == ["--api-key", "configured-etfirst-key"]
+    assert "configured-etfirst-key" not in str(result.request)
+
+
+def test_etfirst_fetch_keeps_explicit_api_key_compatibility(monkeypatch):
+    import json
+    import scripts.fetch_data as fetch_data
+
+    observed = {}
+
+    def run(command, **kwargs):
+        observed["command"] = command
+        return type("Completed", (), {
+            "returncode": 0,
+            "stdout": json.dumps({"results": {"getReturnTrendList": {
+                "512530": []
+            }}}).encode(),
+            "stderr": b"",
+        })()
+
+    monkeypatch.setattr(fetch_data, "get_credential", lambda provider: "stored-key")
+    monkeypatch.setattr(fetch_data.subprocess, "run", run)
+    fetch_data.fetch_product_history_etfirst("512530", "20260105", "20260105", api_key="explicit-key")
+
+    assert observed["command"][-2:] == ["--api-key", "explicit-key"]
+
+
 def test_merge_rejects_conflicting_observation_instead_of_silent_overwrite():
     import pytest
     old = [{"tradeDate": "20260105", "productCode": "512530", "closePrice": 1.5}]

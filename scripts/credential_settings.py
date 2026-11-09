@@ -7,6 +7,7 @@ The service deliberately exposes status only as configured/masked metadata.
 from __future__ import annotations
 
 import os
+import subprocess
 from dataclasses import dataclass
 from enum import Enum
 from typing import Any, Mapping, TypedDict
@@ -80,6 +81,8 @@ def _keyring():
 
 
 def _provider(provider: CredentialProvider | str) -> CredentialProvider:
+    if provider == "htbr":
+        provider = CredentialProvider.HTBR_ETF
     try:
         return provider if isinstance(provider, CredentialProvider) else CredentialProvider(provider)
     except ValueError as exc:
@@ -186,5 +189,40 @@ def test_credential(
     keyring_module=None,
 ) -> dict[str, Any]:
     normalized = _provider(provider)
-    configured = bool(get_credential(normalized, environ, keyring_module=keyring_module))
-    return {"provider": normalized.value, "configured": configured, "ok": configured}
+    value = get_credential(normalized, environ, keyring_module=keyring_module)
+    configured = bool(value)
+    if not configured:
+        return {"provider": normalized.value, "configured": False, "ok": False, "message": "未配置凭证"}
+
+    child_env = dict(os.environ if environ is None else environ)
+    child_env[_SPECS[normalized].account] = value
+    try:
+        if normalized is CredentialProvider.ETFIRST:
+            command = ["etfirst", "--json", "config", "--no-show"]
+        elif normalized is CredentialProvider.HTBR_ETF:
+            from pathlib import Path
+            skill_root = Path.home() / ".codex" / "skills" / "htbr-etf-skill"
+            python = child_env.get("HTBR_PYTHON") or os.sys.executable
+            command = [python, str(skill_root / "config.py"), "status"]
+        else:
+            from scripts.wind_credentials import get_authorization
+            from scripts.wind_config import DEFAULT_WIND_MCP_URL
+            from scripts.wind_mcp_client import WindMcpClient
+            authorization = get_authorization(child_env)
+            with WindMcpClient(child_env.get("WIND_MCP_URL", DEFAULT_WIND_MCP_URL), authorization, timeout=15) as client:
+                client.initialize()
+                tools = client.list_tools()
+            return {"provider": normalized.value, "configured": True, "ok": True,
+                    "message": f"连接成功（发现 {len(tools)} 个工具）"}
+
+        completed = subprocess.run(
+            command, env=child_env, capture_output=True, text=True,
+            timeout=15, check=False,
+        )
+        if completed.returncode != 0:
+            raise RuntimeError("提供方返回失败")
+        return {"provider": normalized.value, "configured": True, "ok": True, "message": "连接成功"}
+    except Exception as exc:
+        # Never expose command output or the configured value in the status API.
+        return {"provider": normalized.value, "configured": True, "ok": False,
+                "message": f"{type(exc).__name__}: {str(exc).replace(value, '[REDACTED]')}"}

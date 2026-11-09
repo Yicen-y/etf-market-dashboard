@@ -16,6 +16,7 @@ from pathlib import Path
 
 from scripts.wind_credentials import get_authorization
 from scripts.wind_mcp_client import WindMcpClient
+from scripts.credential_settings import get_credential
 from .db import connect, init_schema
 
 
@@ -362,14 +363,23 @@ def _htbr_python() -> str:
     return str(candidate) if candidate.is_file() else sys.executable
 
 
-def _skill_call(api_id: str, params: dict) -> dict:
+def _htbr_environment() -> dict[str, str]:
+    environment = os.environ.copy()
+    key = get_credential('htbr')
+    if key:
+        environment['HTBR_ETF_API_KEY'] = key
+    return environment
+
+
+def _skill_call(api_id: str, params: dict, *, environment: dict[str, str] | None = None) -> dict:
     script = SKILL_ROOT / 'scripts' / 'api_client.py'
     if not script.is_file():
         raise RuntimeError('华泰柏瑞ETF技能未安装')
     cmd = [_htbr_python(), str(script), 'invoke', api_id,
            json.dumps(params, ensure_ascii=False)]
     result = subprocess.run(cmd, capture_output=True, text=True, encoding='utf-8',
-                            errors='replace', timeout=70, check=False)
+                            errors='replace', timeout=70, check=False,
+                            env=environment or _htbr_environment())
     if result.returncode != 0:
         raise RuntimeError(f'华泰柏瑞接口调用失败（退出码{result.returncode}）')
     payload = json.loads(result.stdout)
@@ -402,15 +412,16 @@ def parse_htbr_etf_yield(resolved: dict, valuation: dict, code: str) -> dict:
 
 
 def fetch_htbr_etf_yield(code: str) -> dict:
+    environment = _htbr_environment()
     status = subprocess.run([_htbr_python(), str(SKILL_ROOT / 'config.py'), 'status'],
-                            capture_output=True, timeout=15, check=False)
+                            capture_output=True, timeout=15, check=False, env=environment)
     if status.returncode != 0:
         raise RuntimeError('华泰柏瑞ETF凭证不可用')
-    resolved = _skill_call('fund-resolve', {'secuCode': code})
+    resolved = _skill_call('fund-resolve', {'secuCode': code}, environment=environment)
     candidates = resolved['data']['candidates']
     if resolved['data'].get('matchCount') != 1 or len(candidates) != 1:
         raise ValueError('ETF代码无法唯一映射到基金内码')
-    valuation = _skill_call('fund-valuation', {'innerCode': int(candidates[0]['innerCode'])})
+    valuation = _skill_call('fund-valuation', {'innerCode': int(candidates[0]['innerCode'])}, environment=environment)
     return parse_htbr_etf_yield(resolved, valuation, code)
 
 

@@ -11,6 +11,7 @@ import subprocess
 import time
 from typing import Any, Iterator
 from .config import INDEX_START_DATE, PRODUCT_START_DATES
+from .credential_settings import get_credential
 
 
 @dataclass(frozen=True)
@@ -146,9 +147,16 @@ def discover_start_date(product_code: str, end_date: str) -> str:
     return PRODUCT_START_DATES.get(product_code, "20130101")
 
 
-def fetch_product_history_etfirst(product_code: str, start_date: str, end_date: str) -> FetchResult:
-    command = ["etfirst", "--json", "etf-detail", "all", "--product-code", product_code,
-               "--start-date", start_date, "--end-date", end_date]
+def _etfirst_command(command: list[str], api_key: str | None) -> list[str]:
+    if api_key:
+        return command + ["--api-key", api_key]
+    configured = get_credential("etfirst")
+    return command + (["--api-key", configured] if configured else [])
+
+
+def fetch_product_history_etfirst(product_code: str, start_date: str, end_date: str, api_key=None) -> FetchResult:
+    command = _etfirst_command(["etfirst", "--json", "etf-detail", "all", "--product-code", product_code,
+               "--start-date", start_date, "--end-date", end_date], api_key)
     result = subprocess.run(command, capture_output=True, text=False, check=False)
     if result.returncode != 0:
         error = result.stderr.decode("utf-8", errors="replace").strip()
@@ -202,9 +210,9 @@ def fetch_product_history(product_code: str, start_date: str, end_date: str, api
     return _result(records, "AkShare", "Eastmoney", {"product_code": product_code, "start_date": start_date, "end_date": end_date}, raw, "https://akshare.akfamily.xyz")
 
 
-def fetch_index_history_etfirst(index_code: str, start_date: str, end_date: str) -> FetchResult:
-    command = ["etfirst", "--json", "index-detail", "all", "--index-code", index_code,
-               "--start-date", start_date, "--end-date", end_date]
+def fetch_index_history_etfirst(index_code: str, start_date: str, end_date: str, api_key=None) -> FetchResult:
+    command = _etfirst_command(["etfirst", "--json", "index-detail", "all", "--index-code", index_code,
+               "--start-date", start_date, "--end-date", end_date], api_key)
     result = subprocess.run(command, capture_output=True, text=False, check=False)
     if result.returncode != 0:
         raise RuntimeError(result.stderr.decode("utf-8", errors="replace").strip() or "ETFirst request failed")
