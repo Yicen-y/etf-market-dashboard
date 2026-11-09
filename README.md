@@ -4,13 +4,11 @@ Python + AkShare + ECharts dashboard for comparing the 300 dividend ETF, 300 gro
 
 ## Local use
 
-Install the CLI and dependencies:
+Install the dependencies from the repository root:
 
 ```powershell
 python -m pip install -r requirements.txt
 python -m pip install https://www.nffund.com/wxfiles/miniapp/openu/static/assets/etfirst/0.4.2/etfirst-0.4.2.tar.gz
-etfirst auth login --api-key <YOUR_KEY>
-python -m scripts.update_data
 ```
 
 Start the local FastAPI site from the repository root:
@@ -19,7 +17,37 @@ Start the local FastAPI site from the repository root:
 python -m uvicorn server:app --host 127.0.0.1 --port 8000
 ```
 
-Open `http://localhost:8000/web/`.
+Open `http://localhost:8000/web/` for the dashboard, or open
+`http://localhost:8000/web/settings.html` for local data-source credentials.
+
+### Local credential settings
+
+The settings page supports three providers: Wind MCP, 华泰柏瑞 ETF and 南方
+ETFirst. On Windows, install the `keyring` dependency from `requirements.txt`,
+open the settings page, enter one provider credential at a time, and select
+`保存凭证`. The value is stored in Windows Credential Manager and is never
+returned by the API or written to browser storage, URLs, SQLite, static JSON,
+or application logs. The page only shows whether a credential is configured.
+
+Use `测试连接` after saving. A successful Wind test verifies the MCP handshake
+and tool discovery. ETFirst and 华泰柏瑞 currently report a local configuration
+check unless their installed provider CLI exposes a remote verification command;
+that status is deliberately not presented as a successful remote connection.
+
+To remove a credential, select `删除凭证` on the same provider card. This
+deletes only that provider's entry from Windows Credential Manager. If the
+server is restarted, the configured status is loaded again from the credential
+manager. Do not put keys in source files, query strings, `localStorage`, or
+shell history. For one-session compatibility overrides, the existing
+`WIND_MCP_AUTH`, `WIND_MCP_TOKEN`, `HTBR_ETF_API_KEY`, and `ETFIRST_API_KEY`
+environment variables remain supported, but the settings page is the preferred
+local workflow.
+
+After configuring the providers, run the existing refresh command when needed:
+
+```powershell
+python -m scripts.update_data
+```
 
 ## Update workflow
 

@@ -5,6 +5,11 @@ __pycache__/
 .env
 *.session.json
 *.key
+*.secret
+*.token
+credentials*.json
+credential*.json
+wind-verify.json
 data/*.tmp
 reports/wind/*
 !reports/wind/.gitkeep
