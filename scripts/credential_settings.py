@@ -192,7 +192,8 @@ def test_credential(
     value = get_credential(normalized, environ, keyring_module=keyring_module)
     configured = bool(value)
     if not configured:
-        return {"provider": normalized.value, "configured": False, "ok": False, "message": "未配置凭证"}
+        return {"provider": normalized.value, "configured": False, "ok": False,
+                "remote_verified": False, "status": "not_configured", "message": "未配置凭证"}
 
     child_env = dict(os.environ if environ is None else environ)
     child_env[_SPECS[normalized].account] = value
@@ -213,6 +214,7 @@ def test_credential(
                 client.initialize()
                 tools = client.list_tools()
             return {"provider": normalized.value, "configured": True, "ok": True,
+                    "remote_verified": True, "status": "remote_verified",
                     "message": f"连接成功（发现 {len(tools)} 个工具）"}
 
         completed = subprocess.run(
@@ -221,8 +223,13 @@ def test_credential(
         )
         if completed.returncode != 0:
             raise RuntimeError("提供方返回失败")
-        return {"provider": normalized.value, "configured": True, "ok": True, "message": "连接成功"}
+        # ETFirst config and HTBR status are local checks only.  They do not
+        # prove that the remote gateway accepts the credential.
+        return {"provider": normalized.value, "configured": True, "ok": False,
+                "remote_verified": False, "status": "not_verified",
+                "message": "本地配置检查通过；未验证远程服务"}
     except Exception as exc:
         # Never expose command output or the configured value in the status API.
         return {"provider": normalized.value, "configured": True, "ok": False,
+                "remote_verified": False, "status": "check_failed",
                 "message": f"{type(exc).__name__}: {str(exc).replace(value, '[REDACTED]')}"}

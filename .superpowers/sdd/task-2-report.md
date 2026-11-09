@@ -62,3 +62,44 @@ D:\Anaconda3\envs\QuaTra\python.exe -m py_compile scripts/credential_settings.py
 - 华泰柏瑞 `config.py status` 是否实际校验子进程环境中的 Key，取决于已安装的华泰柏瑞技能版本；真实调用失败时会返回失败状态，不会用模拟结果替代。
 - Task 1 审查中提到的 Windows Credential Manager 后端校验问题不在本 Task 范围内，本次复用了其公开接口，没有绕过安全边界。
 - 工作区中已有的数据库文件和计划文件改动未纳入本次提交，避免覆盖其他任务的用户变更。
+
+## Task 2 审查修复追加
+
+审查指出的两项问题已修复：
+
+1. ETFirst `config --no-show` 与 HTBR `config.py status` 现在只被视为本地配置检查。成功时返回：
+   - `configured: true`
+   - `status: "not_verified"`
+   - `remote_verified: false`
+   - `ok: false`
+   - 说明：本地配置检查通过；未验证远程服务
+
+   只有 Wind MCP 完成真实 `initialize` 和 `tools/list` 后，才返回 `status: "remote_verified"`、`remote_verified: true` 和 `ok: true`。未配置和检查失败也分别返回明确状态，不再误报远程连接成功。
+
+2. `fetch_htbr_etf_yield(code, api_key=None)` 增加显式 API Key 兼容入口。传入非 `None` 的显式值时优先使用；未传入时仍按原逻辑从统一凭证服务读取。现有 HTBR 响应解析、持久化和业务校验逻辑未修改。
+
+## 审查修复测试
+
+新增/更新了以下回归覆盖：
+
+- ETFirst/HTBR 本地检查不得返回远程成功；
+- `status`、`remote_verified`、`ok` 状态组合；
+- HTBR 显式 API Key 覆盖已保存 Key；
+- 显式 Key 不进入业务返回值。
+
+实际执行：
+
+```text
+D:\Anaconda3\envs\QuaTra\python.exe -m pytest tests/test_credential_settings.py tests/test_update_data.py tests/test_dividend_providers.py tests/dividend -q
+98 passed in 11.00s
+```
+
+```text
+D:\Anaconda3\envs\QuaTra\python.exe -m py_compile scripts/credential_settings.py scripts/dividend/provider_yields.py
+```
+
+## 修复后 concerns
+
+- ETFirst 和 HTBR 当前已知安全命令只能完成本地配置检查，因此系统会诚实显示 `not_verified`；本次没有擅自调用登录、写配置或其他可能产生副作用的命令。
+- 若未来确认某个 ETFirst/HTBR CLI 版本支持安全的只读远程探测，应单独增加远程适配器，并仅在真实远程调用成功后设置 `remote_verified: true`。
+- ETFirst 历史获取仍把显式 Key 放在子进程参数中，存在同机进程查看 argv 的边界风险；本次未扩大范围修改该既有兼容路径。

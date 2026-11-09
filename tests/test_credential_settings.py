@@ -121,7 +121,11 @@ def test_test_credential_does_not_return_secret():
 
     result = credential_settings.test_credential("etfirst", keyring_module=validated)
 
-    assert result == {"provider": "etfirst", "configured": True, "ok": True, "message": "连接成功"}
+    assert result == {
+        "provider": "etfirst", "configured": True, "ok": False,
+        "remote_verified": False, "status": "not_verified",
+        "message": "本地配置检查通过；未验证远程服务",
+    }
     assert "etfirst-secret" not in str(result)
 
 
@@ -139,7 +143,11 @@ def test_test_credential_runs_bounded_etfirst_status_check_without_returning_key
     monkeypatch.setattr(credential_settings.subprocess, "run", run)
     result = credential_settings.test_credential("etfirst", keyring_module=validated)
 
-    assert result == {"provider": "etfirst", "configured": True, "ok": True, "message": "连接成功"}
+    assert result == {
+        "provider": "etfirst", "configured": True, "ok": False,
+        "remote_verified": False, "status": "not_verified",
+        "message": "本地配置检查通过；未验证远程服务",
+    }
     assert calls and calls[0][0][:3] == ["etfirst", "--json", "config"]
     assert "etfirst-secret" not in str(result)
 
@@ -177,9 +185,61 @@ def test_test_credential_runs_htbr_status_with_key_in_child_environment(monkeypa
     monkeypatch.setattr(credential_settings.subprocess, "run", run)
     result = credential_settings.test_credential("htbr_etf", keyring_module=validated)
 
-    assert result["ok"] is True
+    assert result["ok"] is False
+    assert result["status"] == "not_verified"
+    assert result["remote_verified"] is False
     assert observed["env"]["HTBR_ETF_API_KEY"] == "htbr-secret"
     assert "htbr-secret" not in str(result)
+
+
+def test_etfirst_and_htbr_local_checks_are_not_remote_success(monkeypatch):
+    fake = FakeKeyring()
+    validated = credential_settings._test_keyring(fake)
+    credential_settings.set_credential("etfirst", "etfirst-secret", keyring_module=validated)
+    credential_settings.set_credential("htbr", "htbr-secret", keyring_module=validated)
+
+    monkeypatch.setattr(
+        credential_settings.subprocess, "run",
+        lambda *args, **kwargs: type("Completed", (), {"returncode": 0, "stdout": "", "stderr": ""})(),
+    )
+
+    for provider in ("etfirst", "htbr"):
+        result = credential_settings.test_credential(provider, keyring_module=validated)
+        assert result["configured"] is True
+        assert result["status"] == "not_verified"
+        assert result["remote_verified"] is False
+        assert result["ok"] is False
+
+
+def test_htbr_fetch_accepts_explicit_api_key_without_using_stored_key(monkeypatch):
+    from scripts.dividend import provider_yields
+
+    observed = {}
+
+    monkeypatch.setattr(provider_yields, "get_credential", lambda provider: "stored-htbr-key")
+    monkeypatch.setattr(provider_yields, "_htbr_python", lambda: "python")
+
+    def run(command, **kwargs):
+        observed["status_env"] = kwargs["env"]
+        return type("Completed", (), {"returncode": 0, "stdout": "", "stderr": ""})()
+
+    def skill_call(api_id, params, *, environment=None):
+        observed.setdefault("skill_envs", []).append(environment)
+        if api_id == "fund-resolve":
+            return {"data": {"matchCount": 1, "candidates": [{"secuCode": "510300", "innerCode": 7}]}}
+        return {"data": {"innerCode": 7, "records": [{
+            "fundcode": "510300", "fundobject": 7, "dividendratio": 3.2,
+            "reportdate": "2026-09-30",
+        }]}}
+
+    monkeypatch.setattr(provider_yields.subprocess, "run", run)
+    monkeypatch.setattr(provider_yields, "_skill_call", skill_call)
+
+    result = provider_yields.fetch_htbr_etf_yield("510300", api_key="explicit-htbr-key")
+
+    assert result["value_pct"] == "3.2"
+    assert observed["status_env"]["HTBR_ETF_API_KEY"] == "explicit-htbr-key"
+    assert all(env["HTBR_ETF_API_KEY"] == "explicit-htbr-key" for env in observed["skill_envs"])
 
 
 def test_wind_environment_override_works_when_keyring_is_unavailable(monkeypatch):

@@ -363,9 +363,9 @@ def _htbr_python() -> str:
     return str(candidate) if candidate.is_file() else sys.executable
 
 
-def _htbr_environment() -> dict[str, str]:
+def _htbr_environment(api_key: str | None = None) -> dict[str, str]:
     environment = os.environ.copy()
-    key = get_credential('htbr')
+    key = api_key if api_key is not None else get_credential('htbr')
     if key:
         environment['HTBR_ETF_API_KEY'] = key
     return environment
@@ -411,8 +411,8 @@ def parse_htbr_etf_yield(resolved: dict, valuation: dict, code: str) -> dict:
             'raw': {'resolved': resolved, 'valuation': valuation}}
 
 
-def fetch_htbr_etf_yield(code: str) -> dict:
-    environment = _htbr_environment()
+def fetch_htbr_etf_yield(code: str, api_key: str | None = None) -> dict:
+    environment = _htbr_environment(api_key)
     status = subprocess.run([_htbr_python(), str(SKILL_ROOT / 'config.py'), 'status'],
                             capture_output=True, timeout=15, check=False, env=environment)
     if status.returncode != 0:
