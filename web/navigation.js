@@ -76,6 +76,7 @@
       <a class="sidebar-standalone${activeSection === "anchor" ? " active" : ""}" href="./anchor.html"${current(activeSection === "anchor")}>五年之锚</a>
       <a class="sidebar-standalone${activeSection === "research" ? " active" : ""}" href="./dividend-research.html"${current(activeSection === "research")}>红利研究</a>
       <a class="sidebar-standalone${activeSection === "bond-value" ? " active" : ""}" href="./bond-value.html"${current(activeSection === "bond-value")}>股债性价比</a>
+      <a class="sidebar-standalone${activeSection === "settings" ? " active" : ""}" href="./settings.html"${current(activeSection === "settings")}>设置</a>
       <div class="sidebar-divider"></div>
       <a class="sidebar-standalone fund-flow-link${activeSection === "fund-flow" ? " active" : ""}" href="./fund-flow.html"${current(activeSection === "fund-flow")}>${flowIcon}<span>沪深300 ETF资金流向</span></a>
       <p class="sidebar-note">选择看板后，基准日期、状态和图表会随模块切换。</p>

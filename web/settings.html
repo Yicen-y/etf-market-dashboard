@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>设置 · A股ETF看板</title>
+  <link rel="stylesheet" href="theme.css?v=20261101-2">
+  <link rel="stylesheet" href="ui-components.css?v=20261109-ui3">
+  <link rel="stylesheet" href="settings.css?v=20261110-settings1">
+</head>
+<body>
+  <main class="dashboard-layout settings-layout">
+    <aside data-dashboard-navigation data-active-section="settings"></aside>
+    <div class="dashboard-content settings-main">
+      <div class="settings-shell">
+        <header class="page-hero settings-hero">
+          <div class="page-heading">
+            <p class="eyebrow">投资分析看板 · 设置</p>
+            <h1>数据源设置</h1>
+            <p class="subline">凭证仅保存到本机 Windows 凭证管理器，用于本地数据服务调用。</p>
+          </div>
+        </header>
+
+        <section class="settings-notice" aria-label="安全说明">
+          <strong>安全说明</strong>
+          <span>页面只显示是否已配置，不会回显完整密钥，也不会写入浏览器存储或 URL。</span>
+        </section>
+
+        <section class="credential-grid" aria-label="数据源凭证">
+          <article class="credential-card" data-provider="wind_mcp">
+            <div class="credential-card-heading"><div><h2>Wind MCP</h2><p>用于 Wind 金融数据校验与研究接口。</p></div><span class="provider-badge">金融数据</span></div>
+            <label class="ui-field" for="credential-wind_mcp"><span>授权值</span><div class="credential-input-wrap"><input id="credential-wind_mcp" class="ui-input credential-input" type="password" autocomplete="new-password" spellcheck="false"><button class="credential-visibility" type="button" aria-label="显示或隐藏凭证" aria-pressed="false" data-toggle-credential="wind_mcp">显示</button></div></label>
+            <div class="credential-actions"><button class="ui-button ui-button--primary" type="button" data-save-credential="wind_mcp">保存凭证</button><button class="ui-button" type="button" data-test-credential="wind_mcp">测试连接</button><button class="ui-button ui-button--quiet" type="button" data-delete-credential="wind_mcp">删除凭证</button></div>
+            <p class="credential-status" data-status="wind_mcp" role="status" aria-live="polite">正在读取配置状态……</p>
+          </article>
+
+          <article class="credential-card" data-provider="htbr_etf">
+            <div class="credential-card-heading"><div><h2>华泰柏瑞 ETF</h2><p>用于华泰柏瑞 ETF 数据接口。</p></div><span class="provider-badge">ETF 数据</span></div>
+            <label class="ui-field" for="credential-htbr_etf"><span>API Key</span><div class="credential-input-wrap"><input id="credential-htbr_etf" class="ui-input credential-input" type="password" autocomplete="new-password" spellcheck="false"><button class="credential-visibility" type="button" aria-label="显示或隐藏凭证" aria-pressed="false" data-toggle-credential="htbr_etf">显示</button></div></label>
+            <div class="credential-actions"><button class="ui-button ui-button--primary" type="button" data-save-credential="htbr_etf">保存凭证</button><button class="ui-button" type="button" data-test-credential="htbr_etf">测试连接</button><button class="ui-button ui-button--quiet" type="button" data-delete-credential="htbr_etf">删除凭证</button></div>
+            <p class="credential-status" data-status="htbr_etf" role="status" aria-live="polite">正在读取配置状态……</p>
+          </article>
+
+          <article class="credential-card" data-provider="etfirst">
+            <div class="credential-card-heading"><div><h2>南方 ETFirst</h2><p>用于南方基金 ETFirst ETF 与指数数据。</p></div><span class="provider-badge">ETF 数据</span></div>
+            <label class="ui-field" for="credential-etfirst"><span>API Key</span><div class="credential-input-wrap"><input id="credential-etfirst" class="ui-input credential-input" type="password" autocomplete="new-password" spellcheck="false"><button class="credential-visibility" type="button" aria-label="显示或隐藏凭证" aria-pressed="false" data-toggle-credential="etfirst">显示</button></div></label>
+            <div class="credential-actions"><button class="ui-button ui-button--primary" type="button" data-save-credential="etfirst">保存凭证</button><button class="ui-button" type="button" data-test-credential="etfirst">测试连接</button><button class="ui-button ui-button--quiet" type="button" data-delete-credential="etfirst">删除凭证</button></div>
+            <p class="credential-status" data-status="etfirst" role="status" aria-live="polite">正在读取配置状态……</p>
+          </article>
+        </section>
+        <p id="settings-operation-status" class="settings-operation-status" role="status" aria-live="polite"></p>
+      </div>
+    </div>
+  </main>
+  <script src="navigation.js?v=20261110-settings1"></script>
+  <script src="settings.js?v=20261110-settings1"></script>
+</body>
+</html>

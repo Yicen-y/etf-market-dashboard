@@ -1,0 +1,30 @@
+.settings-main { min-width: 0; }
+.settings-shell { min-width: 0; }
+.settings-hero { margin-bottom: var(--card-gap); }
+.settings-notice { display:flex; gap:10px; align-items:baseline; margin:0 0 var(--card-gap); padding:12px 16px; border:1px solid #cfe0fb; border-radius:var(--radius-card); color:#24559b; background:#f3f7ff; }
+.settings-notice strong { color:var(--text-primary); white-space:nowrap; }
+.credential-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:var(--card-gap); }
+.credential-card { min-width:0; padding:20px; background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-card); box-shadow:var(--shadow-card); }
+.credential-card-heading { display:flex; justify-content:space-between; align-items:flex-start; gap:12px; margin-bottom:18px; }
+.credential-card h2 { margin:0; font-size:20px; color:var(--text-primary); }
+.credential-card-heading p { margin:5px 0 0; color:var(--text-secondary); font-size:13px; }
+.provider-badge { flex:none; padding:3px 8px; border-radius:999px; color:#24559b; background:var(--primary-bg); font-size:12px; white-space:nowrap; }
+.credential-input-wrap { display:flex; align-items:stretch; }
+.credential-input-wrap .credential-input { min-width:0; border-radius:8px 0 0 8px; }
+.credential-visibility { border:1px solid var(--border); border-left:0; border-radius:0 8px 8px 0; padding:0 11px; color:var(--text-secondary); background:#f8fafc; cursor:pointer; }
+.credential-visibility:hover { color:var(--primary); background:var(--primary-bg); }
+.credential-actions { display:flex; flex-wrap:wrap; gap:8px; margin-top:16px; }
+.credential-actions .ui-button { flex:1 1 110px; }
+.credential-actions .ui-button--quiet { flex-basis:100%; color:var(--text-secondary); }
+.credential-status { min-height:21px; margin:14px 0 0; color:var(--text-secondary); font-size:13px; }
+.credential-status[data-state="configured"] { color:var(--negative); }
+.credential-status[data-state="error"] { color:var(--error); }
+.credential-status[data-state="busy"] { color:var(--warning); }
+.settings-operation-status { min-height:24px; margin:var(--card-gap) 0 0; padding:0 2px; color:var(--text-secondary); }
+.settings-operation-status[data-state="error"] { color:var(--error); }
+.settings-operation-status[data-state="success"] { color:var(--negative); }
+.credential-card button:focus-visible, .credential-card input:focus-visible { position:relative; z-index:1; outline:3px solid rgba(44,107,237,.28); outline-offset:2px; }
+@media (max-width:1100px) { .credential-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+@media (max-width:768px) { .credential-grid { grid-template-columns:1fr; } .settings-notice { align-items:flex-start; flex-direction:column; gap:2px; } }
+@media (max-width:480px) { .credential-card { padding:16px; } .credential-card-heading { flex-direction:column; gap:8px; } .provider-badge { order:-1; } .credential-actions .ui-button { flex-basis:100%; } }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior:auto !important; transition-duration:.01ms !important; } }
