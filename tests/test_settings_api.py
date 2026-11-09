@@ -53,6 +53,26 @@ def test_put_credential_saves_key_but_never_returns_it(client, monkeypatch):
     assert "secret-value" not in response.text
 
 
+@pytest.mark.parametrize("public_provider", ["htbr", "htbr_etf"])
+def test_htbr_public_aliases_are_normalized_to_canonical_provider(client, monkeypatch, public_provider):
+    observed = []
+    monkeypatch.setattr(
+        server.credential_settings,
+        "set_credential",
+        lambda provider, value: observed.append((provider, value)),
+    )
+
+    response = client.put(
+        f"/api/settings/credentials/{public_provider}",
+        json={"key": "alias-secret"},
+    )
+
+    assert response.status_code == 200
+    assert observed == [("htbr_etf", "alias-secret")]
+    assert response.json() == {"provider": "htbr_etf", "configured": True}
+    assert "alias-secret" not in response.text
+
+
 def test_delete_credential_returns_unconfigured_status(client, monkeypatch):
     observed = []
     monkeypatch.setattr(
@@ -117,7 +137,40 @@ def test_empty_key_returns_400_without_calling_storage(client, monkeypatch):
     assert called == []
 
 
+def test_save_failure_uses_fixed_message_without_request_key(client, monkeypatch):
+    key = "save-sentinel-key"
+    monkeypatch.setattr(
+        server.credential_settings,
+        "set_credential",
+        lambda provider, value: (_ for _ in ()).throw(
+            RuntimeError(f"vault rejected {value}; bearer {value}")
+        ),
+    )
+
+    response = client.put("/api/settings/credentials/wind_mcp", json={"key": key})
+
+    assert response.status_code == 500
+    assert response.json() == {"detail": "凭证保存失败"}
+    assert key not in response.text
+
+
+def test_delete_failure_uses_fixed_message_without_underlying_key(client, monkeypatch):
+    key = "delete-sentinel-key"
+    monkeypatch.setattr(
+        server.credential_settings,
+        "delete_credential",
+        lambda provider: (_ for _ in ()).throw(RuntimeError(f"delete failed: {key}")),
+    )
+
+    response = client.delete("/api/settings/credentials/wind_mcp")
+
+    assert response.status_code == 500
+    assert response.json() == {"detail": "凭证删除失败"}
+    assert key not in response.text
+
+
 def test_provider_test_failure_returns_502_and_safe_message(client, monkeypatch):
+    key = "test-sentinel-key"
     monkeypatch.setattr(
         server.credential_settings,
         "test_credential",
@@ -127,7 +180,7 @@ def test_provider_test_failure_returns_502_and_safe_message(client, monkeypatch)
             "ok": False,
             "remote_verified": False,
             "status": "check_failed",
-            "message": "连接失败",
+            "message": f"底层异常包含 {key} 和 Bearer {key}",
         },
     )
 
@@ -135,7 +188,47 @@ def test_provider_test_failure_returns_502_and_safe_message(client, monkeypatch)
 
     assert response.status_code == 502
     assert response.json()["detail"]["status"] == "check_failed"
-    assert "secret" not in response.text
+    assert response.json()["detail"]["message"] == "连接测试失败"
+    assert key not in response.text
+
+
+def test_provider_test_exception_uses_fixed_message_without_underlying_key(client, monkeypatch):
+    key = "exception-sentinel-key"
+    monkeypatch.setattr(
+        server.credential_settings,
+        "test_credential",
+        lambda provider: (_ for _ in ()).throw(RuntimeError(f"remote failed with {key}")),
+    )
+
+    response = client.post("/api/settings/credentials/wind_mcp/test")
+
+    assert response.status_code == 502
+    assert response.json() == {
+        "detail": {
+            "provider": "wind_mcp",
+            "configured": False,
+            "ok": False,
+            "remote_verified": False,
+            "status": "check_failed",
+            "message": "连接测试失败",
+        }
+    }
+    assert key not in response.text
+
+
+def test_status_failure_uses_fixed_message_without_underlying_key(client, monkeypatch):
+    key = "status-sentinel-key"
+    monkeypatch.setattr(
+        server.credential_settings,
+        "list_credential_status",
+        lambda: (_ for _ in ()).throw(RuntimeError(f"status failed with {key}")),
+    )
+
+    response = client.get("/api/settings/credentials")
+
+    assert response.status_code == 500
+    assert response.json() == {"detail": "凭证状态查询失败"}
+    assert key not in response.text
 
 
 def test_successful_provider_test_returns_200(client, monkeypatch):

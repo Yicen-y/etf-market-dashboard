@@ -44,19 +44,33 @@ class CredentialRequest(BaseModel):
 
 def _credential_provider(provider: str) -> str:
     try:
-        return credential_settings.CredentialProvider(provider).value
+        return credential_settings.normalize_provider(provider).value
     except ValueError as exc:
         raise HTTPException(status_code=404, detail="未知的凭证提供方") from exc
 
 
-def _safe_credential_test_result(result: dict) -> dict:
-    allowed = {"provider", "configured", "ok", "remote_verified", "status", "message"}
-    return {key: result[key] for key in allowed if key in result}
+def _safe_credential_test_result(result: dict, provider: str) -> dict:
+    status = str(result.get("status", "check_failed"))
+    ok = bool(result.get("ok"))
+    return {
+        "provider": provider,
+        "configured": bool(result.get("configured")),
+        "ok": ok,
+        "remote_verified": bool(result.get("remote_verified")),
+        "status": status,
+        "message": "连接成功" if ok else (
+            "本地配置检查通过；未验证远程服务"
+            if status == "not_verified" else "连接测试失败"
+        ),
+    }
 
 
 @app.get("/api/settings/credentials")
 def credential_status():
-    return {"credentials": credential_settings.list_credential_status()}
+    try:
+        return {"credentials": credential_settings.list_credential_status()}
+    except Exception as exc:
+        raise HTTPException(status_code=500, detail="凭证状态查询失败") from exc
 
 
 @app.put("/api/settings/credentials/{provider}")
@@ -68,20 +82,37 @@ def save_credential(provider: str, request: CredentialRequest):
         credential_settings.set_credential(normalized, request.key)
     except ValueError as exc:
         raise HTTPException(status_code=400, detail="凭证不能为空") from exc
+    except Exception as exc:
+        raise HTTPException(status_code=500, detail="凭证保存失败") from exc
     return {"provider": normalized, "configured": True}
 
 
 @app.delete("/api/settings/credentials/{provider}")
 def remove_credential(provider: str):
     normalized = _credential_provider(provider)
-    credential_settings.delete_credential(normalized)
+    try:
+        credential_settings.delete_credential(normalized)
+    except Exception as exc:
+        raise HTTPException(status_code=500, detail="凭证删除失败") from exc
     return {"provider": normalized, "configured": False}
 
 
 @app.post("/api/settings/credentials/{provider}/test")
 def test_saved_credential(provider: str):
     normalized = _credential_provider(provider)
-    result = _safe_credential_test_result(credential_settings.test_credential(normalized))
+    try:
+        result = _safe_credential_test_result(
+            credential_settings.test_credential(normalized), normalized
+        )
+    except Exception as exc:
+        result = {
+            "provider": normalized,
+            "configured": False,
+            "ok": False,
+            "remote_verified": False,
+            "status": "check_failed",
+            "message": "连接测试失败",
+        }
     if not result.get("ok"):
         raise HTTPException(status_code=502, detail=result)
     return result

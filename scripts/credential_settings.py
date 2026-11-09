@@ -80,13 +80,18 @@ def _keyring():
     return ValidatedKeyring(keyring)
 
 
-def _provider(provider: CredentialProvider | str) -> CredentialProvider:
+def normalize_provider(provider: CredentialProvider | str) -> CredentialProvider:
+    """Return the canonical provider enum, accepting documented aliases."""
     if provider == "htbr":
         provider = CredentialProvider.HTBR_ETF
     try:
         return provider if isinstance(provider, CredentialProvider) else CredentialProvider(provider)
     except ValueError as exc:
         raise ValueError(f"Unsupported credential provider: {provider}") from exc
+
+
+def _provider(provider: CredentialProvider | str) -> CredentialProvider:
+    return normalize_provider(provider)
 
 
 def _spec(provider: CredentialProvider | str) -> tuple[CredentialProvider, CredentialSpec]:
