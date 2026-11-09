@@ -82,8 +82,12 @@ def _keyring():
 
 def normalize_provider(provider: CredentialProvider | str) -> CredentialProvider:
     """Return the canonical provider enum, accepting documented aliases."""
-    if provider == "htbr":
-        provider = CredentialProvider.HTBR_ETF
+    aliases = {
+        "wind": CredentialProvider.WIND_MCP,
+        "htbr": CredentialProvider.HTBR_ETF,
+    }
+    if isinstance(provider, str):
+        provider = aliases.get(provider, provider)
     try:
         return provider if isinstance(provider, CredentialProvider) else CredentialProvider(provider)
     except ValueError as exc:

@@ -73,6 +73,25 @@ def test_htbr_public_aliases_are_normalized_to_canonical_provider(client, monkey
     assert "alias-secret" not in response.text
 
 
+def test_wind_public_alias_is_normalized_to_canonical_provider(client, monkeypatch):
+    observed = []
+    monkeypatch.setattr(
+        server.credential_settings,
+        "set_credential",
+        lambda provider, value: observed.append((provider, value)),
+    )
+
+    response = client.put(
+        "/api/settings/credentials/wind",
+        json={"key": "alias-secret"},
+    )
+
+    assert response.status_code == 200
+    assert observed == [("wind_mcp", "alias-secret")]
+    assert response.json() == {"provider": "wind_mcp", "configured": True}
+    assert "alias-secret" not in response.text
+
+
 def test_delete_credential_returns_unconfigured_status(client, monkeypatch):
     observed = []
     monkeypatch.setattr(

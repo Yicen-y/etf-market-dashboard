@@ -46,6 +46,19 @@ def test_htbr_short_name_maps_to_existing_credential_account():
     assert credential_settings.get_credential("htbr", keyring_module=validated) == "htbr-secret"
 
 
+def test_wind_public_name_maps_to_canonical_provider_and_account(monkeypatch):
+    monkeypatch.delenv("WIND_MCP_AUTH", raising=False)
+    monkeypatch.delenv("WIND_MCP_TOKEN", raising=False)
+    fake = FakeKeyring()
+    validated = credential_settings._test_keyring(fake)
+
+    credential_settings.set_credential("wind", "wind-secret", keyring_module=validated)
+
+    assert credential_settings.normalize_provider("wind") is credential_settings.CredentialProvider.WIND_MCP
+    assert fake.values[(credential_settings.SERVICE, "WIND_MCP_AUTH")] == "wind-secret"
+    assert credential_settings.get_credential("wind", keyring_module=validated) == "wind-secret"
+
+
 def test_status_only_exposes_configuration_and_masked_value():
     fake = FakeKeyring()
     validated = credential_settings._test_keyring(fake)
