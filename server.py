@@ -11,6 +11,7 @@ from typing import Optional
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import JSONResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
+from pydantic import BaseModel
 
 from scripts.rotation_overview import build_overview
 from scripts.config import DATA_PATH, INDEX_DATA_PATH
@@ -22,6 +23,7 @@ from scripts.anchor.api import router as anchor_router
 from scripts.bond_value.api import router as bond_value_router
 from scripts.fund_flow.config import DATABASE_PATH
 from scripts.wind_credentials import get_authorization
+from scripts import credential_settings
 
 
 ROOT = Path(__file__).resolve().parent
@@ -34,6 +36,55 @@ app.include_router(anchor_router)
 app.include_router(bond_value_router)
 update_lock = threading.Lock()
 status = {"state": "idle", "message": "尚未刷新", "updatedAt": None, "summary": None}
+
+
+class CredentialRequest(BaseModel):
+    key: str
+
+
+def _credential_provider(provider: str) -> str:
+    try:
+        return credential_settings.CredentialProvider(provider).value
+    except ValueError as exc:
+        raise HTTPException(status_code=404, detail="未知的凭证提供方") from exc
+
+
+def _safe_credential_test_result(result: dict) -> dict:
+    allowed = {"provider", "configured", "ok", "remote_verified", "status", "message"}
+    return {key: result[key] for key in allowed if key in result}
+
+
+@app.get("/api/settings/credentials")
+def credential_status():
+    return {"credentials": credential_settings.list_credential_status()}
+
+
+@app.put("/api/settings/credentials/{provider}")
+def save_credential(provider: str, request: CredentialRequest):
+    normalized = _credential_provider(provider)
+    if not request.key.strip():
+        raise HTTPException(status_code=400, detail="凭证不能为空")
+    try:
+        credential_settings.set_credential(normalized, request.key)
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail="凭证不能为空") from exc
+    return {"provider": normalized, "configured": True}
+
+
+@app.delete("/api/settings/credentials/{provider}")
+def remove_credential(provider: str):
+    normalized = _credential_provider(provider)
+    credential_settings.delete_credential(normalized)
+    return {"provider": normalized, "configured": False}
+
+
+@app.post("/api/settings/credentials/{provider}/test")
+def test_saved_credential(provider: str):
+    normalized = _credential_provider(provider)
+    result = _safe_credential_test_result(credential_settings.test_credential(normalized))
+    if not result.get("ok"):
+        raise HTTPException(status_code=502, detail=result)
+    return result
 
 
 @app.get("/")
