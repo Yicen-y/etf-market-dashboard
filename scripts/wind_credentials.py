@@ -7,6 +7,8 @@ import getpass
 import os
 import sys
 
+from scripts import credential_settings
+
 SERVICE = "etf-market-dashboard"
 ACCOUNT = "WIND_MCP_AUTH"
 
@@ -21,11 +23,12 @@ def _keyring():
 
 def get_authorization(environ=None) -> str | None:
     env = os.environ if environ is None else environ
-    value = env.get("WIND_MCP_AUTH") or env.get("WIND_MCP_TOKEN")
-    if value:
-        return _normalize(value)
     try:
-        value = _keyring().get_password(SERVICE, ACCOUNT)
+        value = credential_settings.get_credential(
+            credential_settings.CredentialProvider.WIND_MCP,
+            environ=env,
+            keyring_module=_keyring(),
+        )
     except Exception:
         return None
     return _normalize(value) if value else None
@@ -47,13 +50,17 @@ def main(argv=None) -> int:
             if not value:
                 print("未输入凭证；未做更改。")
                 return 2
-            keyring.set_password(SERVICE, ACCOUNT, value)
+            credential_settings.set_credential(
+                credential_settings.CredentialProvider.WIND_MCP,
+                value,
+                keyring_module=keyring,
+            )
             print("Wind MCP 凭证已保存到 Windows 凭证库。")
         elif args.action == "delete":
-            try:
-                keyring.delete_password(SERVICE, ACCOUNT)
-            except keyring.errors.PasswordDeleteError:
-                pass
+            credential_settings.delete_credential(
+                credential_settings.CredentialProvider.WIND_MCP,
+                keyring_module=keyring,
+            )
             print("Wind MCP 凭证已从 Windows 凭证库删除。")
         else:
             auth = get_authorization()
