@@ -63,7 +63,7 @@ The frontend reads a pinned snapshot through the local API. SQLite, raw evidence
 
 ## Wind MCP history validation
 
-The three ETF price histories (512530, 562310, 510330) are sourced exclusively from AkShare. Incremental ETF updates re-fetch the trailing seven calendar days so provider corrections replace recent stored values; daily close changes above 20% block publication for review. Index histories retain their existing ETFirst-first/AkShare-fallback process. Wind Alice can be used as an independent source to compare historical index points. The validator is read-only and writes discrepancy reports under `reports/wind/`; it does not repair SQLite or published JSON.
+The three ETF price histories (512530, 562310, 510330) are sourced through AkShare. Eastmoney is the primary upstream; if its connection fails, the updater uses AkShare's Sina ETF daily history and records Sina as the upstream. Incremental ETF updates re-fetch the trailing seven calendar days so provider corrections replace recent stored values; daily close changes above 20% block publication for review. Index histories retain their existing ETFirst-first/AkShare-fallback process. Wind Alice can be used as an independent source to compare historical index points. The validator is read-only and writes discrepancy reports under `reports/wind/`; it does not repair SQLite or published JSON.
 
 Store the Wind credential in Windows Credential Vault (the prompt does not echo input):
 

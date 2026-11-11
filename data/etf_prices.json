@@ -1,9 +1,9 @@
 {
   "schemaVersion": 2,
-  "snapshot_id": "20261109T203818-0b47bc97",
+  "snapshot_id": "20261111T214903-865e1e9e",
   "source": "per-record provenance",
-  "updatedAt": "2026-11-09T20:38:25+08:00",
-  "latestTradeDate": "20261109",
+  "updatedAt": "2026-11-11T21:49:43+08:00",
+  "latestTradeDate": "20261111",
   "products": {
     "512530": {
       "name": "建信沪深300红利ETF",
@@ -22867,6 +22867,22 @@
         "510330": 4.308,
         "512530": 1.712,
         "562310": 0.849
+      }
+    },
+    {
+      "tradeDate": "20261110",
+      "prices": {
+        "510330": 4.312,
+        "512530": 1.703,
+        "562310": 0.854
+      }
+    },
+    {
+      "tradeDate": "20261111",
+      "prices": {
+        "510330": 4.329,
+        "512530": 1.694,
+        "562310": 0.867
       }
     }
   ],
@@ -53295,9 +53311,39 @@
       "tradeDate": "20261109",
       "productCode": "562310",
       "closePrice": 0.849
+    },
+    {
+      "tradeDate": "20261110",
+      "productCode": "510330",
+      "closePrice": 4.312
+    },
+    {
+      "tradeDate": "20261110",
+      "productCode": "512530",
+      "closePrice": 1.703
+    },
+    {
+      "tradeDate": "20261110",
+      "productCode": "562310",
+      "closePrice": 0.854
+    },
+    {
+      "tradeDate": "20261111",
+      "productCode": "510330",
+      "closePrice": 4.329
+    },
+    {
+      "tradeDate": "20261111",
+      "productCode": "512530",
+      "closePrice": 1.694
+    },
+    {
+      "tradeDate": "20261111",
+      "productCode": "562310",
+      "closePrice": 0.867
     }
   ],
   "providerSummary": {
-    "AkShare": 18
+    "AkShare": 53
   }
 }

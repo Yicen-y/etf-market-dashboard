@@ -28,6 +28,11 @@ _previews: dict[str, ImportPreview] = {}
 HISTORY_START = date(2023, 12, 29)
 
 
+@router.get("/sync-status")
+def fund_flow_sync_status():
+    return {"updating": _sync_lock.locked()}
+
+
 def _db() -> Path:
     return DATABASE_PATH
 
@@ -108,6 +113,18 @@ def _needs_history_backfill() -> bool:
     return earliest is None or date.fromisoformat(earliest) > HISTORY_START
 
 
+def _incremental_start(end: date, overlap_days: int) -> date:
+    """Resume from the oldest ETF tail, with a short correction overlap."""
+    with open_fund_flow_connection(_db()) as connection:
+        latest_by_code = dict(connection.execute(
+            "SELECT etf_code, MAX(record_date) FROM fund_flow_etf_daily_raw GROUP BY etf_code"
+        ).fetchall())
+    if any(code not in latest_by_code for code in ETF_UNIVERSE):
+        return HISTORY_START
+    oldest_tail = min(date.fromisoformat(latest_by_code[code]) for code in ETF_UNIVERSE)
+    return max(HISTORY_START, oldest_tail - timedelta(days=overlap_days * 2))
+
+
 @router.get("/series")
 def fund_flow_series(codes: str, start: Optional[str] = None, end: str = "latest", frequency: str = "daily"):
     if frequency not in {"daily", "weekly", "monthly"}:
@@ -154,7 +171,7 @@ def fund_flow_sync(overlap_days: int = Query(5, ge=1, le=30), backfill: bool = Q
     try:
         end = date.today()
         should_backfill = backfill or _needs_history_backfill()
-        start = HISTORY_START if should_backfill else end - timedelta(days=overlap_days * 3)
+        start = HISTORY_START if should_backfill else _incremental_start(end, overlap_days)
         report = sync_recent(_db(), share_providers=[AkshareSSEProvider(), AkshareSZSEProvider()], nav_provider=AkshareNavProvider(), start=start, end=end)
         return {"mode": "backfill" if should_backfill else "incremental", "start": start.isoformat(), "inserted": report.inserted, "updated": report.updated, "latestTradeDate": report.latest_trade_date.isoformat() if report.latest_trade_date else None, "providerStatus": report.provider_status, "warnings": report.warnings}
     finally:

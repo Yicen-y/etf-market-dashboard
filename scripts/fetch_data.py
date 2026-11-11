@@ -199,7 +199,18 @@ def fetch_product_history(product_code: str, start_date: str, end_date: str, api
                 if attempt < 2:
                     time.sleep(2 ** attempt)
         if frame is None:
-            raise RuntimeError(f"AkShare request failed for {product_code} ({cursor} - {chunk_end}): {last_error}") from last_error
+            try:
+                sina = ak.fund_etf_hist_sina(symbol="sh" + product_code)
+                if sina is None or not {"date", "close"}.issubset(sina.columns):
+                    raise ValueError("Sina ETF response is missing date or close")
+                rows = [{"tradeDate": str(row.date).replace("-", "")[:8], "productCode": product_code,
+                         "closePrice": float(row.close)} for row in sina.itertuples()
+                        if start_date <= str(row.date).replace("-", "")[:8] <= end_date]
+                return _result(rows, "AkShare", "Sina", {"product_code": product_code,
+                    "start_date": start_date, "end_date": end_date, "eastmoney_error": str(last_error)},
+                    _frame_bytes(sina), "https://finance.sina.com.cn")
+            except Exception as sina_error:
+                raise RuntimeError(f"AkShare ETF history failed for {product_code}: Eastmoney: {last_error}; Sina: {sina_error}") from sina_error
         if not frame.empty:
             if not {"日期", "收盘"}.issubset(frame.columns):
                 raise RuntimeError(f"AkShare response for {product_code} is missing required columns")

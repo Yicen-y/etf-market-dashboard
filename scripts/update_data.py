@@ -250,8 +250,8 @@ def update_dataset(path: Path = DATA_PATH, api_key: Optional[str] = None, end_da
         provider_summary[metadata["provider"]] = provider_summary.get(metadata["provider"], 0) + len(rows)
     legacy_issues = [{"symbol": row.get("productCode"), "kind": "etf", "trade_date": row.get("tradeDate"), "issue_code": "LEGACY_INVALID_OBSERVATION", "severity": "BLOCKED", "batch_id": batch_id} for row in existing if validate_records([row], set(PRODUCTS))]
     valid_existing = [row for row in existing if not validate_records([row], set(PRODUCTS))]
-    # ETF closes are sourced exclusively from AkShare; incoming overlap rows
-    # are authoritative corrections to older values from other providers.
+    # ETF closes are sourced through AkShare (Eastmoney, then Sina on connection
+    # failure); incoming overlap rows are authoritative corrections.
     records = merge_records(valid_existing, incoming, replace_conflicts=True)
     errors = validate_records(records, set(PRODUCTS))
     if errors:

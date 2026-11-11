@@ -5,7 +5,7 @@
   <title>沪深300 ETF资金流向监测</title>
   <link rel="stylesheet" href="theme.css?v=20261101-2">
   <link rel="stylesheet" href="ui-components.css?v=20261109-ui3">
-  <link rel="stylesheet" href="fund-flow.css?v=20261108-ui2">
+  <link rel="stylesheet" href="fund-flow.css?v=20261111-cards1">
   <script src="echarts.min.js"></script>
   <script src="chart-theme.js?v=20261101"></script>
 </head>
@@ -18,19 +18,21 @@
       <div class="fund-flow-controls">
         <label for="preset">ETF组合<select id="preset"><option value="core_four">核心四只</option><option value="original_shanghai_five">原上海五只</option><option value="all_six">全部六只</option></select></label>
         <label for="start">开始日期<input id="start" type="date" value="2023-12-29"></label>
-        <button id="refresh" class="ui-button ui-button--primary" type="button">刷新全部数据</button>
+        <button id="refresh" class="ui-button ui-button--primary" type="button">增量更新</button>
       </div>
       <div id="universe" class="universe"></div>
     </header>
     <section id="status" class="status" role="status" aria-live="polite" data-state="loading">正在读取资金流数据…</section>
     <section class="summary" id="summary"></section>
+    <section class="panel fund-flow-focus"><div class="panel-heading"><div><h2>ETF 最新概览</h2><p>份额变化与估算净申赎按各标的最新有效交易日展示；点击卡片查看明细。</p></div></div><div id="etf-cards" class="etf-cards" aria-label="选择 ETF 查看明细"></div></section>
     <section class="panel"><div class="panel-heading"><h2>调整后ETF份额（万份）</h2><span>来源：交易所公开份额口径；该字段为调整后份额存量</span></div><div id="shares-chart" class="chart" role="img" aria-label="调整后ETF份额趋势，详细数据可在下方交易日数据表查看"></div></section>
+    <div class="fund-flow-detail-grid"><section class="panel"><div class="panel-heading"><h2 id="selected-daily-title">每日份额变化</h2><span>单位：万份；缺失值不补零</span></div><div id="selected-daily-chart" class="chart" role="img" aria-label="选中ETF的每日调整后份额变化"></div></section><section class="panel"><div class="panel-heading"><h2 id="selected-recent-title">近3个月调整后份额</h2><span>单位：万份；截至最新数据日，显示近3个自然月内有记录的交易日</span></div><div id="selected-recent-chart" class="chart" role="img" aria-label="选中ETF近3个月的调整后份额"></div></section></div>
     <section class="panel"><div class="panel-heading"><h2>累计估算净申赎（亿元）</h2><span>F = ΔS × NAV ÷ 10000</span></div><div id="cumulative-flow-chart" class="chart" role="img" aria-label="累计估算净申赎趋势，详细数据可在下方交易日数据表查看"></div></section>
     <section class="panel"><div class="panel-heading"><h2>每日估算净申赎（亿元）</h2><span>红柱为净申购，绿柱为净赎回；缺少前一交易日或NAV时显示为空</span></div><div id="daily-flow-chart" class="chart" role="img" aria-label="每日估算净申赎柱状图，红色正值为净申购，绿色负值为净赎回；详细数据可在下方交易日数据表查看"></div></section>
     <section class="panel"><div class="panel-heading"><h2>交易日数据</h2><button id="fund-flow-table-toggle" class="ui-button" type="button" aria-expanded="false" aria-controls="fund-flow-table-region">展开交易日数据</button></div><div id="fund-flow-table-region" class="table-wrap" hidden><table id="fund-flow-table"><caption>沪深300 ETF份额与估算净申赎明细，缺失值显示为破折号</caption><thead><tr><th scope="col">交易日</th><th scope="col">ETF</th><th scope="col">调整后份额（万份）</th><th scope="col">调整后NAV</th><th scope="col">每日净申赎（亿元）</th><th scope="col">累计净申赎（亿元）</th><th scope="col">状态</th></tr></thead><tbody></tbody></table></div></section>
     </div>
   </main>
   <script src="navigation.js?v=20261109-ui3"></script>
-  <script src="fund-flow.js?v=20261109-ui4"></script>
+  <script src="fund-flow.js?v=20261111-cards2"></script>
 </body>
 </html>
