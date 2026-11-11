@@ -4,7 +4,8 @@ from fastapi import APIRouter, HTTPException, Query
 from .db import add_watchlist, list_watchlist, remove_watchlist, search
 from .catalog import catalog_status
 from .announcement_sync import candidate_detail
-from .provider_yields import sync_provider_yield, provider_yield_history_detail, sync_wind_stock_yield_history
+from .provider_yields import (sync_provider_yield, provider_yield_history_detail,
+                              record_wind_stock_yield_observation, STOCK_PROVIDER)
 from .etfirst_yield_list import etfirst_yield_page
 from .service import ensure_seed, yield_detail, event_detail, history_detail, calendar_detail, sync_watchlist, sync_security
 
@@ -59,11 +60,12 @@ def build_router(database_path: Path) -> APIRouter:
             result = sync_provider_yield(database_path, security_id)
         except Exception as error:
             raise HTTPException(502, f'Wind股息率刷新失败：{error}') from error
-        if result.get('provider') == 'wind:mcp:stock_fundamentals':
-            try:
-                result['history_sync'] = sync_wind_stock_yield_history(database_path, security_id)
-            except Exception as error:
-                raise HTTPException(502, f'Wind历史股息率同步失败：{error}') from error
+        if (result.get('provider') == STOCK_PROVIDER and
+                result.get('status') == 'READY' and
+                result.get('value_pct') is not None and
+                result.get('as_of_date')):
+            result['history_observation'] = record_wind_stock_yield_observation(
+                database_path, security_id, result)
         return result
 
     @router.get('/provider-yields/{security_id}/history')

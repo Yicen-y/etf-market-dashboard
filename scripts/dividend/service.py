@@ -7,7 +7,7 @@ from pathlib import Path
 from .db import connect, init_schema, list_watchlist, record_candidate_snapshot
 from .providers import fetch_security_snapshot
 from .announcement_sync import sync_candidates
-from .provider_yields import provider_yield_detail, provider_yield_history_detail, sync_provider_yield, sync_wind_stock_yield_history
+from .provider_yields import provider_yield_detail, provider_yield_history_detail, sync_provider_yield
 from .domain import CashEvent, Coverage, calculate_annual_reference, calculate_forward_groups, calculate_ttm, normalize_cash_amount, select_as_known_revision
 
 
@@ -267,11 +267,6 @@ def sync_security(path: Path, security_id: str, start: str = '2021-01-01', end: 
         return None
     provider_result = sync_provider_yield(path, security_id)
     history_result = None
-    if security(path, security_id)['security_type'] == 'STOCK':
-        try:
-            history_result = sync_wind_stock_yield_history(path, security_id, end_date=end)
-        except Exception as error:
-            history_result = {'status': 'FAILED', 'reason': str(error)}
     try:
         snapshot = fetch_security_snapshot(security_id, start, end or date.today().isoformat())
         dividends = snapshot['dividends'] if isinstance(snapshot['dividends'], list) else []

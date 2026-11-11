@@ -1,5 +1,7 @@
 from fastapi.testclient import TestClient
 
+from scripts.dividend.db import connect
+
 
 def test_search_is_type_filtered():
     from server import app
@@ -159,7 +161,7 @@ def test_provider_yield_history_endpoint_returns_percentile_and_rows(tmp_path):
     assert payload['missing_dates'] == ['2026-01-03']
 
 
-def test_provider_refresh_returns_json_error_when_history_sync_crashes(monkeypatch, tmp_path):
+def test_provider_refresh_does_not_depend_on_historical_sync(monkeypatch, tmp_path):
     from fastapi import FastAPI
     from scripts.dividend import api
     from scripts.dividend.api import build_router
@@ -169,11 +171,105 @@ def test_provider_refresh_returns_json_error_when_history_sync_crashes(monkeypat
     upsert_security(db, {'security_id': 'STOCK:601318', 'code': '601318', 'name': '中国平安',
                          'market': 'SH', 'security_type': 'STOCK', 'aliases': ''})
     monkeypatch.setattr(api, 'sync_provider_yield', lambda *args: {
-        'security_id': 'STOCK:601318', 'provider': 'wind:mcp:stock_fundamentals', 'status': 'READY'})
-    monkeypatch.setattr(api, 'sync_wind_stock_yield_history',
-                        lambda *args, **kwargs: (_ for _ in ()).throw(RuntimeError('Wind网关超时')))
+        'security_id': 'STOCK:601318', 'provider': 'wind:mcp:stock_fundamentals',
+        'metric_label': 'Wind股息率（提供方口径）', 'status': 'READY',
+        'value_pct': '3.1', 'as_of_date': '2026-02-03', 'raw': {}})
     app = FastAPI()
     app.include_router(build_router(db))
     response = TestClient(app).post('/api/dividend/provider-yields/STOCK:601318/refresh')
-    assert response.status_code == 502
-    assert response.json()['detail'] == 'Wind历史股息率同步失败：Wind网关超时'
+    assert response.status_code == 200
+    assert response.json()['history_observation']['status'] == 'READY'
+
+
+def _seed_provider_refresh_app(tmp_path, monkeypatch, result):
+    from fastapi import FastAPI
+    from scripts.dividend import api
+    from scripts.dividend.db import connect, upsert_security
+
+    db = tmp_path / 'provider-refresh.sqlite'
+    upsert_security(db, {'security_id': 'STOCK:601318', 'code': '601318', 'name': '中国平安',
+                         'market': 'SH', 'security_type': 'STOCK', 'aliases': '平安'})
+
+    def fake_sync(path, security_id):
+        with connect(path) as connection:
+            connection.execute('''INSERT INTO dividend_provider_yields
+                (security_id,value_pct,as_of_date,fetched_at,provider,metric_label,
+                 source_sha256,status,reason)
+                VALUES (?,?,?,?,?,?,?,?,?)
+                ON CONFLICT(security_id) DO UPDATE SET
+                value_pct=excluded.value_pct, as_of_date=excluded.as_of_date,
+                fetched_at=excluded.fetched_at, source_sha256=excluded.source_sha256,
+                status=excluded.status, reason=excluded.reason''',
+                (security_id, result['value_pct'], result['as_of_date'], 'now',
+                 result['provider'], result['metric_label'], 'hash', 'READY', None))
+        return {'security_id': security_id, **result, 'status': 'READY'}
+
+    monkeypatch.setattr(api, 'sync_provider_yield', fake_sync)
+    app = FastAPI()
+    app.include_router(api.build_router(db))
+    return api, db, app
+
+
+def test_provider_refresh_does_not_call_historical_sync_and_records_fresh_2026_value(monkeypatch, tmp_path):
+    from fastapi.testclient import TestClient
+    from scripts.dividend import provider_yields
+
+    result = {'value_pct': '3.25', 'as_of_date': '2026-02-03',
+              'provider': 'wind:mcp:stock_fundamentals',
+              'metric_label': 'Wind股息率（提供方口径）'}
+    api, db, app = _seed_provider_refresh_app(tmp_path, monkeypatch, result)
+    monkeypatch.setattr(provider_yields, 'sync_wind_stock_yield_history',
+                        lambda *args, **kwargs: (_ for _ in ()).throw(
+                            AssertionError('历史同步不应被股票刷新调用')))
+
+    response = TestClient(app).post('/api/dividend/provider-yields/STOCK:601318/refresh')
+
+    assert response.status_code == 200
+    with connect(db) as connection:
+        latest = connection.execute(
+            'SELECT value_pct,as_of_date FROM dividend_provider_yields WHERE security_id=?',
+            ('STOCK:601318',)).fetchone()
+        history = connection.execute(
+            'SELECT trade_date,value_pct,status FROM dividend_provider_yield_history '
+            'WHERE security_id=?', ('STOCK:601318',)).fetchall()
+    assert (latest['value_pct'], latest['as_of_date']) == ('3.25', '2026-02-03')
+    assert [(row['trade_date'], row['value_pct'], row['status']) for row in history] == [
+        ('2026-02-03', '3.25', 'READY')]
+
+
+def test_provider_refresh_does_not_record_pre_2026_observation(monkeypatch, tmp_path):
+    from fastapi.testclient import TestClient
+
+    result = {'value_pct': '3.25', 'as_of_date': '2025-12-31',
+              'provider': 'wind:mcp:stock_fundamentals',
+              'metric_label': 'Wind股息率（提供方口径）'}
+    _, db, app = _seed_provider_refresh_app(tmp_path, monkeypatch, result)
+
+    response = TestClient(app).post('/api/dividend/provider-yields/STOCK:601318/refresh')
+
+    assert response.status_code == 200
+    with connect(db) as connection:
+        count = connection.execute(
+            'SELECT COUNT(*) FROM dividend_provider_yield_history WHERE security_id=?',
+            ('STOCK:601318',)).fetchone()[0]
+    assert count == 0
+
+
+def test_provider_refresh_same_2026_date_is_idempotent(monkeypatch, tmp_path):
+    from fastapi.testclient import TestClient
+
+    result = {'value_pct': '3.25', 'as_of_date': '2026-02-03',
+              'provider': 'wind:mcp:stock_fundamentals',
+              'metric_label': 'Wind股息率（提供方口径）'}
+    _, db, app = _seed_provider_refresh_app(tmp_path, monkeypatch, result)
+    client = TestClient(app)
+
+    assert client.post('/api/dividend/provider-yields/STOCK:601318/refresh').status_code == 200
+    assert client.post('/api/dividend/provider-yields/STOCK:601318/refresh').status_code == 200
+
+    with connect(db) as connection:
+        count = connection.execute(
+            'SELECT COUNT(*) FROM dividend_provider_yield_history '
+            'WHERE security_id=? AND trade_date=?',
+            ('STOCK:601318', '2026-02-03')).fetchone()[0]
+    assert count == 1

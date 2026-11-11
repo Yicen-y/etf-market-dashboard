@@ -328,6 +328,30 @@ def sync_wind_stock_yield_history(path: Path, security_id: str, *,
             'latest_date': ready[-1]['trade_date'] if ready else None}
 
 
+def record_wind_stock_yield_observation(path: Path, security_id: str, result: dict,
+                                        *, minimum_date: str = '2026-01-01') -> dict:
+    """Store one fresh Wind observation without initiating historical backfill."""
+    if result.get('provider') != STOCK_PROVIDER or result.get('metric_label') != STOCK_LABEL:
+        raise ValueError('提供方指标身份不符')
+    observed = datetime.fromisoformat(str(result['as_of_date'])).date().isoformat()
+    if observed < minimum_date:
+        return {'status': 'SKIPPED', 'trade_date': observed, 'reason': '早于本地观测起始日期'}
+    value = _percent(result['value_pct'])
+    payload = json.dumps(result.get('raw', {}), ensure_ascii=False,
+                         sort_keys=True, default=str)
+    digest = hashlib.sha256(payload.encode('utf-8')).hexdigest()
+    fetched_at = datetime.now(timezone.utc).isoformat()
+    with connect(path) as db:
+        db.execute('INSERT OR IGNORE INTO raw_source_records(payload,sha256) VALUES (?,?)',
+                   (payload, digest))
+        db.execute('''INSERT OR IGNORE INTO dividend_provider_yield_history
+            (security_id,trade_date,value_pct,provider,metric_label,source_sha256,
+             fetched_at,status,reason) VALUES (?,?,?,?,?,?,?,?,?)''',
+                   (security_id, observed, value, STOCK_PROVIDER, STOCK_LABEL,
+                    digest, fetched_at, 'READY', None))
+    return {'status': 'READY', 'trade_date': observed, 'value_pct': value}
+
+
 def provider_yield_history_detail(path: Path, security_id: str) -> dict | None:
     init_schema(path)
     with connect(path) as db:
