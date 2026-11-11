@@ -273,3 +273,33 @@ def test_provider_refresh_same_2026_date_is_idempotent(monkeypatch, tmp_path):
             'WHERE security_id=? AND trade_date=?',
             ('STOCK:601318', '2026-02-03')).fetchone()[0]
     assert count == 1
+
+
+def test_batch_stock_sync_records_fresh_wind_observation(monkeypatch, tmp_path):
+    from scripts.dividend import service
+    from scripts.dividend.db import upsert_security
+
+    db = tmp_path / 'batch-stock.sqlite'
+    upsert_security(db, {'security_id': 'STOCK:601318', 'code': '601318', 'name': '中国平安',
+                         'market': 'SH', 'security_type': 'STOCK', 'aliases': '平安'})
+    from scripts.dividend.db import add_watchlist, connect
+    add_watchlist(db, 'STOCK:601318')
+
+    result = {'security_id': 'STOCK:601318', 'provider': 'wind:mcp:stock_fundamentals',
+              'metric_label': 'Wind股息率（提供方口径）', 'status': 'READY',
+              'value_pct': '3.25', 'as_of_date': '2026-02-03', 'raw': {'source': 'fixture'}}
+    monkeypatch.setattr(service, 'sync_provider_yield', lambda *args: result)
+    monkeypatch.setattr(service, 'fetch_security_snapshot', lambda *args: {
+        'quotes': [], 'dividends': [], 'provider': 'fixture', 'errors': []})
+    monkeypatch.setattr(service, 'sync_candidates', lambda *args: {
+        'status': 'CANDIDATES_ONLY', 'count': 0, 'pdf_count': 0})
+
+    payload = service.sync_watchlist(db, 'STOCK')
+
+    assert payload['items'][0]['provider_yield']['status'] == 'READY'
+    with connect(db) as connection:
+        rows = connection.execute(
+            'SELECT trade_date,value_pct,status FROM dividend_provider_yield_history '
+            'WHERE security_id=?', ('STOCK:601318',)).fetchall()
+    assert [(row['trade_date'], row['value_pct'], row['status']) for row in rows] == [
+        ('2026-02-03', '3.25', 'READY')]

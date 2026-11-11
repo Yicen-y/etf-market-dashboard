@@ -76,3 +76,22 @@ def test_provider_sync_preserves_source_identity_and_failure_reason(tmp_path):
         db.execute('UPDATE dividend_provider_yields SET as_of_date=? WHERE security_id=?',
                    (date.today().isoformat(), 'STOCK:600519'))
     assert provider_yield_detail(path, 'STOCK:600519')['as_of_date'] == date.today().isoformat()
+
+
+def test_wind_failure_preserves_existing_ready_provider_value(tmp_path):
+    path = tmp_path / 'provider-failure.sqlite'
+    upsert_security(path, {'security_id': 'STOCK:600519', 'code': '600519', 'name': '贵州茅台',
+                           'market': 'SH', 'security_type': 'STOCK', 'aliases': ''})
+    initial = sync_provider_yield(path, 'STOCK:600519', stock_fetcher=lambda *_: {
+        'value_pct': '2.35', 'as_of_date': '2026-11-09',
+        'provider': STOCK_PROVIDER, 'metric_label': STOCK_LABEL, 'raw': {'source': 'fixture'}})
+    assert initial['status'] == 'READY'
+
+    failed = sync_provider_yield(path, 'STOCK:600519', stock_fetcher=lambda *_: (_ for _ in ()).throw(
+        RuntimeError('Wind暂时不可用')))
+
+    assert failed['status'] == 'READY'
+    assert failed['value_pct'] == '2.35'
+    assert failed['as_of_date'] == '2026-11-09'
+    assert failed['last_refresh_status'] == 'UNAVAILABLE'
+    assert failed['last_refresh_reason'] == 'Wind暂时不可用'

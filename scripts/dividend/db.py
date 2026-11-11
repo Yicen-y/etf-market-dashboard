@@ -26,7 +26,8 @@ CREATE TABLE IF NOT EXISTS dividend_provider_yields (
  security_id TEXT PRIMARY KEY REFERENCES dividend_securities(security_id),
  value_pct TEXT, as_of_date TEXT, fetched_at TEXT NOT NULL,
  provider TEXT NOT NULL, metric_label TEXT NOT NULL,
- source_sha256 TEXT, status TEXT NOT NULL, reason TEXT
+ source_sha256 TEXT, status TEXT NOT NULL, reason TEXT,
+ last_refresh_status TEXT, last_refresh_reason TEXT
 );
 CREATE TABLE IF NOT EXISTS dividend_provider_yield_history (
  security_id TEXT NOT NULL REFERENCES dividend_securities(security_id),
@@ -99,6 +100,11 @@ def init_schema(path: Path) -> None:
             connection.execute('ALTER TABLE dividend_revisions ADD COLUMN ex_date TEXT')
         if 'fiscal_year' not in revision_columns:
             connection.execute('ALTER TABLE dividend_revisions ADD COLUMN fiscal_year INTEGER')
+        provider_yield_columns = {row['name'] for row in connection.execute('PRAGMA table_info(dividend_provider_yields)')}
+        if 'last_refresh_status' not in provider_yield_columns:
+            connection.execute('ALTER TABLE dividend_provider_yields ADD COLUMN last_refresh_status TEXT')
+        if 'last_refresh_reason' not in provider_yield_columns:
+            connection.execute('ALTER TABLE dividend_provider_yields ADD COLUMN last_refresh_reason TEXT')
         coverage_columns = {row['name'] for row in connection.execute('PRAGMA table_info(dividend_coverage)')}
         if 'quote_calendar_verified' not in coverage_columns:
             connection.execute('ALTER TABLE dividend_coverage ADD COLUMN quote_calendar_verified INTEGER NOT NULL DEFAULT 0')

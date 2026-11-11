@@ -358,7 +358,8 @@ def provider_yield_history_detail(path: Path, security_id: str) -> dict | None:
         security = db.execute('SELECT * FROM dividend_securities WHERE security_id=?', (security_id,)).fetchone()
         if security is None:
             return None
-        latest_row = db.execute('''SELECT value_pct,as_of_date,status,provider,metric_label
+        latest_row = db.execute('''SELECT value_pct,as_of_date,status,provider,metric_label,
+            last_refresh_status,last_refresh_reason
             FROM dividend_provider_yields WHERE security_id=?''', (security_id,)).fetchone()
         rows = db.execute('''SELECT trade_date,value_pct,provider,metric_label,source_sha256,
             fetched_at,status,reason FROM dividend_provider_yield_history
@@ -471,10 +472,12 @@ def provider_yield_detail(path: Path, security_id: str) -> dict | None:
                               reason=f'提供方数据日期超出{limit}天有效窗口，请刷新')
         return result
     kind = security['security_type']
-    return {'security_id': security_id, 'value_pct': None, 'as_of_date': None,
+    result = {'security_id': security_id, 'value_pct': None, 'as_of_date': None,
             'fetched_at': None, 'provider': STOCK_PROVIDER if kind == 'STOCK' else ETF_PROVIDER,
             'metric_label': STOCK_LABEL if kind == 'STOCK' else ETF_LABEL,
-            'status': 'NOT_FETCHED', 'reason': '尚未获取提供方股息率', 'source_sha256': None}
+            'status': 'NOT_FETCHED', 'reason': '尚未获取提供方股息率', 'source_sha256': None,
+            'last_refresh_status': 'NOT_FETCHED', 'last_refresh_reason': '尚未获取提供方股息率'}
+    return result
 
 
 def sync_provider_yield(path: Path, security_id: str, *, stock_fetcher=None, etf_fetcher=None) -> dict:
@@ -516,15 +519,28 @@ def sync_provider_yield(path: Path, security_id: str, *, stock_fetcher=None, etf
         status, reason = 'UNAVAILABLE', str(exc)
     checked_at = datetime.now(timezone.utc).isoformat()
     with connect(path) as db:
+        previous = db.execute('''SELECT value_pct,as_of_date,fetched_at,provider,metric_label,
+            source_sha256,status,reason,last_refresh_status,last_refresh_reason
+            FROM dividend_provider_yields WHERE security_id=?''', (security_id,)).fetchone()
         if payload is not None:
             db.execute('INSERT OR IGNORE INTO raw_source_records(payload,sha256) VALUES (?,?)',
                        (payload, digest))
-        db.execute('''INSERT INTO dividend_provider_yields
-            (security_id,value_pct,as_of_date,fetched_at,provider,metric_label,source_sha256,status,reason)
-            VALUES (?,?,?,?,?,?,?,?,?) ON CONFLICT(security_id) DO UPDATE SET
-            value_pct=excluded.value_pct,as_of_date=excluded.as_of_date,
-            fetched_at=excluded.fetched_at,source_sha256=excluded.source_sha256,
-            status=excluded.status,reason=excluded.reason,
-            provider=excluded.provider,metric_label=excluded.metric_label''',
-            (security_id, value, as_of, checked_at, provider, label, digest, status, reason))
+        if status == 'READY' or previous is None or kind != 'STOCK':
+            db.execute('''INSERT INTO dividend_provider_yields
+                (security_id,value_pct,as_of_date,fetched_at,provider,metric_label,source_sha256,status,reason,
+                 last_refresh_status,last_refresh_reason)
+                VALUES (?,?,?,?,?,?,?,?,?,?,?) ON CONFLICT(security_id) DO UPDATE SET
+                value_pct=excluded.value_pct,as_of_date=excluded.as_of_date,
+                fetched_at=excluded.fetched_at,source_sha256=excluded.source_sha256,
+                status=excluded.status,reason=excluded.reason,
+                provider=excluded.provider,metric_label=excluded.metric_label,
+                last_refresh_status=excluded.last_refresh_status,
+                last_refresh_reason=excluded.last_refresh_reason''',
+                (security_id, value, as_of, checked_at, provider, label, digest, status, reason,
+                 status, reason))
+        else:
+            db.execute('''UPDATE dividend_provider_yields
+                SET fetched_at=?, last_refresh_status=?, last_refresh_reason=?
+                WHERE security_id=?''',
+                (checked_at, status, reason, security_id))
     return provider_yield_detail(path, security_id)
