@@ -303,3 +303,41 @@ def test_batch_stock_sync_records_fresh_wind_observation(monkeypatch, tmp_path):
             'WHERE security_id=?', ('STOCK:601318',)).fetchall()
     assert [(row['trade_date'], row['value_pct'], row['status']) for row in rows] == [
         ('2026-02-03', '3.25', 'READY')]
+
+
+def test_batch_stock_sync_reports_failure_without_masking_existing_ready_value(monkeypatch, tmp_path):
+    from scripts.dividend import provider_yields, service
+    from scripts.dividend.db import add_watchlist, upsert_security
+
+    db = tmp_path / 'batch-stock-failure.sqlite'
+    upsert_security(db, {'security_id': 'STOCK:601318', 'code': '601318', 'name': '中国平安',
+                         'market': 'SH', 'security_type': 'STOCK', 'aliases': '平安'})
+    add_watchlist(db, 'STOCK:601318')
+    with connect(db) as connection:
+        connection.execute('''INSERT INTO dividend_provider_yields
+            (security_id,value_pct,as_of_date,fetched_at,provider,metric_label,source_sha256,status,reason)
+            VALUES (?,?,?,?,?,?,?,?,?)''',
+            ('STOCK:601318', '3.25', '2026-11-09', '2026-11-09T08:00:00+00:00',
+             'wind:mcp:stock_fundamentals', 'Wind股息率（提供方口径）', 'old-hash', 'READY', None))
+
+    monkeypatch.setattr(provider_yields, 'fetch_wind_stock_yield',
+                        lambda *_: (_ for _ in ()).throw(RuntimeError('Wind暂时不可用')))
+    monkeypatch.setattr(service, 'fetch_security_snapshot', lambda *args: {
+        'quotes': [], 'dividends': [], 'provider': 'fixture', 'errors': []})
+    monkeypatch.setattr(service, 'sync_candidates', lambda *args: {
+        'status': 'CANDIDATES_ONLY', 'count': 0, 'pdf_count': 0})
+
+    payload = service.sync_watchlist(db, 'STOCK')
+
+    item = payload['items'][0]
+    assert item['provider_yield']['status'] == 'READY'
+    assert item['provider_yield']['value_pct'] == '3.25'
+    assert item['provider_yield']['last_refresh_status'] == 'UNAVAILABLE'
+    assert item['provider_yield']['last_refresh_reason'] == 'Wind暂时不可用'
+    with connect(db) as connection:
+        row = connection.execute('''SELECT value_pct,as_of_date,fetched_at,status,
+            last_refresh_status FROM dividend_provider_yields WHERE security_id=?''',
+                                 ('STOCK:601318',)).fetchone()
+    assert (row['value_pct'], row['as_of_date'], row['fetched_at'], row['status'],
+            row['last_refresh_status']) == (
+        '3.25', '2026-11-09', '2026-11-09T08:00:00+00:00', 'READY', 'UNAVAILABLE')

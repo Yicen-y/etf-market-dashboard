@@ -344,9 +344,14 @@ def record_wind_stock_yield_observation(path: Path, security_id: str, result: di
     with connect(path) as db:
         db.execute('INSERT OR IGNORE INTO raw_source_records(payload,sha256) VALUES (?,?)',
                    (payload, digest))
-        db.execute('''INSERT OR IGNORE INTO dividend_provider_yield_history
+        db.execute('''INSERT INTO dividend_provider_yield_history
             (security_id,trade_date,value_pct,provider,metric_label,source_sha256,
-             fetched_at,status,reason) VALUES (?,?,?,?,?,?,?,?,?)''',
+             fetched_at,status,reason) VALUES (?,?,?,?,?,?,?,?,?)
+            ON CONFLICT(security_id,trade_date) DO UPDATE SET
+            value_pct=excluded.value_pct, provider=excluded.provider,
+            metric_label=excluded.metric_label, source_sha256=excluded.source_sha256,
+            fetched_at=excluded.fetched_at, status='READY', reason=NULL
+            WHERE dividend_provider_yield_history.status='FAILED' ''',
                    (security_id, observed, value, STOCK_PROVIDER, STOCK_LABEL,
                     digest, fetched_at, 'READY', None))
     return {'status': 'READY', 'trade_date': observed, 'value_pct': value}
@@ -540,7 +545,7 @@ def sync_provider_yield(path: Path, security_id: str, *, stock_fetcher=None, etf
                  status, reason))
         else:
             db.execute('''UPDATE dividend_provider_yields
-                SET fetched_at=?, last_refresh_status=?, last_refresh_reason=?
+                SET last_refresh_status=?, last_refresh_reason=?
                 WHERE security_id=?''',
-                (checked_at, status, reason, security_id))
+                (status, reason, security_id))
     return provider_yield_detail(path, security_id)

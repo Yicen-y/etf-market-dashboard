@@ -5,7 +5,7 @@ from scripts.dividend.db import connect, upsert_security
 from scripts.dividend.provider_yields import (
     ETF_LABEL, ETF_PROVIDER, STOCK_LABEL, STOCK_PROVIDER,
     parse_htbr_etf_yield, parse_wind_stock_yield, provider_yield_detail,
-    sync_provider_yield,
+    record_wind_stock_yield_observation, sync_provider_yield,
 )
 
 
@@ -95,3 +95,77 @@ def test_wind_failure_preserves_existing_ready_provider_value(tmp_path):
     assert failed['as_of_date'] == '2026-11-09'
     assert failed['last_refresh_status'] == 'UNAVAILABLE'
     assert failed['last_refresh_reason'] == 'Wind暂时不可用'
+
+
+def test_wind_failure_preserves_last_successful_fetch_timestamp(tmp_path):
+    path = tmp_path / 'provider-failure-timestamp.sqlite'
+    upsert_security(path, {'security_id': 'STOCK:600519', 'code': '600519', 'name': '贵州茅台',
+                           'market': 'SH', 'security_type': 'STOCK', 'aliases': ''})
+    with connect(path) as db:
+        db.execute('''INSERT INTO dividend_provider_yields
+            (security_id,value_pct,as_of_date,fetched_at,provider,metric_label,source_sha256,status,reason)
+            VALUES (?,?,?,?,?,?,?,?,?)''',
+            ('STOCK:600519', '2.35', '2026-11-09', '2026-11-09T08:00:00+00:00',
+             STOCK_PROVIDER, STOCK_LABEL, 'old-hash', 'READY', None))
+
+    failed = sync_provider_yield(path, 'STOCK:600519', stock_fetcher=lambda *_: (_ for _ in ()).throw(
+        RuntimeError('Wind暂时不可用')))
+
+    assert failed['status'] == 'READY'
+    with connect(path) as db:
+        row = db.execute('''SELECT fetched_at,last_refresh_status,last_refresh_reason
+            FROM dividend_provider_yields WHERE security_id=?''', ('STOCK:600519',)).fetchone()
+    assert row['fetched_at'] == '2026-11-09T08:00:00+00:00'
+    assert row['last_refresh_status'] == 'UNAVAILABLE'
+    assert row['last_refresh_reason'] == 'Wind暂时不可用'
+
+
+def test_successful_observation_repairs_failed_same_day_history(tmp_path):
+    path = tmp_path / 'provider-history-repair.sqlite'
+    upsert_security(path, {'security_id': 'STOCK:600519', 'code': '600519', 'name': '贵州茅台',
+                           'market': 'SH', 'security_type': 'STOCK', 'aliases': ''})
+    with connect(path) as db:
+        db.execute('''INSERT INTO dividend_provider_yield_history
+            (security_id,trade_date,value_pct,provider,metric_label,source_sha256,
+             fetched_at,status,reason) VALUES (?,?,?,?,?,?,?,?,?)''',
+            ('STOCK:600519', '2026-11-09', None, STOCK_PROVIDER, STOCK_LABEL,
+             None, '2026-11-09T08:00:00+00:00', 'FAILED', 'Wind超时'))
+
+    result = record_wind_stock_yield_observation(path, 'STOCK:600519', {
+        'value_pct': '2.35', 'as_of_date': '2026-11-09',
+        'provider': STOCK_PROVIDER, 'metric_label': STOCK_LABEL,
+        'raw': {'source': 'fixture'},
+    })
+
+    assert result['status'] == 'READY'
+    with connect(path) as db:
+        row = db.execute('''SELECT value_pct,provider,metric_label,source_sha256,
+            status,reason FROM dividend_provider_yield_history
+            WHERE security_id=? AND trade_date=?''', ('STOCK:600519', '2026-11-09')).fetchone()
+    assert row['value_pct'] == '2.35'
+    assert row['provider'] == STOCK_PROVIDER
+    assert row['metric_label'] == STOCK_LABEL
+    assert row['source_sha256']
+    assert row['status'] == 'READY'
+    assert row['reason'] is None
+
+
+def test_ready_same_day_observation_remains_idempotent(tmp_path):
+    path = tmp_path / 'provider-history-idempotent.sqlite'
+    upsert_security(path, {'security_id': 'STOCK:600519', 'code': '600519', 'name': '贵州茅台',
+                           'market': 'SH', 'security_type': 'STOCK', 'aliases': ''})
+    first = {'value_pct': '2.35', 'as_of_date': '2026-11-09',
+             'provider': STOCK_PROVIDER, 'metric_label': STOCK_LABEL,
+             'raw': {'source': 'first'}}
+    second = {**first, 'value_pct': '9.99', 'raw': {'source': 'second'}}
+    record_wind_stock_yield_observation(path, 'STOCK:600519', first)
+    record_wind_stock_yield_observation(path, 'STOCK:600519', second)
+
+    with connect(path) as db:
+        row = db.execute('''SELECT value_pct,source_sha256,status,reason
+            FROM dividend_provider_yield_history WHERE security_id=? AND trade_date=?''',
+                         ('STOCK:600519', '2026-11-09')).fetchone()
+    assert row['value_pct'] == '2.35'
+    assert row['source_sha256']
+    assert row['status'] == 'READY'
+    assert row['reason'] is None
