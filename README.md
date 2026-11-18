@@ -1,5 +1,7 @@
 # ETF Market Dashboard
 
+最新变更见 [2026-11-18 更新说明](CHANGELOG.md)。
+
 ## V2 工程升级状态
 
 数据中心：`/web/data-center.html`；只读诊断 API：`/api/data-center`。支持以 `ETF_DATA_DIR` 指定独立持久数据目录，未设置时仍使用仓库内 `data/`。新异步更新入口 `/api/jobs/update` 返回 job ID；原 `/api/update` 保持兼容。所有写接口仅允许本机对等端访问，公开反向代理仍须另行设置访问控制。
