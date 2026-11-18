@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>更新任务详情 · 投资分析看板</title>
+  <link rel="stylesheet" href="theme.css?v=20261115-hierarchy1">
+  <link rel="stylesheet" href="ui-components.css?v=20261115-hierarchy1">
+  <link rel="stylesheet" href="data-center.css?v=20261116-job-detail1">
+</head>
+<body>
+<main class="dashboard-layout">
+  <aside data-dashboard-navigation data-active-section="data-center"></aside>
+  <div class="dashboard-content">
+    <header class="page-hero"><div class="page-heading"><p class="eyebrow">数据中心</p><h1>更新任务详情</h1>
+      <p class="subline">查看每个数据集的实际结果、失败阶段及当前已发布版本。</p></div></header>
+    <p><a href="data-center.html">← 返回数据中心</a></p>
+    <p id="job-detail-message" role="status">正在读取任务详情…</p>
+    <section class="panel"><h2>任务概况</h2><dl class="dc-summary" id="job-detail-summary"></dl></section>
+    <section class="panel"><h2>数据集结果</h2><p class="dc-help" id="job-detail-explanation"></p>
+      <div class="table-wrap" tabindex="0"><table><thead><tr><th>数据集</th><th>结果</th><th>来源</th><th>最近日期</th><th>新增</th><th>复核更新</th><th>原因</th><th>错误类型</th></tr></thead><tbody id="job-detail-datasets"></tbody></table></div>
+    </section>
+    <section class="panel"><h2>如何处理</h2><p id="job-detail-next"></p></section>
+  </div>
+</main>
+<script src="navigation.js?v=20261118-industry1"></script>
+<script src="job-detail.js?v=20261118-manual-refresh1"></script>
+</body></html>

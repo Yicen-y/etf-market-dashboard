@@ -5,10 +5,11 @@ from __future__ import annotations
 import csv
 import json
 import os
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, time
 from pathlib import Path
+from zoneinfo import ZoneInfo
 
-from scripts.config import DATABASE_PATH, ROOT
+from scripts.config import DATABASE_PATH, DATA_ROOT, ROOT
 from scripts.storage import read_nikkei_anchor_records, record_observations, save_raw_payload, upsert_nikkei_anchor_records
 from scripts.wind_mcp_client import WindMcpClient
 from scripts.wind_credentials import get_authorization
@@ -16,7 +17,7 @@ from scripts.wind_credentials import get_authorization
 ENDPOINT = "https://mcp.wind.com.cn/vserver_index_data/mcp/"
 REQUESTED_NAME = "日经225全收益指数"
 SOURCE = "WIND_MCP_NAME_LOOKUP_UNVERIFIED_TR"
-CSV_PATH = ROOT / "data" / "nikkei225_anchor.csv"
+CSV_PATH = DATA_ROOT / "nikkei225_anchor.csv"
 
 
 def _now() -> str:
@@ -34,6 +35,7 @@ def bootstrap_csv(database: Path = DATABASE_PATH, csv_path: Path = CSV_PATH) -> 
             "close": float(row["close"]), "high": float(row["high"]), "low": float(row["low"]),
         } for row in csv.DictReader(stream)]
     result = upsert_nikkei_anchor_records(database, records, _now(), SOURCE)
+    result.pop("changed_dates")
     batch_id = "nikkei-bootstrap-" + datetime.now().strftime("%Y%m%d%H%M%S")
     record_observations(database, [{
         "symbol": "NKY225_TEMP", "kind": "index", "trade_date": row["tradeDate"],
@@ -57,7 +59,7 @@ def _payload(result: dict) -> dict:
     raise ValueError("Wind MCP returned no parseable index response")
 
 
-def _normalize(payload: dict) -> list[dict]:
+def _normalize(payload: dict, *, now_jst: datetime | None = None) -> list[dict]:
     data = payload.get("data", {})
     columns = [column.get("name") for column in data.get("columns", [])]
     rows = data.get("rows", [])
@@ -65,6 +67,7 @@ def _normalize(payload: dict) -> list[dict]:
     if not required.issubset(columns):
         raise ValueError("Wind response does not contain the expected daily OHLC fields")
     positions = {name: columns.index(name) for name in required}
+    current = now_jst or datetime.now(ZoneInfo("Asia/Tokyo"))
     result, seen = [], set()
     for values in rows:
         stamp = str(values[positions["TIME"]])
@@ -73,6 +76,14 @@ def _normalize(payload: dict) -> list[dict]:
         if not stamp.endswith("+09:00"):
             continue
         day = stamp[:10].replace("-", "")
+        # Wind may emit a midnight-stamped daily bar while Tokyo is still
+        # trading. An incomplete bar is not a published daily close.
+        if day == current.strftime("%Y%m%d") and current.time() < time(15, 30):
+            continue
+        if ("TURNOVER" in columns and "VOLUME" in columns
+                and values[columns.index("TURNOVER")] is None
+                and values[columns.index("VOLUME")] is None):
+            continue
         record = {"tradeDate": day, "open": float(values[positions["OPEN"]]),
                   "close": float(values[positions["MATCH"]]), "high": float(values[positions["HIGH"]]),
                   "low": float(values[positions["LOW"]])}
@@ -105,7 +116,7 @@ def sync_nikkei_anchor(database: Path = DATABASE_PATH, *, authorization: str | N
         response = client.call_tool("get_index_kline", request)
     raw = json.dumps(response, ensure_ascii=False, separators=(",", ":")).encode("utf-8")
     batch_id = datetime.now().strftime("%Y%m%dT%H%M%S") + "-nikkei"
-    saved = save_raw_payload(ROOT / "data", batch_id, "nikkei225-incremental", raw)
+    saved = save_raw_payload(DATA_ROOT, batch_id, "nikkei225-incremental", raw)
     payload = _payload(response)
     records = _normalize(payload)
     if not records:
@@ -113,6 +124,7 @@ def sync_nikkei_anchor(database: Path = DATABASE_PATH, *, authorization: str | N
                 "fromDate": start_date.replace("-", ""), "toDate": finish.replace("-", ""),
                 "rawSha256": saved[1] if saved else None}
     result = upsert_nikkei_anchor_records(database, records, _now(), SOURCE)
+    changed_dates = set(result.pop("changed_dates"))
     raw_records = [{
         "symbol": "NKY225_TEMP", "kind": "index", "trade_date": row["tradeDate"],
         "value_raw": str(row["close"]), "unit_raw": "index_point", "provider": "WIND_MCP",
@@ -120,9 +132,10 @@ def sync_nikkei_anchor(database: Path = DATABASE_PATH, *, authorization: str | N
         "provider_request_id": json.dumps(request, ensure_ascii=False, sort_keys=True),
         "source_url": endpoint, "fetched_at": _now(), "raw_sha256": saved[1] if saved else None,
         "fetch_batch_id": batch_id, "source_version": "temporary-name-lookup-v1",
-    } for row in records]
-    record_observations(database, raw_records)
-    return {"status": "UPDATED", **result, "fromDate": records[0]["tradeDate"],
+    } for row in records if row["tradeDate"] in changed_dates]
+    if raw_records:
+        record_observations(database, raw_records)
+    return {"status": "UPDATED" if changed_dates else "NO_NEW_ROWS", **result, "fromDate": records[0]["tradeDate"],
             "toDate": records[-1]["tradeDate"], "rawSha256": saved[1] if saved else None,
             "source": SOURCE, "bootstrap": bootstrap}
 

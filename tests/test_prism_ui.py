@@ -46,7 +46,8 @@ def test_market_data_uses_one_pinned_snapshot():
     assert "activeSnapshotId=manifest.snapshot_id" in script
     assert "async function ensureDashboardData(strategy)" in script
     assert "await ensureDashboardData(window.activeDashboard)" in script
-    assert "await ensureDashboardData(window.activeDashboard);render()" in script
+    refresh = script.split("async function refreshData()", 1)[1].split("async function init()", 1)[0]
+    assert refresh.index("await ensureDashboardData(window.activeDashboard)") < refresh.index("render()")
     assert "[dataset,indexDataset]=await Promise.all([fetchJson(pinnedUrl(DATA_URL)),fetchJson(pinnedUrl(INDEX_DATA_URL))])" not in script
 
 

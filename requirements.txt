@@ -1,13 +1,16 @@
 # Runtime dependencies
-akshare>=1.18,<2
+akshare>=1.18.64,<1.19
 openpyxl>=3.1.0,<4
-fastapi>=0.128,<1
+fastapi>=0.128,<0.129
 pydantic>=2,<3
 uvicorn[standard]>=0.39,<1
 click>=8.1,<9
 python-multipart>=0.0.20,<1
 keyring>=25,<26
+requests>=2.32,<3
+pypdf>=6,<7
 
 # Test dependencies
 pytest>=8.4,<9
+httpx>=0.28,<1
 

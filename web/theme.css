@@ -1,25 +1,36 @@
 :root {
   color-scheme: light;
-  --bg: #f5f7fb;
+  --bg: #f2f6fc;
   --surface: #ffffff;
-  --text-primary: #172033;
-  --text-secondary: #64748b;
-  --border: #e2e8f0;
-  --primary: #2c6bed;
-  --primary-bg: #edf3ff;
+  --surface-soft: #f7faff;
+  --surface-raised: #ffffff;
+  --text-primary: #10213f;
+  --text-secondary: #66758d;
+  --border: #dbe5f1;
+  --primary: #2f6fed;
+  --primary-strong: #1d56d9;
+  --primary-bg: #eaf1ff;
   --positive: #c9362b;
   --negative: #16834a;
   --warning: #b7791f;
   --error: #b42318;
-  --page-max-width: 1600px;
-  --sidebar-width: 232px;
-  --radius-card: 12px;
-  --control-height: 36px;
+  --page-max-width: 1680px;
+  --sidebar-width: 248px;
+  --radius-card: 16px;
+  --radius-control: 10px;
+  --radius-pill: 999px;
+  --control-height: 44px;
   --page-padding: 24px;
   --layout-gap: 20px;
   --card-gap: 16px;
   --card-padding: 20px;
-  --shadow-card: 0 8px 28px rgba(23, 32, 51, 0.055);
+  --shadow-card: 0 10px 30px rgba(30, 64, 120, 0.07);
+  --shadow-raised: 0 18px 48px rgba(30, 64, 120, 0.11);
+  --nav-bg: #182e50;
+  --nav-bg-deep: #122540;
+  --nav-text: #eef4ff;
+  --nav-muted: #a8bad4;
+  --nav-active: #356df1;
 
   /* Compatibility aliases retained while page-specific CSS is migrated. */
   --ink: var(--text-primary);
@@ -37,10 +48,12 @@ body {
   margin: 0;
   min-width: 0;
   overflow-x: clip;
-  background: var(--bg);
+  background:
+    radial-gradient(circle at 82% 0%, rgba(47, 111, 237, 0.07), transparent 30rem),
+    var(--bg);
   color: var(--text-primary);
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
-  font-size: 14px;
+  font-size: 15px;
   line-height: 1.5;
   font-variant-numeric: tabular-nums;
 }

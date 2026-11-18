@@ -201,7 +201,7 @@ def certify_600519_ttm(path: Path, evidence_root: Path, catalog_rows: list[dict]
 
 
 if __name__ == '__main__':
-    from scripts.config import DATABASE_PATH, ROOT
+    from scripts.config import DATABASE_PATH, DATA_ROOT
     rows, total = fetch_cninfo_catalog()
-    print(json.dumps(certify_600519_ttm(DATABASE_PATH, ROOT / 'data' / 'raw' / 'dividend', rows, total),
+    print(json.dumps(certify_600519_ttm(DATABASE_PATH, DATA_ROOT / 'raw' / 'dividend', rows, total),
                      ensure_ascii=False))

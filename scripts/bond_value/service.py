@@ -7,13 +7,13 @@ from datetime import date, timedelta
 
 import pandas as pd
 
-from scripts.config import ROOT
+from scripts.config import DATA_ROOT
 from scripts.wind_credentials import get_authorization
 from scripts.wind_mcp_client import WindMcpClient
 from .metrics import build_rows
 
 
-DATA_FILE = ROOT / "data" / "research" / "bond_value_hs300.json"
+DATA_FILE = DATA_ROOT / "research" / "bond_value_hs300.json"
 INDEX_ENDPOINT = "https://mcp.wind.com.cn/vserver_index_data/mcp/"
 
 

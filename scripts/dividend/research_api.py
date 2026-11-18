@@ -9,7 +9,8 @@ from typing import Optional
 from fastapi import APIRouter, HTTPException, Query
 from fastapi.responses import JSONResponse
 
-from scripts.config import DATABASE_PATH, ROOT
+from scripts.config import DATABASE_PATH, DATA_ROOT
+from scripts.snapshot import read_dataset, read_manifest
 from scripts.dividend.research import ah_common_40, condition_forward_returns, dividend_regression
 from scripts.dividend.research_store import read_research_series, research_series_metadata
 from scripts.dividend.research_sync import DEFAULT_RESEARCH_START_DATE, sync_research_sources
@@ -21,17 +22,9 @@ router = APIRouter(prefix="/api/research", tags=["dividend-research"])
 
 
 def _index_rows():
-    manifest_path = ROOT / "data" / "current_manifest.json"
     try:
-        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
-        data_path = (ROOT / "data" / manifest["files"]["index"]).resolve()
-        if not data_path.is_relative_to((ROOT / "data").resolve()):
-            raise ValueError("invalid data path")
-        raw = data_path.read_bytes()
-        expected_hash = manifest.get("sha256", {}).get("index")
-        if expected_hash and hashlib.sha256(raw).hexdigest() != expected_hash:
-            raise ValueError("index snapshot hash mismatch")
-        data = json.loads(raw.decode("utf-8"))
+        manifest = read_manifest(DATA_ROOT)
+        data = read_dataset(DATA_ROOT, manifest, "index")
         if not isinstance(data.get("flatRecords"), list):
             raise ValueError("index snapshot does not contain flatRecords")
         return manifest, data
@@ -245,6 +238,6 @@ def refresh_research_data(start: Optional[str] = Query(None, pattern=r"^\d{8}$")
                           end: Optional[str] = Query(None, pattern=r"^\d{8}$")):
     end_day = end or date.today().strftime("%Y%m%d")
     start_day = start or DEFAULT_RESEARCH_START_DATE
-    result = sync_research_sources(DATABASE_PATH, ROOT / "data", start_day, end_day)
+    result = sync_research_sources(DATABASE_PATH, DATA_ROOT, start_day, end_day)
     # FastAPI's return value is kept serializable; a partial source failure is data, not an HTTP crash.
     return JSONResponse(status_code=200 if result["status"] == "READY" else 207, content=result)

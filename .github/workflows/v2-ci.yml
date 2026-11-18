@@ -1,0 +1,46 @@
+name: V2 offline regression
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+jobs:
+  python:
+    env:
+      NO_PROXY: 127.0.0.1,localhost
+      no_proxy: 127.0.0.1,localhost
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, ubuntu-latest]
+        python-version: ['3.9', '3.11']
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: python -m pip install -r requirements.txt
+      - run: python -m pytest -q
+      - run: node --check web/app.js
+      - run: node --check web/data-center.js
+  ui-data-center:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install -r requirements-ui.txt
+      - run: python -m playwright install --with-deps chromium
+      - run: |
+          python -m http.server 8765 --bind 127.0.0.1 &
+          sleep 2
+          python tests/ui_data_center_v2.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: data-center-screenshots
+          path: docs/engineering-v2/evidence/*.png

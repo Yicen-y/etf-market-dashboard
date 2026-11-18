@@ -10,6 +10,13 @@
 .dividend-search-option button { min-height:40px; }
 @media (max-width:600px) { .dividend-search-option { flex-direction:column; align-items:flex-start; } }
 .dividend-table, .dividend-detail { margin-top: var(--card-gap); }
+.dividend-workspace { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--card-gap); align-items: start; }
+.dividend-workspace .dividend-table, .dividend-workspace .dividend-detail { min-width: 0; margin-bottom: 0; }
+.dividend-workspace .table-wrap { overflow-x: auto; }
+@media (min-width: 1500px) {
+  .dividend-workspace:has(.dividend-detail:not(.hidden)) { grid-template-columns: minmax(360px, .85fr) minmax(0, 1.15fr); }
+  .dividend-workspace:has(.dividend-detail:not(.hidden)) .dividend-watch-table { min-width: 760px; }
+}
 .dividend-muted { color: var(--text-secondary); }
 .dividend-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
 .dividend-card { padding: 14px; border: 1px solid var(--border); border-radius: 10px; }

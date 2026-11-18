@@ -127,7 +127,9 @@ def test_credential_status_type_contains_no_secret_field():
     }
 
 
-def test_test_credential_does_not_return_secret():
+def test_test_credential_does_not_return_secret(monkeypatch):
+    from subprocess import CompletedProcess
+    monkeypatch.setattr(credential_settings.subprocess, "run", lambda command, **kwargs: CompletedProcess(command, 0))
     fake = FakeKeyring()
     validated = credential_settings._test_keyring(fake)
     credential_settings.set_credential("etfirst", "etfirst-secret", keyring_module=validated)
@@ -140,6 +142,18 @@ def test_test_credential_does_not_return_secret():
         "message": "本地配置检查通过；未验证远程服务",
     }
     assert "etfirst-secret" not in str(result)
+
+
+def test_missing_provider_cli_reports_check_failure_without_secret(monkeypatch):
+    fake = credential_settings._test_keyring(FakeKeyring())
+    credential_settings.set_credential("etfirst", "private-token", keyring_module=fake)
+    def missing(*args, **kwargs):
+        raise FileNotFoundError("etfirst")
+    monkeypatch.setattr(credential_settings.subprocess, "run", missing)
+    result = credential_settings.test_credential("etfirst", keyring_module=fake)
+    assert result["status"] == "check_failed"
+    assert result["remote_verified"] is False
+    assert "private-token" not in str(result)
 
 
 def test_test_credential_runs_bounded_etfirst_status_check_without_returning_key(monkeypatch):

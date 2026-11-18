@@ -1,7 +1,7 @@
 from pathlib import Path
 
 from scripts.fetch_data import FetchResult
-from scripts.update_data import align_index_records_to_reference_calendar, index_fetch_ranges, is_empty_trailing_fetch, is_index_date_valid_for_calendar, merge_index_records, merge_records, next_fetch_start, normalize_exchange_trading_dates, records_to_calendar, reference_trading_dates, should_fetch_range
+from scripts.update_data import align_index_records_to_reference_calendar, index_fetch_ranges, is_empty_trailing_fetch, is_index_date_valid_for_calendar, latest_common_product_date, merge_index_records, merge_records, next_fetch_start, normalize_exchange_trading_dates, records_to_calendar, reference_trading_dates, same_published_market, should_fetch_range
 from scripts.validate_data import validate_records
 
 
@@ -66,6 +66,85 @@ def test_merge_keeps_identical_observation_idempotent():
     assert merge_records(old, old)[0]["closePrice"] == 1.5
 
 
+def test_same_published_market_ignores_refresh_timestamp_but_detects_price_change(tmp_path):
+    from scripts.storage import publish_snapshot
+    etf = {"snapshot_id": "old", "updatedAt": "old", "providerSummary": {"AkShare": 1},
+           "records": [{"tradeDate": "20260105", "prices": {"510330": 1.5}}]}
+    index = {"snapshot_id": "old", "updatedAt": "old", "providerSummary": {"AkShare": 1},
+             "records": [{"tradeDate": "20260105", "values": {"H00300": 100.0}}]}
+    publish_snapshot(tmp_path, "old", etf, index)
+    repeated_etf = {**etf, "snapshot_id": "candidate", "updatedAt": "new", "providerSummary": {"AkShare": 2}}
+    repeated_index = {**index, "snapshot_id": "candidate", "updatedAt": "new"}
+    assert same_published_market(tmp_path, repeated_etf, repeated_index) == "old"
+    changed = {**repeated_etf, "records": [{"tradeDate": "20260105", "prices": {"510330": 1.6}}]}
+    assert same_published_market(tmp_path, changed, repeated_index) is None
+
+
+def test_same_published_market_ignores_optional_issuer_fields_but_not_closes(tmp_path):
+    from scripts.storage import publish_snapshot
+    etf = {"snapshot_id": "old", "records": [{"tradeDate": "20261116"}],
+           "flatRecords": [{"productCode": "510330", "tradeDate": "20261116", "closePrice": 1.5}]}
+    index = {"snapshot_id": "old", "records": [{"tradeDate": "20261116"}],
+             "flatRecords": [{"indexCode": "H00300", "tradeDate": "20261116", "closeValue": 5993.46,
+                              "indexNameEnAll": "CSI 300 Total Return Index", "tradingVol": 1000}]}
+    publish_snapshot(tmp_path, "old", etf, index)
+    candidate = {**index, "snapshot_id": "new", "flatRecords": [
+        {"indexCode": "H00300", "tradeDate": "20261116", "closeValue": 5993.46}]}
+    assert same_published_market(tmp_path, {**etf, "snapshot_id": "new"}, candidate) == "old"
+    candidate["flatRecords"][0]["closeValue"] = 5993.47
+    assert same_published_market(tmp_path, {**etf, "snapshot_id": "new"}, candidate) is None
+
+
+def test_nikkei_overlap_recheck_does_not_rewrite_unchanged_rows(tmp_path):
+    import sqlite3
+    from scripts.storage import init_reliability_schema, upsert_nikkei_anchor_records
+    database = tmp_path / "market.db"
+    init_reliability_schema(database)
+    row = {"tradeDate": "20261113", "open": 100.0, "close": 101.0, "high": 102.0, "low": 99.0}
+    first = upsert_nikkei_anchor_records(database, [row], "first", "WIND_MCP")
+    second = upsert_nikkei_anchor_records(database, [row], "second", "WIND_MCP")
+    with sqlite3.connect(database) as connection:
+        assert connection.execute("SELECT updated_at FROM nikkei225_anchor_prices").fetchone()[0] == "first"
+    assert (first["inserted"], first["replaced"], second["changed_dates"]) == (1, 0, [])
+
+
+def test_nikkei_incomplete_tokyo_session_is_not_a_daily_close():
+    from datetime import datetime
+    from scripts.nikkei_anchor_sync import _normalize
+    names = ("TIME", "OPEN", "MATCH", "HIGH", "LOW", "TURNOVER", "VOLUME")
+    row = ["2026-11-16T00:00:00.000+09:00", "100", "101", "102", "99", "1000", "20"]
+    payload = {"data": {"columns": [{"name": name} for name in names], "rows": [row]}}
+    assert _normalize(payload, now_jst=datetime.fromisoformat("2026-11-16T09:30:00+09:00")) == []
+    assert len(_normalize(payload, now_jst=datetime.fromisoformat("2026-11-16T16:00:00+09:00"))) == 1
+    payload["data"]["rows"] = [row[:-2] + [None, None]]
+    assert _normalize(payload, now_jst=datetime.fromisoformat("2026-11-16T16:00:00+09:00")) == []
+
+
+def test_nikkei_read_guard_hides_preclose_bar_after_market_closes():
+    from datetime import datetime
+    from scripts.storage import nikkei_close_is_published
+    morning = datetime.fromisoformat("2026-11-16T09:30:00+09:00")
+    evening = datetime.fromisoformat("2026-11-16T16:00:00+09:00")
+    assert not nikkei_close_is_published("20261116", "2026-11-16T08:30:00+08:00", morning)
+    assert not nikkei_close_is_published("20261116", "2026-11-16T08:30:00+08:00", evening)
+    assert nikkei_close_is_published("20261116", "2026-11-16T15:45:00+09:00", evening)
+    assert nikkei_close_is_published("20261113", "2026-11-13T16:00:00+09:00", morning)
+
+
+def test_nikkei_final_close_can_replace_equal_preclose_value(tmp_path, monkeypatch):
+    import sqlite3
+    from scripts import storage
+    database = tmp_path / "market.db"
+    storage.init_reliability_schema(database)
+    row = {"tradeDate": "20261116", "open": 100.0, "close": 101.0, "high": 102.0, "low": 99.0}
+    storage.upsert_nikkei_anchor_records(database, [row], "preclose", "WIND_MCP")
+    monkeypatch.setattr(storage, "nikkei_close_is_published", lambda *_: False)
+    result = storage.upsert_nikkei_anchor_records(database, [row], "afterclose", "WIND_MCP")
+    with sqlite3.connect(database) as connection:
+        assert connection.execute("SELECT updated_at FROM nikkei225_anchor_prices").fetchone()[0] == "afterclose"
+    assert result["replaced"] == 1
+
+
 def test_validation_rejects_bad_price_and_duplicate():
     rows = [
         {"tradeDate": "20260105", "productCode": "512530", "closePrice": 1.5},
@@ -90,6 +169,30 @@ def test_next_fetch_start_is_day_after_latest_record():
 def test_today_is_included_in_fetch_range():
     assert should_fetch_range("20261029", "20261029") is True
     assert should_fetch_range("20261030", "20261029") is False
+
+
+def test_latest_common_product_date_uses_last_date_available_for_all_etfs():
+    rows = [
+        {"tradeDate": "20261111", "productCode": "512530", "closePrice": 1.0},
+        {"tradeDate": "20261111", "productCode": "562310", "closePrice": 1.0},
+        {"tradeDate": "20261111", "productCode": "510330", "closePrice": 1.0},
+        {"tradeDate": "20261112", "productCode": "512530", "closePrice": 1.0},
+        {"tradeDate": "20261112", "productCode": "562310", "closePrice": 1.0},
+        {"tradeDate": "20261112", "productCode": "510330", "closePrice": 1.0},
+    ]
+
+    assert latest_common_product_date(rows, {"512530", "562310", "510330"}, "20261113") == "20261112"
+
+
+def test_latest_common_product_date_does_not_use_partial_latest_date():
+    rows = [
+        {"tradeDate": "20261111", "productCode": "512530", "closePrice": 1.0},
+        {"tradeDate": "20261111", "productCode": "562310", "closePrice": 1.0},
+        {"tradeDate": "20261111", "productCode": "510330", "closePrice": 1.0},
+        {"tradeDate": "20261112", "productCode": "512530", "closePrice": 1.0},
+    ]
+
+    assert latest_common_product_date(rows, {"512530", "562310", "510330"}, "20261113") == "20261111"
 
 
 def test_empty_tail_after_latest_record_is_not_a_historical_gap():

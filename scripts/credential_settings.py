@@ -19,6 +19,7 @@ class CredentialProvider(str, Enum):
     WIND_MCP = "wind_mcp"
     HTBR_ETF = "htbr_etf"
     ETFIRST = "etfirst"
+    IFIND = "ifind"
 
 
 class CredentialStatus(TypedDict):
@@ -59,6 +60,7 @@ _SPECS: dict[CredentialProvider, CredentialSpec] = {
     CredentialProvider.WIND_MCP: CredentialSpec("WIND_MCP_AUTH", ("WIND_MCP_AUTH", "WIND_MCP_TOKEN")),
     CredentialProvider.HTBR_ETF: CredentialSpec("HTBR_ETF_API_KEY", ("HTBR_ETF_API_KEY",)),
     CredentialProvider.ETFIRST: CredentialSpec("ETFIRST_API_KEY", ("ETFIRST_API_KEY",)),
+    CredentialProvider.IFIND: CredentialSpec("IFIND_REFRESH_TOKEN", ("IFIND_REFRESH_TOKEN",)),
 }
 
 
@@ -207,6 +209,11 @@ def test_credential(
     child_env = dict(os.environ if environ is None else environ)
     child_env[_SPECS[normalized].account] = value
     try:
+        if normalized is CredentialProvider.IFIND:
+            from scripts.ifind import access_token
+            access_token(value)
+            return {"provider": normalized.value, "configured": True, "ok": True,
+                    "remote_verified": True, "status": "remote_verified", "message": "连接成功"}
         if normalized is CredentialProvider.ETFIRST:
             command = ["etfirst", "--json", "config", "--no-show"]
         elif normalized is CredentialProvider.HTBR_ETF:

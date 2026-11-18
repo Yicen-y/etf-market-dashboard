@@ -6,6 +6,8 @@ let charts = {};
 let tableRows = [], tableNames = {};
 let historyComplete = false;
 let selectedEtf = null;
+let activeLoadId = 0;
+let activeLoadController = null;
 
 function renderSelected(rows, names, codes) {
   if (!codes.includes(selectedEtf)) selectedEtf = codes[0] || null;
@@ -31,9 +33,10 @@ function renderSelected(rows, names, codes) {
     const flow = document.createElement("span");
     flow.className = "etf-card-flow";
     flow.textContent = latest.net_flow_yi == null ? "估算净申赎：—" : `估算净申赎 ${latest.net_flow_yi >= 0 ? "+" : ""}${latest.net_flow_yi.toFixed(2)} 亿元`;
+    if (latest.net_flow_yi != null) flow.dataset.direction = latest.net_flow_yi < 0 ? "out" : "in";
     const meta = document.createElement("small");
     meta.textContent = `${latest.trade_date} · ${latest.status || "状态未知"}${latest.nav_adj == null ? " · NAV缺失" : ""}`;
-    card.append(title, shares, change, flow, meta);
+    card.append(title, flow, change, shares, meta);
     card.addEventListener("click", () => { selectedEtf = code; renderSelected(rows, names, codes); });
     cards.append(card);
   }
@@ -88,13 +91,10 @@ function renderDataTable() {
   tbody.append(fragment);
 }
 
-function setStatus(text, kind = "") {
+function setStatus(text, kind = "", summary = "") {
   const node = $("status");
-  node.textContent = text;
-  node.className = `status ${kind}`;
-  node.dataset.state = kind || "loading";
-  node.setAttribute("aria-busy", String(!kind || kind === "loading"));
-  node.setAttribute("role", kind === "error" ? "alert" : "status");
+  const state = kind === "error" ? "error" : kind === "warning" ? "review" : kind === "success" ? "current" : "loading";
+  window.DashboardStatus.render(node, {state, summary: summary || (text.length > 90 ? `${text.slice(0, 86)}…` : text), detail: text});
 }
 
 function renderChart(key, rows, valueKey, unit, names, chartType = "line") {
@@ -127,11 +127,16 @@ function renderChart(key, rows, valueKey, unit, names, chartType = "line") {
 }
 
 async function load() {
+  const loadId = ++activeLoadId;
+  activeLoadController?.abort();
+  const controller = new AbortController();
+  activeLoadController = controller;
   setStatus("正在读取资金流数据…");
   const params = new URLSearchParams({ preset: $("preset").value, start: $("start").value, end: "latest" });
   try {
-    const response = await fetch(`/api/fund-flow/overview?${params}`);
+    const response = await fetch(`/api/fund-flow/overview?${params}`, {signal: controller.signal});
     const payload = await response.json();
+    if (loadId !== activeLoadId) return false;
     if (!response.ok) throw Error(payload.detail || "读取失败");
     const names = payload.names || {};
     const members = payload.codes.map(code => `${names[code] || code}（${code}）`);
@@ -153,15 +158,17 @@ async function load() {
     historyComplete = Boolean(payload.historyComplete) || Boolean(actualStart && payload.start && actualStart <= payload.start);
     $("refresh").textContent = historyComplete ? "增量更新" : "补齐历史数据";
     const quality = rows.some(row => row.status !== "PASS");
-    const statusText = !historyComplete
-      ? `历史回填未完成（当前最早 ${payload.earliestTradeDate || actualStart || "无"}，目标 ${payload.start}）`
-      : quality ? "存在质量提示" : "正常";
+    const statusText = !historyComplete ? "历史待补齐" : quality ? "待核验" : "已读取";
+    const latestFlowRows = rows.filter(row => row.trade_date === payload.latestTradeDate && row.net_flow_yi != null);
+    const latestFlow = latestFlowRows.reduce((sum, row) => sum + Number(row.net_flow_yi), 0);
+    const flowCoverage = `${latestFlowRows.length}/${payload.codes.length} 只`;
     $("summary").innerHTML = [
       ["最新交易日", payload.latestTradeDate],
+      ["当日估算净申赎", latestFlowRows.length ? `${latestFlow >= 0 ? "+" : ""}${latestFlow.toFixed(2)} 亿元` : "—"],
+      ["净申赎覆盖", flowCoverage],
       ["覆盖ETF数", payload.codes.length],
-      ["指标记录数", rows.length],
       ["状态", statusText],
-    ].map(([label, value]) => `<div class="summary-card"><div class="label">${label}</div><div class="value">${value}</div></div>`).join("");
+    ].map(([label, value]) => `<div class="summary-card"${label === "当日估算净申赎" && latestFlowRows.length ? ` data-direction="${latestFlow < 0 ? 'out' : 'in'}"` : ''}><div class="label">${label}</div><div class="value">${value}</div></div>`).join("");
     renderChart("shares", rows, "shares_adj_wan", "", names);
     renderSelected(rows, names, payload.codes);
     renderChart("cumulative", rows, "cum_flow_yi", " 亿元", names);
@@ -169,9 +176,11 @@ async function load() {
     setStatus(
       `数据截至 ${payload.latestTradeDate}，当前组合为 ${members.join("、")}；显示区间 ${actualStart || payload.start} 至 ${payload.latestTradeDate}。${!historyComplete ? " 请点击“补齐历史数据”完成历史回填。" : ""}`,
       historyComplete && !quality ? "success" : "warning",
+      `截至 ${payload.latestTradeDate} · 净申赎覆盖 ${flowCoverage}${!historyComplete ? ' · 历史待补齐' : quality ? ' · 存在质量提示' : ''}`,
     );
     return true;
   } catch (error) {
+    if (loadId !== activeLoadId || error.name === "AbortError") return false;
     tableRows = []; tableNames = {}; renderDataTable();
     $("summary").replaceChildren();
     $("etf-cards").replaceChildren();

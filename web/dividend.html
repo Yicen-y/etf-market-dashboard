@@ -4,9 +4,9 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>红利看板</title>
-  <link rel="stylesheet" href="theme.css?v=20261101-2">
-  <link rel="stylesheet" href="ui-components.css?v=20261109-ui3">
-  <link rel="stylesheet" href="dividend.css?v=20261109-ui4">
+  <link rel="stylesheet" href="theme.css?v=20261115-hierarchy1">
+  <link rel="stylesheet" href="ui-components.css?v=20261115-hierarchy1">
+  <link rel="stylesheet" href="dividend.css?v=20261115-workbench1">
 </head>
 <body>
   <main class="dashboard-layout">
@@ -26,6 +26,7 @@
         </label>
         <div id="results" class="dividend-results hidden" role="listbox" aria-label="证券搜索结果"></div>
         <p id="dividend-action-status" class="dividend-action-status hidden" role="status" aria-live="polite"></p>
+        <div class="dividend-workspace">
         <section class="dividend-table">
           <div class="ui-panel-heading">
             <h2 id="watch-title">我的自选</h2>
@@ -37,6 +38,8 @@
           <div id="watchlist" class="dividend-muted">加载中……</div>
           <p id="refresh-status" class="dividend-muted" role="status"></p>
         </section>
+        <section id="detail" class="dividend-detail hidden"></section>
+        </div>
         <section id="etfirst-yield-section" class="dividend-table hidden">
           <div class="ui-panel-heading">
             <h2>南方 ETFirst · ETF 跟踪指数股息率</h2>
@@ -54,11 +57,10 @@
           <h2>未来90天除息时间线</h2>
           <div id="calendar" class="dividend-muted">只显示已确认日期；预案日期不虚构。</div>
         </section>
-        <section id="detail" class="dividend-detail hidden"></section>
       </div>
     </div>
   </main>
-  <script src="navigation.js?v=20261109-ui3"></script>
+  <script src="navigation.js?v=20261118-industry1"></script>
   <script src="dividend.js?v=20261109-ui4"></script>
   <script src="dividend-history.js?v=20261109-history1"></script>
 </body>

@@ -9,7 +9,7 @@ from typing import Literal
 from fastapi import APIRouter, HTTPException, Query
 from pydantic import BaseModel, ConfigDict, Field
 
-from scripts.config import ROOT
+from scripts.config import DATA_ROOT
 from scripts.anchor.domain import indicators, compare_indexes
 from scripts.anchor.strategy import dca_states, rebalance_events
 from scripts.anchor.backtest import run_backtest
@@ -69,16 +69,11 @@ def open_quality_issues(symbol):
 
 
 def load_snapshot():
-    root = ROOT / 'data'
+    root = DATA_ROOT
     try:
-        manifest = json.loads((root / 'current_manifest.json').read_text(encoding='utf-8'))
-        path = (root / manifest['files']['index']).resolve()
-        if not path.is_relative_to(root.resolve()):
-            raise ValueError('invalid snapshot path')
-        payload = path.read_bytes()
-        if hashlib.sha256(payload).hexdigest() != manifest['sha256']['index']:
-            raise ValueError('snapshot hash mismatch')
-        return manifest, json.loads(payload)
+        from scripts.snapshot import read_manifest, read_dataset
+        manifest = read_manifest(root)
+        return manifest, read_dataset(root, manifest, 'index')
     except (OSError, KeyError, ValueError) as exc:
         raise HTTPException(status_code=503, detail=f'指数快照不可用：{exc}') from exc
 

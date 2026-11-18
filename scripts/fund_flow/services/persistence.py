@@ -10,7 +10,7 @@ import json
 from ..config import DATABASE_PATH, ETF_UNIVERSE
 from ..db import init_fund_flow_schema, open_fund_flow_connection, seed_default_fund_master
 from ..models import CleanETFRecord, RawETFRecord
-from .corporate_actions import apply_share_unit_adjustment, load_seed_action
+from .corporate_actions import apply_share_unit_adjustment, load_seed_action, seed_event_root
 from .flows import calculate_series
 from .quality import validate_daily_records
 
@@ -26,7 +26,7 @@ def _raw_from_row(row):
 
 def _ensure_seed_actions(connection):
     """Load reviewed metadata files into the audit table, without quote data."""
-    event_root = Path(__file__).resolve().parents[3] / "data" / "source_events"
+    event_root = seed_event_root()
     for path in sorted(event_root.glob("*.json")):
         payload = json.loads(path.read_text(encoding="utf-8"))
         source_id = f"seed:event:{path.stem}"

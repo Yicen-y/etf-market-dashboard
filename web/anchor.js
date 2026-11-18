@@ -6,7 +6,40 @@
   const RANGE_KEY = 'anchor-history-range';
   const ZOOM_KEY = 'anchor-history-zoom';
   const fmt = value => value == null ? '—' : Number(value).toFixed(2);
-  const setStatus = (message, state) => { const element = $('status'); element.textContent = message; element.dataset.state = state; };
+  const setStatus = (message, state, summary) => {
+    const status = state === 'error' ? 'error' : state === 'loading' ? 'loading' : state === 'stale' ? 'stale' : 'review';
+    window.DashboardStatus.render($('status'), {state:status, summary:summary || (message.length > 90 ? `${message.slice(0, 86)}…` : message), detail:message});
+  };
+  function renderObservation(codes, view) {
+    const target = $('anchor-observation'); target.replaceChildren();
+    for (const code of codes) {
+      const item = data.indexes[code];
+      const latest = item.rows.at(-1);
+      const valid = [...item.rows].reverse().find(row => [row.close, row.ma, row.deviation, row.rsi].every(Number.isFinite));
+      const card = document.createElement('section'); card.className = 'anchor-observation-card';
+      const heading = document.createElement('div'); heading.className = 'anchor-observation-heading';
+      const name = document.createElement('strong'); name.textContent = item.name;
+      const date = document.createElement('span'); date.textContent = valid ? `最近有效 ${valid.tradeDate}` : '暂无完整指标';
+      heading.append(name, date); card.append(heading);
+      const metrics = document.createElement('div'); metrics.className = 'anchor-observation-metrics';
+      for (const [label, value, unit] of [
+        ['偏离均线', valid?.deviation == null ? null : valid.deviation * 100, '%'],
+        ['RSI90', valid?.rsi, ''],
+        ['指数点位', valid?.close, ''],
+        [`MA${data.window}`, valid?.ma, '']
+      ]) {
+        const cell = document.createElement('div');
+        const caption = document.createElement('span'); caption.textContent = label;
+        const number = document.createElement('strong'); number.textContent = value == null ? '—' : `${fmt(value)}${unit}`;
+        cell.append(caption, number); metrics.append(cell);
+      }
+      card.append(metrics);
+      const note = document.createElement('p');
+      note.textContent = !valid ? '有效指标不足；不展示估算值。' : latest?.tradeDate !== valid.tradeDate ? `参考日 ${latest.tradeDate} 无完整指标，以上为最近有效日；历史来源待核验。` : '收盘后观察；历史来源待核验。';
+      card.append(note); target.append(card);
+    }
+    target.classList.toggle('anchor-observation-compare', view === 'all');
+  }
   const syncCustomDates = () => {
     const custom = $('range').value === 'custom';
     for (const id of ['start', 'end']) $(id).closest('label').hidden = !custom;
@@ -23,6 +56,8 @@
   ];
   function showChartInfo(index) { infoCopy.textContent=explanations[index]; infoDialog.showModal(); }
   let data;
+  let activeLoadId = 0;
+  let activeLoadController = null;
   function renderDataTable() {
     const table = $('anchor-table'), head = table.tHead || table.createTHead(), body = table.tBodies[0];
     head.replaceChildren(); body.replaceChildren();
@@ -58,11 +93,13 @@
     const codes = single ? [viewCode] : Object.keys(data.indexes);
     if (!data.indexes || !codes.length || codes.some(code => !data.indexes[code]?.rows?.length)) {
       clearCharts();
+      $('anchor-observation').replaceChildren();
       $('anchor-table').tBodies[0].replaceChildren();
       setStatus(`数据不可用：${data.data_note || '所选视图没有有效数据。'}`, 'error');
       return;
     }
     const rows = data.indexes[codes[0]].rows;
+    renderObservation(codes, view);
     const dates = rows.map(r => r.tradeDate);
     const series = [];
     for (const code of codes) {
@@ -129,25 +166,31 @@
     chart.resize();
     chart.setOption({title:titles,graphic,tooltip:{trigger:'axis',formatter:params=>{const i=params[0]?.dataIndex;if(i==null)return '';return [dates[i],...codes.map(code=>{const r=data.indexes[code].rows[i];return `${data.indexes[code].name}<br>点位 ${fmt(r.close)} · 均线 ${fmt(r.ma)}<br>均线+${Number(data.upper_pct*100).toFixed(0)}% ${fmt(r.upper)} · 均线-${Number(data.lower_pct*100).toFixed(0)}% ${fmt(r.lower)}<br>偏离 ${fmt(r.deviation==null?null:r.deviation*100)}% · 90日RSI ${fmt(r.rsi)}<br>质量 ${r.quality} / 来源待核验`;})].join('<br>');}},legend:legends,axisPointer:{link:[{xAxisIndex:'all'}]},grid:single?[{left:75,right:30,top:65,height:'33%'},{left:75,right:30,top:'51%',height:'17%'},{left:75,right:30,top:'75%',height:'13%'}]:[{left:75,right:30,top:65,bottom:95}],xAxis:indices.map(i=>({type:'category',gridIndex:i,data:dates,axisLabel:{show:i===axisCount-1}})),yAxis:indices.map(i=>({type:'value',gridIndex:i,scale:true,axisLabel:{formatter:single ? (i===1?'{value}%':'{value}') : ($('comparison').value==='deviation'?'{value}%':'{value}')}})),dataZoom:[{type:'inside',xAxisIndex:indices,startValue:start,endValue:end},{type:'slider',xAxisIndex:indices,startValue:start,endValue:end,bottom:35}],series},true);
     const last = rows[rows.length-1];
+    const valid = [...rows].reverse().find(row => [row.close, row.ma, row.deviation, row.rsi].every(Number.isFinite));
     const statusMessage = view === 'nikkei225'
       ? `日经225指数点位（价格指数，不是日经全收益指数）· Wind中文名称查询临时数据，代码映射待核验 · 最近交易日 ${last.tradeDate} · 点位 ${fmt(last.close)} / ${data.window}日均线 ${fmt(last.ma)} / 偏离 ${fmt(last.deviation == null ? null : last.deviation*100)}% / 90日RSI ${fmt(last.rsi)} · 异常候选 ${data.indexes[codes[0]].anomalies.length} 个`
       : `快照 ${data.snapshot_id} · 更新 ${data.updated_at} · 最近交易日 ${last.tradeDate} · ${single ? `点位 ${fmt(last.close)} / 均线 ${fmt(last.ma)} / 偏离 ${fmt(last.deviation == null ? null : last.deviation*100)}% / 90日RSI ${fmt(last.rsi)}` : `共同基准日 ${data.comparison.baseDate}`} · 历史来源待核验 · 相对快照参考日历 ${data.calendar_reference} 缺失 ${codes.map(c=>data.indexes[c].missing_dates.length).join(' / ')} 个 · 已阻断 ${codes.map(c=>data.indexes[c].blocked_dates.length).join(' / ')} 个 · 未解决质量记录 ${codes.map(c=>data.indexes[c].open_quality_issues.length).join(' / ')} 个 · 异常候选 ${codes.map(c=>data.indexes[c].anomalies.length).join(' / ')} 个`;
-    setStatus(statusMessage, 'warning');
+    setStatus(statusMessage, valid && valid.tradeDate !== last.tradeDate ? 'stale' : 'warning', `最近有效 ${valid?.tradeDate || '无'} · 参考日 ${last.tradeDate}${valid && valid.tradeDate !== last.tradeDate ? ' 指标缺失' : ''} · 详细质量记录见数据中心`);
     if (!$('anchor-table-region').hidden) renderDataTable();
   }
   async function load() {
+    const loadId = ++activeLoadId;
+    activeLoadController?.abort();
+    const controller = new AbortController();
+    activeLoadController = controller;
     setStatus('正在读取数据…', 'loading');
     try {
       const base = $('base').value.replaceAll('-','');
       const activeView = document.querySelector('.anchor-view-button.active')?.dataset.view || 'H20903';
-      const endpointCode = activeView === 'nikkei225' ? 'nikkei225' : 'all';
-      const response = await fetch(`/api/anchor/metrics?index_code=${endpointCode}&ma_window=${$('window').value}&base_date=${base}&upper_pct=${Number($('upper').value)/100}&lower_pct=${Number($('lower').value)/100}`);
+      const endpointCode = activeView === 'nikkei225' ? 'nikkei225' : activeView;
+      const response = await fetch(`/api/anchor/metrics?index_code=${endpointCode}&ma_window=${$('window').value}&base_date=${base}&upper_pct=${Number($('upper').value)/100}&lower_pct=${Number($('lower').value)/100}`, {signal:controller.signal});
       const result = await response.json();
+      if (loadId !== activeLoadId) return;
       if (!response.ok) throw new Error(typeof result.detail === 'string' ? result.detail : '请求参数无效');
       if (!result || typeof result.indexes !== 'object' || result.indexes === null) throw new Error('接口响应缺少指数数据');
       data = result;
       render();
-    } catch (error) { data = null; clearCharts(); $('anchor-table').tBodies[0].replaceChildren(); setStatus(`数据不可用：${error.message}`, 'error'); }
+    } catch (error) { if (loadId !== activeLoadId || error.name === 'AbortError') return; data = null; clearCharts(); $('anchor-observation').replaceChildren(); $('anchor-table').tBodies[0].replaceChildren(); setStatus(`数据不可用：${error.message}`, 'error'); }
   }
   const rangeSelect = $('range');
   $('anchor-table-toggle').addEventListener('click', event => {

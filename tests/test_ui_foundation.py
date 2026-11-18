@@ -20,19 +20,19 @@ def test_all_pages_load_shared_theme_components_and_navigation():
 def test_theme_contains_required_design_tokens():
     css = read("theme.css")
     required = {
-        "--bg: #f5f7fb",
+        "--bg: #f2f6fc",
         "--surface: #ffffff",
-        "--text-primary: #172033",
-        "--text-secondary: #64748b",
-        "--border: #e2e8f0",
-        "--primary: #2c6bed",
-        "--primary-bg: #edf3ff",
+        "--text-primary: #10213f",
+        "--text-secondary: #66758d",
+        "--border: #dbe5f1",
+        "--primary: #2f6fed",
+        "--primary-bg: #eaf1ff",
         "--positive: #c9362b",
         "--negative: #16834a",
-        "--page-max-width: 1600px",
-        "--sidebar-width: 232px",
-        "--radius-card: 12px",
-        "--control-height: 36px",
+        "--page-max-width: 1680px",
+        "--sidebar-width: 248px",
+        "--radius-card: 16px",
+        "--control-height: 44px",
     }
     normalized = css.lower()
     assert required.issubset({line.strip().rstrip(";") for line in normalized.splitlines()})

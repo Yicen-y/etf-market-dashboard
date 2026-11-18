@@ -29,12 +29,23 @@ def test_settings_page_has_one_card_per_supported_provider():
     ):
         assert f'data-provider="{provider}"' in html
         assert label in html
-    assert html.count('class="credential-card"') == 3
+    assert 'data-provider="ifind"' in html
+    assert "同花顺 iFinD" in html
+    assert html.count('class="credential-card"') == 4
+
+
+def test_ifind_history_test_is_available_on_settings_page():
+    html = read("settings.html")
+    script = read("settings.js")
+    assert 'id="ifind-test-form"' in html
+    assert 'id="ifind-source-code"' in html
+    assert 'id="ifind-fetch-result"' in html
+    assert '"/api/ifind/index-history"' in script
 
 
 def test_settings_page_has_secret_controls_and_accessible_statuses():
     html = read("settings.html")
-    assert html.count('type="password"') == 3
+    assert html.count('type="password"') == 4
     assert 'autocomplete="new-password"' in html
     assert 'aria-label="显示或隐藏凭证"' in html
     assert 'aria-live="polite"' in html

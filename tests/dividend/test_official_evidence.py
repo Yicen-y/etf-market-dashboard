@@ -11,7 +11,7 @@ from scripts.dividend.service import yield_detail
 
 
 def test_510880_pdf_fields_hash_and_revision_are_idempotent(tmp_path):
-    source = ROOT / 'data' / 'raw' / 'dividend'
+    source = ROOT / 'tests' / 'fixtures' / 'dividend-official'
     db = tmp_path / 'evidence.sqlite'
     first = ingest_510880_notice(db, source)
     second = ingest_510880_notice(db, source)
@@ -24,7 +24,7 @@ def test_510880_pdf_fields_hash_and_revision_are_idempotent(tmp_path):
 
 
 def test_tampered_manifest_cannot_promote_pdf(tmp_path):
-    source = ROOT / 'data' / 'raw' / 'dividend'
+    source = ROOT / 'tests' / 'fixtures' / 'dividend-official'
     evidence = tmp_path / 'evidence'
     evidence.mkdir()
     shutil.copy2(source / '510880_20260116_DSHH.pdf', evidence)
@@ -36,7 +36,7 @@ def test_tampered_manifest_cannot_promote_pdf(tmp_path):
 
 
 def test_ttm_requires_verified_quote_and_full_coverage_certificate(tmp_path):
-    source = ROOT / 'data' / 'raw' / 'dividend'
+    source = ROOT / 'tests' / 'fixtures' / 'dividend-official'
     db = tmp_path / 'yield.sqlite'
     upsert_security(db, {'security_id': 'ETF:510880', 'code': '510880', 'name': '红利ETF',
                          'market': 'SH', 'security_type': 'ETF', 'aliases': ''})
@@ -67,7 +67,7 @@ def test_ttm_requires_verified_quote_and_full_coverage_certificate(tmp_path):
 
 
 def test_600519_cninfo_notice_is_verified_and_idempotent(tmp_path):
-    source = ROOT / 'data' / 'raw' / 'dividend'
+    source = ROOT / 'tests' / 'fixtures' / 'dividend-official'
     db = tmp_path / 'stock.sqlite'
     first = ingest_600519_notice(db, source)
     assert first == ingest_600519_notice(db, source)
@@ -83,7 +83,7 @@ def test_600519_cninfo_notice_is_verified_and_idempotent(tmp_path):
 
 
 def test_600519_two_official_notices_remain_distinct(tmp_path):
-    source = ROOT / 'data' / 'raw' / 'dividend'
+    source = ROOT / 'tests' / 'fixtures' / 'dividend-official'
     db = tmp_path / 'stock.sqlite'
     interim = ingest_600519_notice(db, source, '2025-12-11')
     annual = ingest_600519_notice(db, source)
@@ -97,7 +97,7 @@ def test_600519_two_official_notices_remain_distinct(tmp_path):
 
 
 def test_600519_tampered_interim_amount_is_rejected(tmp_path):
-    source = ROOT / 'data' / 'raw' / 'dividend'
+    source = ROOT / 'tests' / 'fixtures' / 'dividend-official'
     evidence = tmp_path / 'evidence'
     evidence.mkdir()
     shutil.copy2(source / '600519_20251211_CNINFO.pdf', evidence)

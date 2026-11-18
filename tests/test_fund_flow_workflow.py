@@ -18,7 +18,7 @@ def test_fund_flow_page_has_three_p0_chart_containers():
     assert 'data-sidebar-toggle="dividend-items"' in navigation
     assert "fund-flow-link" in navigation
     assert "universe" in html
-    assert "刷新全部数据" in html
+    assert "估算净申赎" in html
     assert "返回ETF看板" not in html
     assert "fund-flow.js?v=" in html
     assert "A股ETF看板 · P0" not in html
@@ -29,7 +29,7 @@ def test_daily_flow_uses_zero_axis_bars_with_signed_flow_values():
     script = (Path("web") / "fund-flow.js").read_text(encoding="utf-8")
     assert 'renderChart("daily", rows, "net_flow_yi", " 亿元", names, "bar")' in script
     assert 'type: chartType' in script
-    assert "正值为申购/净流入，负值为赎回/净流出" in html
+    assert "红色正值为净申购，绿色负值为净赎回" in html
 
 
 def test_workflow_uses_explicitly_simulated_sample():

@@ -34,7 +34,9 @@
   function link(parent, strategy, day, label) {
     const params = new URLSearchParams({strategy});
     if (day) params.set("observed_date", day);
-    append(parent, "a", label).href = "./index.html?" + params;
+    const anchor = append(parent, "a", label);
+    anchor.href = "./index.html?" + params;
+    return anchor;
   }
 
   function eventLink(parent, event, label) {
@@ -52,18 +54,72 @@
     const events = overview.groups.flatMap(group => group.events.map(event => ({event, group})))
       .filter(({event}) => get("event-period").value === "5" || event.date === overview.observation_date)
       .sort((a, b) => b.event.date.localeCompare(a.event.date));
-    for (const {event, group} of events) eventLink(append(list, "li"), event, group.name + " · ");
-    if (!events.length) append(list, "li", "该区间无新触发");
+    for (const {event, group} of events) {
+      const anchor = link(append(list, "li"), event.strategy, event.date);
+      append(anchor, "span", date(event.date)).className = "overview-event-date";
+      append(anchor, "strong", group.name);
+      append(anchor, "span", event.label).className = "overview-event-type";
+      const scale = event.field === "return40Spread" ? 100 : 1;
+      const unit = scale === 100 ? " pp" : "";
+      append(anchor, "span", `${value(event.previous, scale, unit)} → ${value(event.value, scale, unit)} · 当日阈值 ${value(event.threshold, scale, unit)}`).className = "overview-event-detail";
+    }
+    if (!events.length) {
+      const empty = append(list, "li");
+      empty.className = "overview-empty";
+      append(empty, "strong", "该区间无新触发");
+      append(empty, "span", "可切换到近5个交易日查看历史变化。");
+    }
+  }
+
+  function visibleGroups() {
+    const filter = get("overview-filter").value;
+    return overview.groups.filter(group =>
+      filter === "latest" ? group.events.some(event => event.date === overview.observation_date) :
+      filter === "recent" ? group.events.length > 0 :
+      filter === "quality" ? group.quality !== "完整" : true
+    );
+  }
+
+  function renderMobileRows(groups) {
+    const list = get("overview-mobile-list");
+    list.replaceChildren();
+    if (!groups.length) {
+      append(list, "p", "该筛选下无组合").className = "overview-footnote";
+      return;
+    }
+    for (const group of groups) {
+      const card = append(list, "article");
+      card.className = "overview-mobile-item";
+      const head = append(card, "div");
+      head.className = "overview-mobile-head";
+      link(head, group.id, group.events[0]?.date || group.data_date, group.name);
+      const quality = append(head, "span", group.quality === "完整" ? "完整" : "需核验");
+      quality.className = "overview-quality";
+      quality.dataset.state = group.quality === "完整" ? "complete" : "warning";
+      append(card, "p", `数据日期 ${date(group.data_date)} · ${group.quality}`);
+      const bias = group.spread == null ? "40日收益差暂不可用" : group.spread === 0 ? "近40日收益持平" :
+        (group.spread > 0 ? group.a_name || indexNames[group.a] : group.b_name || indexNames[group.b]) + "近40日相对占优";
+      append(card, "strong", bias);
+      const details = append(card, "details");
+      append(details, "summary", "查看指标与最近事件");
+      const metrics = append(details, "dl");
+      for (const [label, metric] of [
+        ["40日收益差", value(group.spread, 100, " pp")],
+        ["比值距MA242", value(group.distance, 100, "%")],
+        ["RSI14", value(group.rsi)],
+        ["最近事件", group.events[0] ? `${date(group.events[0].date)} · ${group.events[0].label}` : "近5日无新触发"]
+      ]) {
+        append(metrics, "dt", label);
+        append(metrics, "dd", metric);
+      }
+    }
   }
 
   function renderRows() {
     const rows = get("overview-rows");
-    const filter = get("overview-filter").value;
+    const groups = visibleGroups();
     rows.replaceChildren();
-    for (const group of overview.groups) {
-      if (filter === "latest" && !group.events.some(event => event.date === overview.observation_date)) continue;
-      if (filter === "recent" && !group.events.length) continue;
-      if (filter === "quality" && group.quality === "完整") continue;
+    for (const group of groups) {
       const row = append(rows, "tr");
       const latest = group.events[0];
       link(append(row, "td"), group.id, latest?.date || group.data_date, group.name);
@@ -82,14 +138,20 @@
         for (const event of group.events) eventLink(append(details, "div"), event, "");
       }
       append(row, "td", date(latest?.date));
-      append(row, "td", group.quality + " · " + date(group.data_date));
+      const qualityCell = append(row, "td");
+      const quality = append(qualityCell, "span", group.quality);
+      quality.className = "overview-quality";
+      quality.dataset.state = group.quality === "完整" ? "complete" : "warning";
+      append(qualityCell, "span", date(group.data_date)).className = "overview-quality-date";
     }
     if (!rows.children.length) append(append(rows, "tr"), "td", "该筛选下无组合").colSpan = 8;
+    renderMobileRows(groups);
   }
 
   async function load() {
     retry.classList.add("hidden");
     content.classList.add("hidden");
+    meta.parentElement.dataset.state = "loading";
     meta.textContent = "正在读取已发布快照…";
     try {
       const response = await fetch("/api/rotation/overview", {cache: "no-cache"});
@@ -97,23 +159,37 @@
       overview = await response.json();
       const triggered = overview.groups.filter(group => group.events.some(event => event.date === overview.observation_date)).length;
       const issues = overview.groups.filter(group => group.quality !== "完整").length;
-      meta.textContent = "观察日 " + date(overview.observation_date) + " · 快照 " + overview.snapshot_id +
-        " · 最新交易日触发 " + triggered + " 组 · 数据问题 " + issues + " 组";
+      get("overview-observation").textContent = date(overview.observation_date);
+      get("overview-triggered").textContent = triggered + " 组";
+      get("overview-triggered-copy").textContent = triggered ? `已发布收盘数据中有 ${triggered} 组新触发` : "当日无新触发；可查看近5日历史变化";
+      get("overview-complete").textContent = `${overview.groups.length - issues} / ${overview.groups.length}`;
+      get("overview-quality-copy").textContent = issues ? `${issues} 组指标缺失或日期落后，查看各组状态` : "全部组合数据完整";
+      const qualityCard = document.querySelector(".overview-headline-card--quality");
+      qualityCard.dataset.state = issues ? "warning" : "complete";
+      const spread = overview.etf.spread;
+      get("overview-spread").textContent = spread == null ? "—" : (spread > 0 ? "+" : "") + value(spread, 100, " pp");
+      get("overview-spread-copy").textContent = `基准 ${date(overview.etf.base_date)} · ETF 截至 ${date(overview.etf.data_date)}`;
+      document.querySelector(".overview-headline-card--spread").dataset.polarity = spread > 0 ? "positive" : spread < 0 ? "negative" : "neutral";
+      get("overview-group-count").textContent = `（${overview.groups.length}组）`;
+      meta.textContent = `已读取发布快照 · 指数观察日 ${date(overview.observation_date)} · ETF 数据日 ${date(overview.etf.data_date)}`;
+      meta.parentElement.dataset.state = "ready";
+      get("overview-snapshot").textContent = `快照 ${overview.snapshot_id} · 指标版本 ${overview.formula_version || "未记录"} · 事件规则 ${overview.rule_version || "未记录"}。指数策略数据按各组有效交易日计算；ETF 展示未复权收盘价格收益。`;
       get("etf-dates").textContent = "实际基准日 " + date(overview.etf.base_date) + " · 数据日期 " + date(overview.etf.data_date);
       const etf = get("overview-etf");
       etf.replaceChildren();
-      const items = [...Object.values(overview.etf.returns), {name: "50:50组合", value: overview.etf.portfolio},
-        {name: "红利−成长差值", value: overview.etf.spread, unit: " pp"}];
+      const items = [...Object.values(overview.etf.returns), {name: "红利 / 成长初始各50%买入持有", value: overview.etf.portfolio}];
       for (const item of items) {
         const cell = append(etf, "div");
         append(cell, "dt", item.name);
-        append(cell, "dd", value(item.value, 100, item.unit || "%"));
+        const amount = append(cell, "dd", value(item.value, 100, "%"));
+        amount.className = item.value > 0 ? "positive" : item.value < 0 ? "negative" : "neutral";
       }
       renderEvents();
       renderRows();
       content.classList.remove("hidden");
     } catch (error) {
-      meta.textContent = "轮动总览加载失败，请重试（" + error.message + "）";
+      meta.textContent = "信息总览加载失败，请重试（" + error.message + "）";
+      meta.parentElement.dataset.state = "error";
       retry.classList.remove("hidden");
     }
   }

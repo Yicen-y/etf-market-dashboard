@@ -31,6 +31,7 @@ class FetchResult:
     status: str = "success"
     source_url: str | None = None
     fetch_batch_id: str | None = None
+    price_basis: str = "UNKNOWN"
 
     @property
     def raw_sha256(self) -> str | None:
@@ -62,8 +63,8 @@ def validate_fetch_result(result: FetchResult, start: date, end: date, expected_
         raise ValueError(f"empty response for expected trading interval {start}..{end}")
 
 
-def _result(rows, provider, upstream, request, raw_bytes=b"", source_url=None):
-    return FetchResult(rows=list(rows), provider=provider, upstream=upstream, request=request, raw_bytes=raw_bytes, source_url=source_url)
+def _result(rows, provider, upstream, request, raw_bytes=b"", source_url=None, price_basis="UNKNOWN"):
+    return FetchResult(rows=list(rows), provider=provider, upstream=upstream, request=request, raw_bytes=raw_bytes, source_url=source_url, price_basis=price_basis)
 
 
 def map_index_frame(frame, index_code: str, provider: str, upstream: str) -> FetchResult:
@@ -218,7 +219,7 @@ def fetch_product_history(product_code: str, start_date: str, end_date: str, api
             raw_frames.append(frame)
         cursor = chunk_end + timedelta(days=1)
     raw = b"\n".join(_frame_bytes(frame) for frame in raw_frames)
-    return _result(records, "AkShare", "Eastmoney", {"product_code": product_code, "start_date": start_date, "end_date": end_date}, raw, "https://akshare.akfamily.xyz")
+    return _result(records, "AkShare", "Eastmoney", {"product_code": product_code, "start_date": start_date, "end_date": end_date, "adjust": ""}, raw, "https://akshare.akfamily.xyz", "UNADJUSTED_CLOSE")
 
 
 def fetch_index_history_etfirst(index_code: str, start_date: str, end_date: str, api_key=None) -> FetchResult:
@@ -237,8 +238,20 @@ def fetch_index_history_etfirst(index_code: str, start_date: str, end_date: str,
     if "results" not in payload or "list" not in payload.get("results", {}):
         raise RuntimeError("ETFirst index response schema missing results.list")
     if not rows:
-        return _result([], "ETFirst", "ETFirst", {"index_code": index_code, "start_date": start_date, "end_date": end_date}, raw)
-    return _result([{ "tradeDate": row["JYR"], "indexCode": index_code, "closeValue": float(row["CLOSE"]) } for row in rows], "ETFirst", "ETFirst", {"index_code": index_code, "start_date": start_date, "end_date": end_date}, raw)
+        return _result([], "ETFirst", "UNDISCLOSED", {"index_code": index_code, "start_date": start_date, "end_date": end_date}, raw)
+    return _result([{ "tradeDate": row["JYR"], "indexCode": index_code, "closeValue": float(row["CLOSE"]) } for row in rows], "ETFirst", "UNDISCLOSED", {"index_code": index_code, "start_date": start_date, "end_date": end_date}, raw)
+
+
+def fetch_index_history_official(index_code: str, start_date: str, end_date: str) -> FetchResult:
+    """Fetch the issuer's archived HTTP response with its original provenance.
+
+    The verification module owns the issuer contracts. Reuse that contract so
+    the daily publisher and independent reference run cannot silently drift to
+    different index codes or return types.
+    """
+    from .index_verification import _fetch
+
+    return _fetch(index_code, start_date, end_date)
 
 
 def fetch_index_history(index_code: str, start_date: str, end_date: str, api_key=None) -> FetchResult:

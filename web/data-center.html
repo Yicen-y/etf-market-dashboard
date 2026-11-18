@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>数据中心 · 投资分析看板</title>
+  <link rel="stylesheet" href="theme.css?v=20261115-hierarchy1"><link rel="stylesheet" href="ui-components.css?v=20261115-hierarchy1">
+  <link rel="stylesheet" href="data-center.css?v=20261115-job-detail1">
+</head>
+<body>
+<main class="dashboard-layout">
+  <aside data-dashboard-navigation data-active-section="data-center"></aside>
+  <div class="dashboard-content">
+    <header class="page-hero"><div class="page-heading"><p class="eyebrow">投资分析看板</p><h1>数据中心</h1>
+      <p class="subline">分别查看采集、结构校验和发布状态；未知来源不会被标为已核验。</p></div></header>
+    <p id="dc-message" role="status">正在读取诊断数据…</p>
+    <button class="dc-retry" id="dc-retry" type="button">重新读取</button>
+    <section class="panel"><h2>发布概览</h2><dl class="dc-summary" id="dc-summary"></dl></section>
+    <section class="panel"><h2>最近增量核验</h2><p class="dc-help">参考接口采集成功与新数据允许发布分别判定；核验失败的指数会单独列出。</p><dl class="dc-summary" id="dc-daily-summary"></dl><p id="dc-daily-failures" class="dc-help"></p></section>
+    <section class="panel"><h2>策略实际计算日期</h2><p class="dc-help">依据当前已发布快照逐日核对两条输入指数。计算日期晚于共同有效日会显示冲突；较早的计算日期会显示落后。</p><div class="table-wrap" tabindex="0"><table><thead><tr><th>策略</th><th>依赖指数</th><th>输入最新日期</th><th>共同有效日</th><th>实际计算截至</th><th>检查结果</th><th>快照版本</th></tr></thead><tbody id="dc-strategy-dates"></tbody></table></div></section>
+    <section class="panel"><div class="dc-heading"><h2>数据集概览</h2><label>按状态筛选
+      <select id="dc-filter" aria-describedby="dc-filter-help"><option value="all">全部数据集</option><option value="PUBLISHED">已发布</option><option value="FAILED">需要关注</option><option value="UNKNOWN">尚无发布数据</option></select>
+    </label></div><p id="dc-filter-help" class="dc-help">“已发布”表示有可读取的快照，仍可能有部分序列暂未更新；“需要关注”包含采集提醒、待审核候选或快照异常；“尚无发布数据”表示尚未形成可读取的快照。点击卡片可查看详细状态。</p><div id="dc-datasets" class="dc-datasets"></div></section>
+    <section class="panel"><h2>逐数据集状态</h2><p class="dc-help">采集、新鲜度、当前质量与发布分别判断。历史异常及原始来源另列；最新行情通过不代表历史问题已解决。</p>
+      <div class="dc-series-filters"><label>搜索名称或代码<input id="dc-series-search" type="search" placeholder="例如 H00919"></label>
+        <label>类型<select id="dc-series-type"><option value="all">全部</option><option value="index">指数</option><option value="etf">ETF 行情</option><option value="flow">份额与资金流</option><option value="dividend">股息</option><option value="valuation">估值</option></select></label>
+        <label>综合提醒<select id="dc-series-status"><option value="all">全部</option><option value="NORMAL">正常</option><option value="STALE">陈旧</option><option value="ANOMALY">历史异常</option><option value="FETCH_FAILED">取数失败</option><option value="UNKNOWN">未知</option></select></label>
+        <label>采集<select id="dc-series-acquisition"><option value="all">全部</option><option value="SUCCEEDED">成功</option><option value="FAILED">失败</option><option value="NOT_RUN">未执行</option></select></label>
+        <label>新鲜度<select id="dc-series-freshness"><option value="all">全部</option><option value="CURRENT">最新</option><option value="STALE">陈旧</option><option value="NO_VALID_DATA">无有效数据</option><option value="UNKNOWN">未知</option></select></label>
+        <label>当前质量<select id="dc-series-quality"><option value="all">全部</option><option value="PASS">通过</option><option value="ANOMALY">异常</option><option value="UNVERIFIED">尚未核验</option></select></label>
+        <label>发布<select id="dc-series-release"><option value="all">全部</option><option value="PUBLISHED">已发布</option><option value="USING_PREVIOUS">沿用旧版</option><option value="NOT_PUBLISHED">未发布</option></select></label>
+        <label>来源<select id="dc-series-source"><option value="all">全部来源</option></select></label></div>
+      <div class="table-wrap" tabindex="0"><table><thead><tr><th>名称 / 代码</th><th>类型</th><th>主来源 / 实际来源 / 上游</th><th>最近采集 / 参考</th><th>最新有效日 / 已发布截止</th><th>采集</th><th>新鲜度</th><th>当前质量</th><th>发布 / 版本</th><th>历史异常 / 原始来源</th><th>身份 / 参考证据</th><th>完整核验</th><th>操作</th></tr></thead><tbody id="dc-series"></tbody></table></div>
+    </section>
+    <dialog id="dc-index-dialog" aria-labelledby="dc-index-title" class="dc-review-dialog"><h2 id="dc-index-title">指数核验明细</h2><p id="dc-index-context"></p>
+      <label>质量状态<select id="dc-index-status"><option value="all">全部</option><option value="VENDOR_DISAGREEMENT">供应商差异</option><option value="CALENDAR_EXCEPTION">日历例外</option><option value="CALENDAR_REVIEW">日历待复核</option><option value="NO_REFERENCE">无参考</option><option value="IDENTITY_UNCONFIRMED">身份待确认</option><option value="SOURCE_EVIDENCE_INCOMPLETE">来源证据不足</option><option value="PASS">通过</option></select></label>
+      <div class="table-wrap" tabindex="0"><table><thead><tr><th>日期</th><th>本地</th><th>编制机构</th><th>华泰柏瑞</th><th>质量状态</th><th>来源证据</th></tr></thead><tbody id="dc-index-rows"></tbody></table></div>
+      <div class="dc-review-actions"><button id="dc-index-close" type="button">关闭</button></div>
+    </dialog>
+    <section class="panel"><h2>指数核验异常</h2><p class="dc-help">优先展示供应商差异与日历异常，最多 100 条。点击查看逐日来源证据；历史差异不会自动修改正式行情。</p><div class="table-wrap" tabindex="0"><table><thead><tr><th>指数</th><th>日期</th><th>本地</th><th>编制机构</th><th>华泰柏瑞</th><th>状态</th><th>操作</th></tr></thead><tbody id="dc-index-anomalies"></tbody></table></div></section>
+    <section class="panel"><h2>数据检查记录</h2><p class="dc-help">这里记录某条候选数据或某个来源遇到的问题，并不表示整个看板不可用。“提醒”表示稍后可重试；“已排除”表示异常记录未进入快照；“待审核”才需要核对价格并决定是否放行。下表展示最近记录。</p><div class="table-wrap" tabindex="0"><table>
+      <thead><tr><th>标的</th><th>类型</th><th>交易日</th><th>候选价</th><th>检查结果</th><th>处理情况</th><th>记录编号</th><th>操作</th></tr></thead><tbody id="dc-issues"></tbody>
+    </table></div></section>
+    <dialog id="dc-review-dialog" aria-labelledby="dc-review-title" class="dc-review-dialog">
+      <h2 id="dc-review-title">候选价格详情</h2><p id="dc-review-status"></p>
+      <div class="table-wrap"><table><thead><tr><th>交易日</th><th>新浪候选价</th><th>华泰柏瑞价</th><th>已发布价</th><th>差异</th></tr></thead><tbody id="dc-review-rows"></tbody></table></div>
+      <label>人工核验依据编号 <input id="dc-review-evidence" type="text" maxlength="200" placeholder="填写可追溯的审核依据"></label>
+      <p>人工放行仅适用于这份归档候选数据。请先核对所有日期与价格口径，放行后重新刷新才会尝试发布。</p>
+      <div class="dc-review-actions"><button id="dc-review-approve" type="button">确认人工放行</button><button id="dc-review-close" type="button">关闭</button></div>
+    </dialog>
+    <section class="panel"><h2>最近更新任务</h2><div class="table-wrap" tabindex="0"><table>
+      <thead><tr><th>任务编号</th><th>触发方式</th><th>状态</th><th>阶段</th><th>采集</th><th>校验</th><th>发布</th><th>开始</th><th>结束</th><th>原因</th><th>详情</th></tr></thead><tbody id="dc-jobs"></tbody>
+    </table></div></section>
+    <section class="panel"><h2>来源诊断</h2><p class="dc-help">仅展示仍晚于最近成功参考采集的失败诊断，不暴露访问凭据或响应正文。</p><div class="table-wrap" tabindex="0"><table><thead><tr><th>指数</th><th>来源</th><th>接口</th><th>错误</th><th>时间</th><th>响应哈希</th></tr></thead><tbody id="dc-provider-diagnostics"></tbody></table></div></section>
+    <section class="panel"><h2>版本与存储</h2><dl class="dc-summary" id="dc-version-summary"></dl><div class="table-wrap" tabindex="0"><table><thead><tr><th>版本</th><th>状态</th><th>发布时间</th></tr></thead><tbody id="dc-versions"></tbody></table></div></section>
+    <p class="subline">“结构通过”只说明文件与必要字段可读，不代表独立行情事实核验。</p>
+  </div>
+</main>
+<script src="navigation.js?v=20261118-industry1"></script><script src="data-center.js?v=20261117-online-stability1"></script>
+</body></html>

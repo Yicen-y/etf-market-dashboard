@@ -306,8 +306,16 @@ def test_batch_stock_sync_records_fresh_wind_observation(monkeypatch, tmp_path):
 
 
 def test_batch_stock_sync_reports_failure_without_masking_existing_ready_value(monkeypatch, tmp_path):
+    from datetime import date
     from scripts.dividend import provider_yields, service
     from scripts.dividend.db import add_watchlist, upsert_security
+
+    class FixtureDate(date):
+        @classmethod
+        def today(cls):
+            return cls(2026, 11, 16)
+
+    monkeypatch.setattr(provider_yields, 'date', FixtureDate)
 
     db = tmp_path / 'batch-stock-failure.sqlite'
     upsert_security(db, {'security_id': 'STOCK:601318', 'code': '601318', 'name': '中国平安',

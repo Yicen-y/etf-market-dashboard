@@ -9,6 +9,12 @@ from scripts.dividend.provider_yields import (
 )
 
 
+class _FixtureDate(date):
+    @classmethod
+    def today(cls):
+        return cls(2026, 11, 16)
+
+
 def _stock_payloads():
     snapshot = {'data': {'columns': [{'name': '最新交易日'}, {'name': 'Wind代码'}],
                          'rows': [['20261106', '600519.SH']]}, 'error': None}
@@ -78,7 +84,9 @@ def test_provider_sync_preserves_source_identity_and_failure_reason(tmp_path):
     assert provider_yield_detail(path, 'STOCK:600519')['as_of_date'] == date.today().isoformat()
 
 
-def test_wind_failure_preserves_existing_ready_provider_value(tmp_path):
+def test_wind_failure_preserves_existing_ready_provider_value(tmp_path, monkeypatch):
+    from scripts.dividend import provider_yields
+    monkeypatch.setattr(provider_yields, 'date', _FixtureDate)
     path = tmp_path / 'provider-failure.sqlite'
     upsert_security(path, {'security_id': 'STOCK:600519', 'code': '600519', 'name': '贵州茅台',
                            'market': 'SH', 'security_type': 'STOCK', 'aliases': ''})
@@ -97,7 +105,9 @@ def test_wind_failure_preserves_existing_ready_provider_value(tmp_path):
     assert failed['last_refresh_reason'] == 'Wind暂时不可用'
 
 
-def test_wind_failure_preserves_last_successful_fetch_timestamp(tmp_path):
+def test_wind_failure_preserves_last_successful_fetch_timestamp(tmp_path, monkeypatch):
+    from scripts.dividend import provider_yields
+    monkeypatch.setattr(provider_yields, 'date', _FixtureDate)
     path = tmp_path / 'provider-failure-timestamp.sqlite'
     upsert_security(path, {'security_id': 'STOCK:600519', 'code': '600519', 'name': '贵州茅台',
                            'market': 'SH', 'security_type': 'STOCK', 'aliases': ''})

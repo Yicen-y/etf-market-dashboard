@@ -186,10 +186,10 @@ def candidate_detail(database_path: Path, security_id: str) -> dict:
 
 if __name__ == '__main__':
     import argparse
-    from scripts.config import DATABASE_PATH, ROOT
+    from scripts.config import DATABASE_PATH, DATA_ROOT
 
     parser = argparse.ArgumentParser()
     parser.add_argument('security_id')
     options = parser.parse_args()
     print(json.dumps(sync_candidates(DATABASE_PATH, options.security_id,
-                                     ROOT / 'data' / 'raw' / 'dividend' / 'announcements'), ensure_ascii=False))
+                                     DATA_ROOT / 'raw' / 'dividend' / 'announcements'), ensure_ascii=False))

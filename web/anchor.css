@@ -17,7 +17,7 @@
 .anchor-chart-info p {margin:0;color:var(--text-secondary)}
 .anchor-chart-info form {position:absolute;top:10px;right:12px;margin:0}
 .anchor-chart-info-close {border:0;background:transparent;color:var(--text-secondary);font-size:24px;cursor:pointer}
-@media(max-width:1200px){.anchor-hero{grid-template-columns:minmax(0,1fr)}.anchor-hero .page-heading{min-width:0}.anchor-hero .anchor-controls{max-width:none;grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media(max-width:1150px){.anchor-hero{grid-template-columns:minmax(0,1fr)}.anchor-hero .page-heading{min-width:0}.anchor-hero .anchor-controls{max-width:none;grid-template-columns:repeat(4,minmax(0,1fr))}}
 @media(max-width:850px){.anchor-hero .page-heading{flex:auto}.anchor-hero .anchor-controls{flex:auto;max-width:none;grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:480px){.anchor-hero .anchor-controls{grid-template-columns:repeat(2,minmax(0,1fr))}}
 
@@ -25,3 +25,18 @@
 
 .anchor-guide-formula {margin:12px 0;padding:14px 16px;background:#f7faff;border:1px solid #dbe7f8;border-radius:10px;overflow-x:auto}
 .anchor-guide-formula-label {font-weight:600;margin-bottom:4px}
+
+.anchor-observation {display:grid;grid-template-columns:1fr;gap:14px;margin:0 0 var(--card-gap)}
+.anchor-observation-compare {grid-template-columns:repeat(2,minmax(0,1fr))}
+.anchor-observation-card {min-width:0;padding:18px 20px;border:1px solid #bfd5f4;border-radius:12px;background:linear-gradient(115deg,#eef5ff,#fff 72%)}
+.anchor-observation-heading {display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:8px 14px;margin-bottom:14px}
+.anchor-observation-heading strong {font-size:20px;color:var(--text-primary)}
+.anchor-observation-heading span,.anchor-observation-card p {font-size:13px;color:var(--text-secondary)}
+.anchor-observation-metrics {display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.anchor-observation-metrics > div {min-width:0}
+.anchor-observation-metrics span {display:block;font-size:13px;color:var(--text-secondary)}
+.anchor-observation-metrics strong {display:block;margin-top:4px;font-size:24px;line-height:1.2;color:var(--text-primary);overflow-wrap:anywhere}
+.anchor-observation-metrics > div:first-child strong {color:var(--primary)}
+.anchor-observation-card p {margin:12px 0 0}
+@media(max-width:1050px){.anchor-observation-compare{grid-template-columns:1fr}}
+@media(max-width:600px){.anchor-observation-card{padding:14px}.anchor-observation-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}.anchor-observation-metrics strong{font-size:20px}}

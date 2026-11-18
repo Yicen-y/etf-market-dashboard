@@ -1,4 +1,11 @@
 __pycache__/
+/data/
+/.scratch/
+/docs/engineering-v2/evidence/
+/docs/engineering_audit/evidence/
+/tests/fixtures/dividend-official/
+/scripts/seeds/
+/docs/nasdaq_premium/etfirst_sample_513100.json
 *.py[cod]
 .pytest_cache/
 .venv/
@@ -11,6 +18,18 @@ credentials*.json
 credential*.json
 wind-verify.json
 data/*.tmp
+data/*.db
+data/*.db-*
+data/*.bak
+data/current_manifest.json
+data/etf_prices.json
+data/index_prices.json
+data/releases/
+data/backups/
+data/raw/
+data/source_approvals.json
+data/research/
+data/.update.lock
 reports/wind/*
 !reports/wind/.gitkeep
 

@@ -48,3 +48,15 @@ def test_ah_backtest_costs_reduce_switching_strategy_value():
     charged_buy_a = next(x for x in charged["summary"] if x["strategy"] == "buy_hold_a")
     assert charged_buy_a["estimatedTradingCost"] > 0
     assert charged_buy_a["oneWayTurnover"] == 1
+
+
+def test_initial_weights_and_costs_have_hand_calculable_values():
+    result = backtest_ah_momentum(_rows([100, 110], [100, 100]), lookback=1, cost_bps=100)
+    by_name = {row["strategy"]: row for row in result["summary"]}
+    assert by_name["buy_hold_a"]["finalValue"] == pytest.approx(0.99 * 1.1)
+    assert by_name["buy_hold_a"]["estimatedTradingCost"] == pytest.approx(0.01)
+    assert by_name["buy_hold_h"]["finalValue"] == pytest.approx(0.99)
+    assert by_name["daily_rebalanced_50_50"]["oneWayTurnover"] > 1
+    assert by_name["d40_momentum_switch"]["finalValue"] == pytest.approx(0.99 * 1.05)
+    free = backtest_ah_momentum(_rows([100, 110], [100, 100]), lookback=1, cost_bps=0)
+    assert all(row["estimatedTradingCost"] == 0 for row in free["summary"])

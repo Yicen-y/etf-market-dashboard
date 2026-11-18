@@ -49,7 +49,16 @@ def test_api_uses_one_snapshot_and_invalidates_cache(tmp_path, monkeypatch):
 
     root = tmp_path / "data"
     root.mkdir()
-    monkeypatch.setattr(server, "ROOT", tmp_path)
+    monkeypatch.setattr(server, "DATA_ROOT", root)
+    server._rotation_overview.cache_clear()
+    original_build = server.build_overview
+    calls = []
+
+    def counted_build(*args):
+        calls.append(args[0])
+        return original_build(*args)
+
+    monkeypatch.setattr(server, "build_overview", counted_build)
     client = TestClient(server.app)
     assert client.get("/", follow_redirects=False).headers["location"] == "/web/overview.html"
     configs = [{"id": f"s{i}", "name": f"S{i}"} for i in range(8)]
@@ -69,4 +78,8 @@ def test_api_uses_one_snapshot_and_invalidates_cache(tmp_path, monkeypatch):
         assert result["snapshot_id"] == version
         assert result["observation_date"] == day
         assert all("records" not in group for group in result["groups"])
+        assert client.get("/api/rotation/overview").json() == result
+        assert calls.count(version) == 1
+    (root / "index.json").write_text("corrupt", encoding="utf-8")
+    assert client.get("/api/rotation/overview").status_code == 503
     server._rotation_overview.cache_clear()

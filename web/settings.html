@@ -4,9 +4,9 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>设置 · A股ETF看板</title>
-  <link rel="stylesheet" href="theme.css?v=20261101-2">
-  <link rel="stylesheet" href="ui-components.css?v=20261109-ui3">
-  <link rel="stylesheet" href="settings.css?v=20261110-settings1">
+  <link rel="stylesheet" href="theme.css?v=20261115-hierarchy1">
+  <link rel="stylesheet" href="ui-components.css?v=20261115-hierarchy1">
+  <link rel="stylesheet" href="settings.css?v=20261118-ifind2">
 </head>
 <body>
   <main class="dashboard-layout settings-layout">
@@ -47,12 +47,30 @@
             <div class="credential-actions"><button class="ui-button ui-button--primary" type="button" data-save-credential="etfirst">保存凭证</button><button class="ui-button" type="button" data-test-credential="etfirst">测试连接</button><button class="ui-button ui-button--quiet" type="button" data-delete-credential="etfirst">删除凭证</button></div>
             <p class="credential-status" data-status="etfirst" role="status" aria-live="polite">正在读取配置状态……</p>
           </article>
+          <article class="credential-card" data-provider="ifind">
+            <div class="credential-card-heading"><div><h2>同花顺 iFinD</h2><p>用于通过 HTTP 接口获取指数历史行情候选数据。</p></div><span class="provider-badge">指数数据</span></div>
+            <label class="ui-field" for="credential-ifind"><span>Refresh Token</span><div class="credential-input-wrap"><input id="credential-ifind" class="ui-input credential-input" type="password" autocomplete="new-password" spellcheck="false"><button class="credential-visibility" type="button" aria-label="显示或隐藏凭证" aria-pressed="false" data-toggle-credential="ifind">显示</button></div></label>
+            <div class="credential-actions"><button class="ui-button ui-button--primary" type="button" data-save-credential="ifind">保存凭证</button><button class="ui-button" type="button" data-test-credential="ifind">测试连接</button><button class="ui-button ui-button--quiet" type="button" data-delete-credential="ifind">删除凭证</button></div>
+            <p class="credential-status" data-status="ifind" role="status" aria-live="polite">正在读取配置状态……</p>
+          </article>
+        </section>
+        <section class="ifind-test-panel" aria-labelledby="ifind-test-title">
+          <div class="credential-card-heading"><div><h2 id="ifind-test-title">iFinD 指数取数测试</h2><p>使用已保存的 Refresh Token 查询历史收盘点位。结果仅供核对，不会写入看板。</p></div></div>
+          <form id="ifind-test-form" class="ifind-test-form">
+            <label class="ui-field" for="ifind-local-code"><span>看板指数代码</span><input id="ifind-local-code" class="ui-input" type="text" placeholder="例如 H00300" required spellcheck="false"></label>
+            <label class="ui-field" for="ifind-source-code"><span>iFinD 指数代码</span><input id="ifind-source-code" class="ui-input" type="text" placeholder="填写已核实的代码及市场后缀" required spellcheck="false"></label>
+            <label class="ui-field" for="ifind-start-date"><span>开始日期</span><input id="ifind-start-date" class="ui-input" type="date" required></label>
+            <label class="ui-field" for="ifind-end-date"><span>结束日期</span><input id="ifind-end-date" class="ui-input" type="date" required></label>
+            <button id="ifind-fetch-test" class="ui-button ui-button--primary" type="submit">测试取数</button>
+          </form>
+          <p id="ifind-fetch-status" class="credential-status" role="status" aria-live="polite">请先保存 iFinD 凭证，并填写已核实的指数代码。</p>
+          <div id="ifind-fetch-result" class="ifind-fetch-result" hidden></div>
         </section>
         <p id="settings-operation-status" class="settings-operation-status" role="status" aria-live="polite"></p>
       </div>
     </div>
   </main>
-  <script src="navigation.js?v=20261110-settings1"></script>
-  <script src="settings.js?v=20261110-settings1"></script>
+  <script src="navigation.js?v=20261118-industry1"></script>
+  <script src="settings.js?v=20261118-ifind2"></script>
 </body>
 </html>

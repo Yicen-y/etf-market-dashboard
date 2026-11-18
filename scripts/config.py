@@ -1,9 +1,11 @@
 from pathlib import Path
+import os
 
 ROOT = Path(__file__).resolve().parents[1]
-DATA_PATH = ROOT / "data" / "etf_prices.json"
-INDEX_DATA_PATH = ROOT / "data" / "index_prices.json"
-DATABASE_PATH = ROOT / "data" / "etf_market.db"
+DATA_ROOT = Path(os.environ.get("ETF_DATA_DIR") or ROOT / "data").expanduser().resolve()
+DATA_PATH = DATA_ROOT / "etf_prices.json"
+INDEX_DATA_PATH = DATA_ROOT / "index_prices.json"
+DATABASE_PATH = DATA_ROOT / "etf_market.db"
 
 PRODUCTS = {
     "512530": {"name": "建信沪深300红利ETF", "role": "dividend"},

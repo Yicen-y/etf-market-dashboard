@@ -54,7 +54,7 @@ class Session:
 
 def test_pdf_archive_is_hashed_idempotent_and_html_is_rejected(tmp_path):
     row = normalize_etf_announcements(etf_frame(), 'ETF:510880')[0]
-    payload = (ROOT / 'data' / 'raw' / 'dividend' / '510880_20260116_DSHH.pdf').read_bytes()
+    payload = (ROOT / 'tests' / 'fixtures' / 'dividend-official' / '510880_20260116_DSHH.pdf').read_bytes()
     first = archive_etf_pdf(row, tmp_path, session=Session(payload))
     second = archive_etf_pdf(row, tmp_path, session=Session(payload))
     assert first['pdf_sha256'] == second['pdf_sha256'] == hashlib.sha256(payload).hexdigest()
@@ -67,7 +67,7 @@ def test_sync_persists_candidates_only(tmp_path):
     db = tmp_path / 'candidate.sqlite'
     root = tmp_path / 'raw' / 'dividend' / 'announcements'
     rows = normalize_etf_announcements(etf_frame(), 'ETF:510880')
-    payload = (ROOT / 'data' / 'raw' / 'dividend' / '510880_20260116_DSHH.pdf').read_bytes()
+    payload = (ROOT / 'tests' / 'fixtures' / 'dividend-official' / '510880_20260116_DSHH.pdf').read_bytes()
     result = sync_candidates(db, 'ETF:510880', root, fetcher=lambda _: rows,
                              session=Session(payload))
     assert result['pdf_count'] == 1

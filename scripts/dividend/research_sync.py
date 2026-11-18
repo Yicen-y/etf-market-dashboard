@@ -66,11 +66,11 @@ def main(argv=None) -> int:
     parser.add_argument("--database", type=Path)
     parser.add_argument("--data-root", type=Path)
     args = parser.parse_args(argv)
-    from scripts.config import DATABASE_PATH, ROOT
+    from scripts.config import DATABASE_PATH, DATA_ROOT
     end = args.end or datetime.now().strftime("%Y%m%d")
     start = args.start or DEFAULT_RESEARCH_START_DATE
-    result = sync_research_sources(args.database or DATABASE_PATH, args.data_root or ROOT / "data", start, end)
-    report_path = (args.data_root or ROOT / "data") / "research" / "last_sync.json"
+    result = sync_research_sources(args.database or DATABASE_PATH, args.data_root or DATA_ROOT, start, end)
+    report_path = (args.data_root or DATA_ROOT) / "research" / "last_sync.json"
     export_sync_report(report_path, result)
     print(json.dumps(result, ensure_ascii=False, indent=2))
     print(f"Report: {report_path}")

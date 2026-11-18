@@ -3,48 +3,84 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>轮动总览 · 投资分析看板</title>
-  <link rel="stylesheet" href="theme.css?v=20261101-2">
-  <link rel="stylesheet" href="ui-components.css?v=20261109-ui3">
-  <link rel="stylesheet" href="overview.css?v=1">
+  <title>信息总览 · 投资分析看板</title>
+  <link rel="stylesheet" href="theme.css?v=20261115-hierarchy1">
+  <link rel="stylesheet" href="ui-components.css?v=20261115-hierarchy1">
+  <link rel="stylesheet" href="overview.css?v=20261115-overview2">
 </head>
 <body>
   <main class="dashboard-layout">
     <aside data-dashboard-navigation data-active-section="overview"></aside>
     <div class="dashboard-content">
-      <header class="page-hero"><div class="page-heading">
-        <p class="eyebrow">投资分析看板</p><h1>轮动总览</h1>
-        <p id="overview-meta" class="subline" role="status">正在读取已发布快照…</p>
-        <button id="overview-retry" class="ui-button hidden" type="button">重试</button>
-      </div></header>
+      <header class="page-hero overview-hero">
+        <div class="page-heading">
+          <p class="eyebrow">投资分析看板 / 总览</p><h1>信息总览</h1>
+          <p class="subline">从已发布收盘数据查看 ETF 阶段表现、轮动状态与最近触发。</p>
+        </div>
+        <div class="overview-observation">
+          <span>最新观察交易日</span><strong id="overview-observation">—</strong>
+          <a href="./data-center.html">查看数据中心</a>
+        </div>
+      </header>
+      <div class="overview-loadline" role="status"><span id="overview-meta">正在读取已发布快照…</span><button id="overview-retry" class="ui-button hidden" type="button">重试</button></div>
       <div id="overview-content" class="hidden">
-        <section class="panel">
-          <div class="panel-heading"><h2>近期触发</h2>
+        <section class="overview-headline-grid" aria-label="最新轮动观察">
+          <article class="overview-headline-card overview-headline-card--signals">
+            <span class="overview-card-kicker">最新交易日触发</span><strong id="overview-triggered">—</strong>
+            <p id="overview-triggered-copy">正在核对收盘信号…</p>
+            <a href="#overview-events-panel">查看近期触发 <span aria-hidden="true">→</span></a>
+          </article>
+          <article class="overview-headline-card overview-headline-card--quality">
+            <span class="overview-card-kicker">完整指数策略</span><strong id="overview-complete">—</strong>
+            <p id="overview-quality-copy">正在核对组合数据…</p>
+            <a href="#overview-index-panel">查看各组状态 <span aria-hidden="true">→</span></a>
+          </article>
+          <article class="overview-headline-card overview-headline-card--spread">
+            <span class="overview-card-kicker">红利 − 成长 ETF 阶段收益差</span><strong id="overview-spread">—</strong>
+            <p id="overview-spread-copy">按共同基准日的 ETF 收盘价计算</p>
+            <a href="./index.html?strategy=dividend-growth">查看 ETF 轮动 <span aria-hidden="true">→</span></a>
+          </article>
+        </section>
+        <nav class="overview-shortcuts" aria-label="快捷查看其他看板">
+          <span>快捷查看</span>
+          <a href="./index.html?strategy=dividend-growth">ETF轮动 <span aria-hidden="true">↗</span></a>
+          <a href="./index.html?strategy=prism">三棱镜策略 <span aria-hidden="true">↗</span></a>
+          <a href="./anchor.html">五年之锚 <span aria-hidden="true">↗</span></a>
+          <a href="./fund-flow.html">ETF资金流向 <span aria-hidden="true">↗</span></a>
+        </nav>
+        <section class="panel overview-etf-panel" aria-labelledby="overview-etf-title">
+          <div class="panel-heading"><div><p class="overview-section-kicker">ETF 价格表现</p><h2 id="overview-etf-title">收益对比</h2><p id="etf-dates">正在读取基准日期…</p></div><a href="./index.html?strategy=dividend-growth">查看详细走势 <span aria-hidden="true">→</span></a></div>
+          <dl id="overview-etf" class="overview-etf"></dl>
+          <p class="overview-footnote">按收盘价相对同一基准日计算；ETF 价格收益不含分红再投资。</p>
+        </section>
+        <div class="overview-detail-grid">
+        <section id="overview-events-panel" class="panel overview-events-panel" aria-labelledby="overview-events-title">
+          <div class="panel-heading"><div><p class="overview-section-kicker">最近变化</p><h2 id="overview-events-title">近期触发</h2></div>
             <label for="event-period">事件范围 <select id="event-period"><option value="5">近5个交易日</option><option value="1" selected>最新交易日</option></select></label>
           </div>
           <ul id="overview-events" class="overview-events"></ul>
-          <p class="subline">RSI 30、70 为观察阈值。所有事件基于已发布收盘数据。</p>
+          <p class="overview-footnote">RSI 30、70 为观察阈值；事件只使用已发布收盘数据，不代表可按当日收盘价交易。</p>
         </section>
-        <section class="panel">
-          <div class="panel-heading"><h2>指数轮动</h2>
+        <section id="overview-index-panel" class="panel overview-index-panel" aria-labelledby="overview-index-title">
+          <div class="panel-heading"><div><p class="overview-section-kicker">策略状态</p><h2 id="overview-index-title">指数轮动 <span id="overview-group-count" class="overview-count"></span></h2></div>
             <label for="overview-filter">组合筛选 <select id="overview-filter">
               <option value="all">全部</option><option value="latest">最新交易日触发</option>
               <option value="recent">近5日触发</option><option value="quality">数据异常</option>
             </select></label>
           </div>
+          <p class="overview-footnote">“相对占优”仅描述历史 40 日收益差。缺失指标保持为空，组合日期可能不同。</p>
           <div class="table-wrap" tabindex="0" aria-label="指数轮动总览表">
             <table><thead><tr><th>组合</th><th>当前偏向</th><th>40日收益差</th><th>比值距MA242</th><th>RSI14</th><th>最近事件</th><th>触发日期</th><th>数据状态</th></tr></thead>
             <tbody id="overview-rows"></tbody></table>
           </div>
+          <div id="overview-mobile-list" class="overview-mobile-list" aria-label="指数轮动组合"></div>
         </section>
-        <section class="panel">
-          <div class="panel-heading"><h2>ETF收益对比</h2><a href="./index.html?strategy=dividend-growth">查看ETF详情</a></div>
-          <p id="etf-dates" class="subline"></p><dl id="overview-etf" class="overview-etf"></dl>
-        </section>
+        </div>
+        <details class="overview-provenance"><summary>数据快照与计算口径</summary><p id="overview-snapshot"></p></details>
       </div>
     </div>
   </main>
-  <script src="navigation.js?v=20261109-ui3"></script>
-  <script src="overview.js?v=3"></script>
+  <script src="navigation.js?v=20261118-industry1"></script>
+  <script src="overview.js?v=20261115-overview2"></script>
 </body>
 </html>

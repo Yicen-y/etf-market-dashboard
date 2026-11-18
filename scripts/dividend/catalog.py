@@ -92,5 +92,5 @@ def catalog_status(path: Path) -> dict:
 
 
 if __name__ == '__main__':
-    from scripts.config import DATABASE_PATH, ROOT
-    print(json.dumps(sync_catalog(DATABASE_PATH, ROOT / 'data' / 'raw' / 'dividend' / 'catalog'), ensure_ascii=False))
+    from scripts.config import DATABASE_PATH, DATA_ROOT
+    print(json.dumps(sync_catalog(DATABASE_PATH, DATA_ROOT / 'raw' / 'dividend' / 'catalog'), ensure_ascii=False))

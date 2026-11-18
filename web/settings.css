@@ -23,8 +23,17 @@
 .settings-operation-status { min-height:24px; margin:var(--card-gap) 0 0; padding:0 2px; color:var(--text-secondary); }
 .settings-operation-status[data-state="error"] { color:var(--error); }
 .settings-operation-status[data-state="success"] { color:var(--negative); }
+.ifind-test-panel { margin-top:var(--card-gap); padding:20px; background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-card); box-shadow:var(--shadow-card); }
+.ifind-test-panel h2 { margin:0; font-size:20px; color:var(--text-primary); }
+.ifind-test-form { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)) auto; align-items:end; gap:12px; }
+.ifind-test-form .ui-field { min-width:0; }
+.ifind-test-form .ui-input { width:100%; min-width:0; }
+.ifind-test-form button { min-height:40px; }
+#ifind-fetch-result { min-width:0; margin-top:12px; padding:12px; border:1px solid var(--border); border-radius:8px; background:#f8fafc; }
+#ifind-fetch-result p { margin:0 0 8px; overflow-wrap:anywhere; color:var(--text-secondary); font-size:13px; }
+#ifind-fetch-result pre { margin:0; overflow:auto; font-size:12px; line-height:1.5; }
 .credential-card button:focus-visible, .credential-card input:focus-visible { position:relative; z-index:1; outline:3px solid rgba(44,107,237,.28); outline-offset:2px; }
-@media (max-width:1100px) { .credential-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+@media (max-width:1100px) { .credential-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } .ifind-test-form { grid-template-columns:repeat(2,minmax(0,1fr)); } .ifind-test-form button { justify-self:start; } }
 @media (max-width:768px) { .credential-grid { grid-template-columns:1fr; } .settings-notice { align-items:flex-start; flex-direction:column; gap:2px; } }
-@media (max-width:480px) { .credential-card { padding:16px; } .credential-card-heading { flex-direction:column; gap:8px; } .provider-badge { order:-1; } .credential-actions .ui-button { flex-basis:100%; } }
+@media (max-width:480px) { .credential-card, .ifind-test-panel { padding:16px; } .credential-card-heading { flex-direction:column; gap:8px; } .provider-badge { order:-1; } .credential-actions .ui-button { flex-basis:100%; } .ifind-test-form { grid-template-columns:1fr; } .ifind-test-form button { width:100%; } }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior:auto !important; transition-duration:.01ms !important; } }

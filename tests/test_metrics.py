@@ -26,3 +26,13 @@ def test_metrics_calculate_difference_and_5050():
     assert row["difference"] == pytest.approx(0.2)
     assert row["portfolio5050"] == pytest.approx(0.0)
 
+
+def test_5050_is_initial_equal_weight_buy_and_hold_without_rebalancing():
+    records = [
+        {"tradeDate": "20260102", "prices": {"512530": 100.0, "562310": 100.0}},
+        {"tradeDate": "20260105", "prices": {"512530": 200.0, "562310": 100.0}},
+        {"tradeDate": "20260106", "prices": {"512530": 200.0, "562310": 200.0}},
+    ]
+    result = calculate_metrics(records, date(2026, 1, 2), {"512530": {}, "562310": {}})
+    assert [row["portfolio5050"] for row in result["series"]] == pytest.approx([0.0, 0.5, 1.0])
+

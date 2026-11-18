@@ -1,6 +1,6 @@
 (function () {
-  const providers = ["wind_mcp", "htbr_etf", "etfirst"];
-  const statusMessages = { wind_mcp: "Wind MCP", htbr_etf: "华泰柏瑞 ETF", etfirst: "南方 ETFirst" };
+  const providers = ["wind_mcp", "htbr_etf", "etfirst", "ifind"];
+  const statusMessages = { wind_mcp: "Wind MCP", htbr_etf: "华泰柏瑞 ETF", etfirst: "南方 ETFirst", ifind: "同花顺 iFinD" };
   const operationStatus = document.getElementById("settings-operation-status");
 
   function setOperation(message, state = "") {
@@ -82,6 +82,50 @@
     } catch (error) { setOperation(`${statusMessages[provider]}连接测试未通过，请检查本地配置或服务状态。`, "error"); }
     finally { setBusy(provider, false); }
   }
+
+  const ifindForm = document.getElementById("ifind-test-form");
+  ifindForm.addEventListener("submit", async event => {
+    event.preventDefault();
+    const status = document.getElementById("ifind-fetch-status");
+    const result = document.getElementById("ifind-fetch-result");
+    const button = document.getElementById("ifind-fetch-test");
+    const indexCode = document.getElementById("ifind-local-code").value.trim();
+    const ifindCode = document.getElementById("ifind-source-code").value.trim();
+    const start = document.getElementById("ifind-start-date").value;
+    const end = document.getElementById("ifind-end-date").value;
+    result.hidden = true;
+    result.replaceChildren();
+    if (start > end) {
+      status.dataset.state = "error";
+      status.textContent = "开始日期不能晚于结束日期。";
+      return;
+    }
+    button.disabled = true;
+    status.dataset.state = "busy";
+    status.textContent = "正在从 iFinD 获取指数历史行情……";
+    try {
+      const payload = await request("/api/ifind/index-history", {
+        method: "POST",
+        body: JSON.stringify({ index_code: indexCode, ifind_code: ifindCode,
+          start_date: start.replaceAll("-", ""), end_date: end.replaceAll("-", "") })
+      });
+      const rows = Array.isArray(payload.rows) ? payload.rows : [];
+      status.dataset.state = "configured";
+      status.textContent = `取数成功：${rows.length} 条记录。请核对代码和收益口径后再使用。`;
+      const meta = document.createElement("p");
+      meta.textContent = `来源：${payload.provider} · 原始响应 SHA-256：${payload.rawSha256 || "无"}`;
+      result.append(meta);
+      const preview = document.createElement("pre");
+      preview.textContent = rows.length ? JSON.stringify(rows.slice(-10), null, 2) : "所选日期范围没有返回记录。";
+      result.append(preview);
+      result.hidden = false;
+    } catch (_) {
+      status.dataset.state = "error";
+      status.textContent = "取数测试失败。请检查凭证、指数代码、日期范围和本地服务。";
+    } finally {
+      button.disabled = false;
+    }
+  });
 
   document.querySelectorAll("[data-toggle-credential]").forEach(button => button.addEventListener("click", () => {
     const input = card(button.dataset.toggleCredential).querySelector(".credential-input");

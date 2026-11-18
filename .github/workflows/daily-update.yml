@@ -27,7 +27,8 @@ jobs:
       - name: Update and validate data
         env:
           ETFIRST_API_KEY: ${{ secrets.ETFIRST_API_KEY }}
-        run: python -m scripts.update_data
+        run: |
+          python -m scripts.daily_verified --overlap-days 7
       - name: Run tests
         run: python -m pytest -q
       - name: Preserve generated data for the local artifact only

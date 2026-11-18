@@ -28,7 +28,7 @@ def test_chart_theme_defines_distinct_units_and_stable_security_colors():
 
 def test_main_composite_chart_keeps_four_lines_and_one_difference_bar():
     script = read("app.js")
-    render = script[script.index("function renderETF") : script.index("function renderPrism")]
+    render = script[script.index("function renderETF(){") : script.index("function renderPrism")]
     assert render.count('type:"bar"') == 1
     assert render.count("line(") == 4
     assert "formatPercentagePoints" in render
@@ -45,5 +45,5 @@ def test_chart_lines_never_connect_missing_values():
 def test_fund_flow_uses_adjusted_share_label_and_code_stable_color():
     html = read("fund-flow.html")
     script = read("fund-flow.js")
-    assert "调整后ETF份额（万份）" in html
+    assert "调整后ETF份额存量（万份）" in html
     assert "securityColor(code)" in script

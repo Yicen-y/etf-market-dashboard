@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>行业轮动 · 三棱镜策略</title>
+  <link rel="stylesheet" href="theme.css?v=20261115-hierarchy1">
+  <link rel="stylesheet" href="ui-components.css?v=20261115-hierarchy1">
+  <link rel="stylesheet" href="styles.css?v=20261115-etf-index-split1">
+  <link rel="stylesheet" href="industry-rotation.css?v=20261118-4">
+  <script>window.MathJax = { tex: { inlineMath: [["\\(", "\\)"]], displayMath: [["\\[", "\\]"]] }, svg: { fontCache: "global" } };</script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+  <script src="echarts.min.js"></script>
+  <script src="chart-theme.js"></script>
+</head>
+<body>
+  <main class="dashboard-layout shell app-layout">
+    <aside data-dashboard-navigation data-active-section="industry-rotation"></aside>
+    <div class="dashboard-content content-column">
+      <header class="page-hero hero bento-hero">
+        <div class="page-heading"><p class="eyebrow">三棱镜策略 · 行业轮动</p><h1>行业与红利相对万得全A</h1>
+          <p class="subline">选择一个行业或中证红利全收益指数，在四张同步图中观察累计收益、相对比值、40 日收益差和 RSI。</p>
+          <button id="industry-guide-button" class="button ui-button industry-guide-button" type="button">策略说明 · 五种常见用法</button></div>
+      </header>
+      <section class="panel industry-panel" aria-labelledby="industry-tabs-title">
+        <h2 id="industry-tabs-title">选择指数 <small>左右滚动查看更多</small></h2>
+        <div id="industry-tabs" class="industry-tabs" role="group" aria-label="行业及红利指数，可横向滚动">正在加载指数…</div>
+      </section>
+      <div class="prism-time-toolbar industry-time-toolbar" aria-label="行业轮动时间范围与历史观察日">
+        <div class="prism-range-group" role="group" aria-label="时间范围">
+          <button type="button" class="prism-range-button" data-industry-range="6m">6M</button>
+          <button type="button" class="prism-range-button" data-industry-range="1y">1Y</button>
+          <button type="button" class="prism-range-button" data-industry-range="3y">3Y</button>
+          <button type="button" class="prism-range-button" data-industry-range="5y">5Y</button>
+          <button type="button" class="prism-range-button" data-industry-range="all">全部</button>
+        </div>
+        <div class="prism-time-state"><span id="industry-view-range">显示区间：正在加载…</span><span id="industry-selected-date">当前观察日：最新交易日</span><button id="industry-unlock" type="button" class="prism-unlock hidden">已锁定 · 点击解锁</button></div>
+      </div>
+      <section id="industry-observation" class="prism-observation industry-observation" aria-live="polite"></section>
+      <section class="panel chart-panel industry-main-panel" aria-labelledby="industry-chart-title">
+        <div class="panel-heading"><div><h2 id="industry-chart-title">行业与万得全A累计收益</h2><p id="industry-status" role="status" aria-live="polite">正在读取数据…</p></div></div>
+        <div id="industry-main-chart" class="chart" role="img" aria-label="行业全收益指数与万得全A累计收益对比图"></div>
+      </section>
+      <div id="industry-snapshot" class="prism-snapshot industry-snapshot" aria-live="polite"></div>
+      <div class="prism-secondary-grid industry-secondary-grid">
+        <section class="panel"><h2 id="industry-ratio-title">相对比值及242日布林线</h2><div id="industry-ratio-chart" class="chart" role="img" aria-label="行业相对万得全A的比值及布林线"></div></section>
+        <section class="panel"><h2 id="industry-spread-title">40日收益差及242日均线</h2><div id="industry-spread-chart" class="chart" role="img" aria-label="行业相对万得全A的40日收益差"></div></section>
+      </div>
+      <section class="panel industry-rsi-panel"><h2 id="industry-rsi-title">相对比值 RSI(14) 及242日均线</h2><div id="industry-rsi-chart" class="chart" role="img" aria-label="行业相对万得全A的RSI走势"></div></section>
+      <p id="industry-basis" class="industry-basis"></p>
+    </div>
+  </main>
+  <section id="industry-guide-modal" class="guide-modal hidden" role="dialog" aria-modal="true" aria-labelledby="industry-guide-title">
+    <div class="guide-backdrop" data-guide-close="true"></div>
+    <div class="guide-dialog" role="document">
+      <div class="guide-dialog-header"><h2 id="industry-guide-title">轮动三棱镜策略说明</h2><button id="industry-guide-close" class="guide-close" type="button" aria-label="关闭策略说明">×</button></div>
+      <div id="industry-guide-content" class="guide-content"></div>
+    </div>
+  </section>
+  <script src="navigation.js?v=20261118-industry1"></script>
+  <script src="industry-rotation.js?v=20261118-6"></script>
+</body>
+</html>

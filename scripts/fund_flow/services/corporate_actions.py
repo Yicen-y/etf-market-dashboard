@@ -12,6 +12,7 @@ import json
 from pathlib import Path
 from typing import Iterable, Sequence
 
+from scripts.config import DATA_ROOT
 from ..models import CorporateAction, CleanETFRecord, QualityIssue, RawETFRecord
 
 
@@ -125,9 +126,13 @@ def detect_candidate_actions(
     return candidates
 
 
+def seed_event_root() -> Path:
+    external = DATA_ROOT / "source_events"
+    return external if external.is_dir() else Path(__file__).resolve().parents[2] / "seeds" / "source_events"
+
+
 def load_seed_action(name: str, root: Path | None = None) -> CorporateAction:
-    root = root or Path(__file__).resolve().parents[3]
-    path = root / "data" / "source_events" / f"{name}.json"
+    path = (root / "data" / "source_events" if root is not None else seed_event_root()) / f"{name}.json"
     payload = json.loads(path.read_text(encoding="utf-8"))
     return CorporateAction(
         etf_code=payload["etf_code"],

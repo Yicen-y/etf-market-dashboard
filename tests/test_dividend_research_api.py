@@ -139,7 +139,7 @@ def test_research_api_rejects_snapshot_with_hash_mismatch(monkeypatch, tmp_path)
         '{"snapshot_id":"broken","files":{"index":"release/index_prices.json"},'
         '"sha256":{"index":"not-the-content-hash"}}', encoding="utf-8"
     )
-    monkeypatch.setattr(research_api, "ROOT", tmp_path)
+    monkeypatch.setattr(research_api, "DATA_ROOT", data_dir)
     app = FastAPI()
     app.include_router(research_api.router)
     response = TestClient(app).get("/api/research/dividend-ah")

@@ -10,7 +10,7 @@ from pathlib import Path
 
 import requests
 
-from scripts.config import DATABASE_PATH, ROOT
+from scripts.config import DATABASE_PATH, DATA_ROOT
 from scripts.dividend.research_store import record_research_series
 
 
@@ -64,7 +64,7 @@ def main() -> None:
     rows, raw = fetch()
     digest = hashlib.sha256(raw).hexdigest()
     raw_ref = Path("raw") / "research" / "csi_div_yield2_000922" / f"{digest}.json"
-    target = ROOT / "data" / raw_ref
+    target = DATA_ROOT / raw_ref
     target.parent.mkdir(parents=True, exist_ok=True)
     target.write_bytes(raw)
     inserted = record_research_series(

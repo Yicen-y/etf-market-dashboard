@@ -40,6 +40,42 @@ def _summary(strategy, wealth, path, turnover, cost, first_signal=None, first_ex
             "firstExecutionDate": first_execution, "lastSignalFilled": last_signal_filled}
 
 
+class _Portfolio:
+    """Two risky assets and cash, charged on the value actually traded."""
+
+    def __init__(self, target, cost_rate):
+        self.cost_rate = cost_rate
+        self.units = [0.0, 0.0]
+        self.cash = 1.0
+        self.turnover = 0.0
+        self.cost = 0.0
+        self.path = []
+        self.rebalance(target, (1.0, 1.0))
+        self.path.append(self.value((1.0, 1.0)))
+
+    def value(self, prices):
+        return self.cash + sum(units * price for units, price in zip(self.units, prices))
+
+    def weights(self, prices):
+        wealth = self.value(prices)
+        return tuple(units * price / wealth for units, price in zip(self.units, prices))
+
+    def rebalance(self, target, prices):
+        wealth = self.value(prices)
+        current = self.weights(prices)
+        bought = sum(max(a - b, 0) for a, b in zip(target, current))
+        sold = sum(max(b - a, 0) for a, b in zip(target, current))
+        fee = wealth * (bought + sold) * self.cost_rate
+        investable = wealth - fee
+        self.units = [investable * weight / price for weight, price in zip(target, prices)]
+        self.cash = investable * (1 - sum(target))
+        self.turnover += max(bought, sold)
+        self.cost += fee
+
+    def mark(self, prices):
+        self.path.append(self.value(prices))
+
+
 def backtest_ah_momentum(rows, *, lookback=40, cost_bps=0.0):
     """Compare theoretical total-return index portfolios on common observed dates.
 
@@ -59,53 +95,26 @@ def backtest_ah_momentum(rows, *, lookback=40, cost_bps=0.0):
     a_values = [x[1] for x in series]
     h_values = [x[2] for x in series]
 
-    a_wealth = h_wealth = ew_wealth = 1.0
-    switch_wealth = 1.0
-    a_path, h_path, ew_path, switch_path = [[1.0], [1.0], [1.0], [1.0]]
-    weights = (0.5, 0.5)
-    turnover = total_cost = ew_turnover = ew_cost = 0.0
-    ew_weights = (0.5, 0.5)
+    portfolios = [_Portfolio(target, cost_rate) for target in ((1.0, 0.0), (0.0, 1.0), (0.5, 0.5), (0.5, 0.5))]
     pending = None
     first_signal = first_execution = None
     last_signal_filled = True
 
     for i in range(1, len(series)):
-        ra = a_values[i] / a_values[i - 1] - 1
-        rh = h_values[i] / h_values[i - 1] - 1
-        a_wealth *= 1 + ra
-        h_wealth *= 1 + rh
-        ew_wealth *= 1 + ew_weights[0] * ra + ew_weights[1] * rh
-        ew_pre_fee_a = ew_weights[0] * (1 + ra)
-        ew_pre_fee_h = ew_weights[1] * (1 + rh)
-        ew_total = ew_pre_fee_a + ew_pre_fee_h
-        ew_weights = (ew_pre_fee_a / ew_total, ew_pre_fee_h / ew_total)
-        ew_trade = 0.5 * (abs(0.5 - ew_weights[0]) + abs(0.5 - ew_weights[1]))
-        ew_fee = ew_wealth * ew_trade * cost_rate
-        ew_wealth -= ew_fee
-        ew_cost += ew_fee
-        ew_turnover += ew_trade
-        ew_weights = (0.5, 0.5)
-
-        switch_wealth *= 1 + weights[0] * ra + weights[1] * rh
-        switch_path.append(switch_wealth)
-        a_path.append(a_wealth)
-        h_path.append(h_wealth)
-        ew_path.append(ew_wealth)
+        prices = (a_values[i] / a_values[0], h_values[i] / h_values[0])
+        portfolios[2].rebalance((0.5, 0.5), prices)
 
         # Execute yesterday's after-close signal at today's close. This affects
         # the portfolio only from the next common-date interval onwards.
         if pending is not None:
             signal_day, target = pending
-            traded = 0.5 * (abs(target[0] - weights[0]) + abs(target[1] - weights[1]))
-            fee = switch_wealth * traded * cost_rate
-            switch_wealth -= fee
-            total_cost += fee
-            turnover += traded
-            weights = target
+            portfolios[3].rebalance(target, prices)
             if first_execution is None:
                 first_signal, first_execution = signal_day, days[i]
             pending = None
-            switch_path[-1] = switch_wealth
+            last_signal_filled = True
+        for portfolio in portfolios:
+            portfolio.mark(prices)
 
         # Signal uses the close on this date; schedule at the following close.
         if i >= lookback:
@@ -114,13 +123,12 @@ def backtest_ah_momentum(rows, *, lookback=40, cost_bps=0.0):
             pending = (days[i], target)
             last_signal_filled = False
 
-    summaries = [
-        _summary("buy_hold_a", a_wealth, a_path, 0.0, 0.0),
-        _summary("buy_hold_h", h_wealth, h_path, 0.0, 0.0),
-        _summary("daily_rebalanced_50_50", ew_wealth, ew_path, ew_turnover, ew_cost),
-        _summary("d40_momentum_switch", switch_wealth, switch_path, turnover, total_cost,
-                 first_signal, first_execution, last_signal_filled),
-    ]
+    summaries = [_summary(name, p.path[-1], p.path, p.turnover, p.cost,
+                          first_signal if index == 3 else None,
+                          first_execution if index == 3 else None,
+                          last_signal_filled if index == 3 else True)
+                 for index, (name, p) in enumerate(zip(
+                     ("buy_hold_a", "buy_hold_h", "daily_rebalanced_50_50", "d40_momentum_switch"), portfolios))]
     return {"assetMode": "theoretical_index", "execution": "signal_close_then_next_common_close",
             "signalRule": f"D{lookback}>0: target A; otherwise target H; signal after close, fill next common close",
             "lookback": lookback, "costBps": float(cost_bps), "returnType": "CNY total return index",
