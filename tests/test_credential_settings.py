@@ -112,6 +112,20 @@ def test_plaintext_backend_is_rejected(monkeypatch):
         credential_settings.set_credential("wind_mcp", "secret")
 
 
+def test_linux_without_keyring_reports_unconfigured_without_storing_secrets(monkeypatch):
+    from types import SimpleNamespace
+
+    def unavailable():
+        raise RuntimeError("Windows Credential Vault backend is unavailable")
+
+    monkeypatch.setattr(credential_settings, "_keyring", unavailable)
+    monkeypatch.setattr(credential_settings, "os", SimpleNamespace(name="posix"))
+    statuses = credential_settings.list_credential_status(environ={})
+    assert all(not status["configured"] and status["masked"] == "" for status in statuses)
+    with pytest.raises(RuntimeError, match="Windows Credential Vault backend"):
+        credential_settings.set_credential("ifind", "secret")
+
+
 def test_raw_injected_keyring_cannot_bypass_backend_validation():
     with pytest.raises(RuntimeError, match="Unvalidated keyring injection"):
         credential_settings.set_credential("wind_mcp", "secret", keyring_module=FakeKeyring())

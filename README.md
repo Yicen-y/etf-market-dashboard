@@ -55,6 +55,12 @@ shell history. For one-session compatibility overrides, the existing
 environment variables remain supported, but the settings page is the preferred
 local workflow.
 
+On Linux, the settings page can display whether a provider environment variable
+is configured, but browser-based credential storage is unavailable. Configure
+`WIND_MCP_AUTH`, `HTBR_ETF_API_KEY`, `ETFIRST_API_KEY`, or `IFIND_REFRESH_TOKEN`
+through a protected service environment file when server-side refreshes need
+them; do not place the values in the repository.
+
 After configuring the providers, run the existing refresh command when needed:
 
 ```powershell

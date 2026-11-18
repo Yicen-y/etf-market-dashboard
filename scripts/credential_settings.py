@@ -1,7 +1,7 @@
 """Local credential storage for the ETF dashboard.
 
-Credentials are stored in the Windows Credential Manager through ``keyring``.
-The service deliberately exposes status only as configured/masked metadata.
+Windows stores credentials in Credential Manager; Linux reads environment
+overrides without falling back to an untrusted plaintext keyring.
 """
 
 from __future__ import annotations
@@ -148,7 +148,14 @@ def get_credential(
     override = _environment_value(spec, environ)
     if override:
         return override
-    return _backend(keyring_module).get_password(SERVICE, spec.account)
+    try:
+        backend = _backend(keyring_module)
+    except RuntimeError as error:
+        if (os.name != "nt" and keyring_module is None
+                and "Windows Credential Vault backend is unavailable" in str(error)):
+            return None
+        raise
+    return backend.get_password(SERVICE, spec.account)
 
 
 def set_credential(
