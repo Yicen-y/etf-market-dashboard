@@ -41,13 +41,22 @@ before_snapshot=""
 if [[ -n "$previous" ]]; then
   before_snapshot=$(curl --fail --silent --max-time 15 http://127.0.0.1:8000/api/snapshot | python3 -c 'import json,sys; print(json.load(sys.stdin)["snapshot_id"])')
 fi
+wait_ready() {
+  for _ in {1..30}; do
+    if curl --fail --silent --max-time 3 http://127.0.0.1:8000/api/ready >/dev/null; then
+      return 0
+    fi
+    sleep 1
+  done
+  return 1
+}
 [[ ! -e "$release" ]] || { echo "Release path already exists" >&2; exit 2; }
 mkdir -p -- "$release"
 unzip -q "$package" -d "$release"
 python3 -m compileall -q "$release/server.py" "$release/scripts"
 ln -s -- "$release" "$deploy_root/current.next"
 mv -Tf -- "$deploy_root/current.next" "$deploy_root/current"
-if ! systemctl restart "$service" || ! curl --fail --silent --max-time 15 http://127.0.0.1:8000/api/ready >/dev/null ||
+if ! systemctl restart "$service" || ! wait_ready ||
    { [[ -n "$before_snapshot" ]] && [[ "$(curl --fail --silent --max-time 15 http://127.0.0.1:8000/api/snapshot | python3 -c 'import json,sys; print(json.load(sys.stdin)["snapshot_id"])')" != "$before_snapshot" ]]; }; then
   echo "Health check failed; restoring prior code link" >&2
   if [[ -n "$previous" && -d "$previous" ]]; then
