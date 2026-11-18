@@ -1,7 +1,7 @@
 const $ = id => document.getElementById(id);
 const fmt = x => x == null ? "—" : Number(x).toFixed(3);
 const chartTheme = window.DashboardChartTheme;
-const securityColor = code => chartTheme.securityColor(code);
+const securityColor = code => chartTheme.securityColor(String(code || "").split(".")[0]);
 let charts = {};
 let tableRows = [], tableNames = {};
 let historyComplete = false;
@@ -12,6 +12,7 @@ let activeLoadController = null;
 function renderSelected(rows, names, codes) {
   if (!codes.includes(selectedEtf)) selectedEtf = codes[0] || null;
   const cards = $("etf-cards");
+  const cardScrollLeft = cards.scrollLeft;
   cards.replaceChildren();
   for (const code of codes) {
     const history = rows.filter(row => row.etf_code === code);
@@ -40,6 +41,7 @@ function renderSelected(rows, names, codes) {
     card.addEventListener("click", () => { selectedEtf = code; renderSelected(rows, names, codes); });
     cards.append(card);
   }
+  cards.scrollLeft = cardScrollLeft;
   const selectedRows = rows.filter(row => row.etf_code === selectedEtf);
   const name = names[selectedEtf] || selectedEtf || "ETF";
   $("selected-daily-title").textContent = `每日份额变化 — ${name}`;
@@ -97,29 +99,31 @@ function setStatus(text, kind = "", summary = "") {
   window.DashboardStatus.render(node, {state, summary: summary || (text.length > 90 ? `${text.slice(0, 86)}…` : text), detail: text});
 }
 
-function renderChart(key, rows, valueKey, unit, names, chartType = "line") {
+function renderChart(key, rows, valueKey, unit, names, chartType = "line", codes = []) {
   const grouped = {};
   for (const row of rows) {
     (grouped[row.etf_code] ??= []).push([row.trade_date, row[valueKey]]);
   }
   const dates = [...new Set(rows.map(x => x.trade_date))];
+  const orderedCodes = [...codes.filter(code => grouped[code]), ...Object.keys(grouped).filter(code => !codes.includes(code))];
   const isBar = chartType === "bar";
   const valueFormatter = valueKey === "shares_adj_wan" ? chartTheme.formatSharesWan : chartTheme.formatMoneyYi;
   charts[key].setOption({
     ...chartTheme.createBaseChartOption({ dates, bottom: 48 }),
-    legend: { top: 0, left: 64, right: 24, type: "scroll" },
+    color: orderedCodes.map(securityColor),
+    legend: { top: 0, left: 64, right: 24, type: "scroll", data: orderedCodes.map(code => ({name: `${names[code] || code}（${code}）`, itemStyle: {color: securityColor(code)}})) },
     grid: { left: 64, right: 24, top: 48, bottom: 48 },
     tooltip: chartTheme.axisTooltip(() => valueFormatter),
     dataZoom: [{ type: "inside", filterMode: "none", start: 0, end: 100 }],
     xAxis: { type: "category", data: dates, axisLabel: { rotate: 0, hideOverlap: true, interval: Math.max(0, Math.ceil(dates.length / 8) - 1), formatter: value => String(value).slice(0, 7) } },
     yAxis: { type: "value", axisLine: { onZero: true } },
-    series: Object.entries(grouped).map(([code, data]) => ({
+    series: orderedCodes.map(code => ({
       name: `${names[code] || code}（${code}）`,
       type: chartType,
       showSymbol: !isBar,
       ...(isBar ? { barMaxWidth: 12, barGap: "12%" } : {}),
       connectNulls: false,
-      data: dates.map(date => data.find(x => x[0] === date)?.[1] ?? null),
+      data: dates.map(date => grouped[code].find(x => x[0] === date)?.[1] ?? null),
       lineStyle: { color: securityColor(code), width: 2 },
       itemStyle: { color: isBar ? params => Number(params.value) >= 0 ? "#c9362b" : "#16834a" : securityColor(code) },
     })),
@@ -169,10 +173,10 @@ async function load() {
       ["覆盖ETF数", payload.codes.length],
       ["状态", statusText],
     ].map(([label, value]) => `<div class="summary-card"${label === "当日估算净申赎" && latestFlowRows.length ? ` data-direction="${latestFlow < 0 ? 'out' : 'in'}"` : ''}><div class="label">${label}</div><div class="value">${value}</div></div>`).join("");
-    renderChart("shares", rows, "shares_adj_wan", "", names);
+    renderChart("shares", rows, "shares_adj_wan", "", names, "line", payload.codes);
     renderSelected(rows, names, payload.codes);
-    renderChart("cumulative", rows, "cum_flow_yi", " 亿元", names);
-    renderChart("daily", rows, "net_flow_yi", " 亿元", names, "bar");
+    renderChart("cumulative", rows, "cum_flow_yi", " 亿元", names, "line", payload.codes);
+    renderChart("daily", rows, "net_flow_yi", " 亿元", names, "bar", payload.codes);
     setStatus(
       `数据截至 ${payload.latestTradeDate}，当前组合为 ${members.join("、")}；显示区间 ${actualStart || payload.start} 至 ${payload.latestTradeDate}。${!historyComplete ? " 请点击“补齐历史数据”完成历史回填。" : ""}`,
       historyComplete && !quality ? "success" : "warning",
